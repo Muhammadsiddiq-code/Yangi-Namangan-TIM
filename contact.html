@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bog'lanish - Ixtisoslashtirilgan ta'lim muassasalari agentligi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            /* Light theme */
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-header: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --text-light: rgba(255, 255, 255, 0.8);
+            --border-color: #e0e0e0;
+            --shadow: rgba(0,0,0,0.1);
+            --accent: #3498db;
+            --accent-hover: #2980b9;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --card-bg: #ffffff;
+            --input-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            /* Dark theme */
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-header: linear-gradient(135deg, #1e2832 0%, #2c5aa0 100%);
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-light: rgba(255, 255, 255, 0.9);
+            --border-color: #404040;
+            --shadow: rgba(0,0,0,0.3);
+            --accent: #4a9eff;
+            --accent-hover: #357abd;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --card-bg: #2d2d2d;
+            --input-bg: #3a3a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            background: var(--bg-header);
+            color: white;
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .gov-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .gov-logo i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 8px 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            margin-top: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-nav a:hover {
+            color: white;
+        }
+
+        .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .contact-info {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow);
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .contact-section {
+            margin-bottom: 25px;
+        }
+
+        .contact-section h3 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .contact-section p {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .contact-section a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-section a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .map-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .map-header {
+            background: var(--accent);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .map-content {
+            height: 400px;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--text-secondary);
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .interactive-map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--bg-primary) 25%, transparent 25%), 
+                        linear-gradient(-45deg, var(--bg-primary) 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, var(--bg-primary) 75%), 
+                        linear-gradient(-45deg, transparent 75%, var(--bg-primary) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-marker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--error);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translate(-50%, -50%) translateY(0);
+            }
+            40% {
+                transform: translate(-50%, -50%) translateY(-10px);
+            }
+            60% {
+                transform: translate(-50%, -50%) translateY(-5px);
+            }
+        }
+
+        .social-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .social-link.facebook { background: #3b5998; }
+        .social-link.telegram { background: #0088cc; }
+        .social-link.instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+        .social-link.youtube { background: #ff0000; }
+
+        .social-link:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .contact-form {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow);
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px var(--shadow);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        .language-switcher {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
+            display: flex;
+        }
+
+        .language-switcher button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .header-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-sidebar {
+                position: static;
+                transform: none;
+                flex-direction: row;
+                justify-content: center;
+                margin: 20px 0;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="gov-logo">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h1 class="header-title" data-translate="header-title">Bog'lanish</h1>
+                </div>
+                
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeText" data-translate="dark-mode">Tungi rejim</span>
+                    </button>
+                    
+                    <div class="language-switcher">
+                        <button class="lang-btn active" data-lang="uz">UZ</button>
+                        <button class="lang-btn" data-lang="ru">RU</button>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="breadcrumb">
+                <nav class="breadcrumb-nav">
+                    <a href="./index.html" style="text-indent: 20px;" data-translate="home">Bosh sahifa</a>
+                    <span class="breadcrumb-separator">></span>
+                    <span data-translate="contact">Bog'lanish</span>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h2 class="page-title" data-translate="page-title">
+                O'zbekiston Respublikasi<br>
+                Maktabgacha va maktab ta'limi vazirligi huzuridagi<br>
+                Ixtisoslashtirilgan ta'lim muassasalari agentligi
+            </h2>
+
+            <div class="content-grid">
+                <div class="contact-info">
+                    <div class="contact-section">
+                        <h3 data-translate="address">Manzil:</h3>
+                        <p>Toshkent shahri, Yashnobod tumani, Mahtumquli ko'chasi, 1A</p>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3 data-translate="transport">Jamoat transporti yo'nalishlari:</h3>
+                        <p><strong>Avtobus:</strong> 18, 44, 50</p>
+                        <p>"Buyuk ipak yo'li" metro bekatidan kelish yo'li</p>
+                        <p><a href="#" class="route-link">Xaritada ko'rish</a></p>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3 data-translate="phone">Telefon:</h3>
+                        <p><a href="tel:+998712072017">+998 (71) 207-20-17</a></p>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3 data-translate="email">Elektron pochta:</h3>
+                        <p><a href="mailto:info@pirma.uz">info@pirma.uz</a></p>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3 data-translate="email-personal">E-xat:</h3>
+                        <p><a href="mailto:pirma@exat.uz">pirma@exat.uz</a></p>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3 data-translate="director">Direktor:</h3>
+                        <p>Prezident maktablari va Muhammad al-Xorazmiy nomli ixtisoslashtirilgan maktabda imkoniyati cheklangan insonlar uchun barcha sharoitlar yaratilgan.</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <div class="map-header">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-translate="location">Joylashuv xaritasi</span>
+                    </div>
+                    <div class="map-content">
+                        <div class="interactive-map" id="interactiveMap">
+                            <div class="map-marker">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span data-translate="agency">Agentlik</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3 data-translate="contact-form-title">Biz bilan bog'laning</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name" data-translate="name">Ism va familiya:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-translate="email-label">Elektron pochta:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" data-translate="phone-label">Telefon raqami:</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" data-translate="subject">Mavzu:</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" data-translate="message">Xabar:</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span class="btn-text" data-translate="send">Xabarni yuborish</span>
+                        <span class="loading" style="display: none;"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div class="social-sidebar">
+        <a href="#" class="social-link facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://t.me/YangiNamanganTIM" class="social-link telegram" title="Telegram">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+        <a href="#" class="social-link instagram" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-link youtube" title="YouTube">
+            <i class="fab fa-youtube"></i>
+        </a>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationMessage" data-translate="success-message">Xabaringiz muvaffaqiyatli yuborildi!</span>
+    </div>
+
+    <script>
+        // Language translations
+        const translations = {
+            uz: {
+                'header-title': "Bog'lanish",
+                'home': 'Bosh sahifa',
+                'contact': "Bog'lanish",
+                'dark-mode': 'Tungi rejim',
+                'light-mode': 'Kunduzgi rejim',
+                'page-title': "O'zbekiston Respublikasi\nMaktabgacha va maktab ta'limi vazirligi huzuridagi\nIxtisoslashtirilgan ta'lim muassasalari agentligi",
+                'address': 'Manzil:',
+                'transport': "Jamoat transporti yo'nalishlari:",
+                'phone': 'Telefon:',
+                'email': 'Elektron pochta:',
+                'email-personal': 'E-xat:',
+                'director': 'Direktor:',
+                'location': 'Joylashuv xaritasi',
+                'agency': 'Agentlik',
+                'contact-form-title': "Biz bilan bog'laning",
+                'name': 'Ism va familiya:',
+                'email-label': 'Elektron pochta:',
+                'phone-label': 'Telefon raqami:',
+                'subject': 'Mavzu:',
+                'message': 'Xabar:',
+                'send': 'Xabarni yuborish',
+                'success-message': "Xabaringiz muvaffaqiyatli yuborildi!",
+                'error-message': "Xatolik yuz berdi. Iltimos, keyinroq urunib ko'ring."
+            },
+            ru: {
+                'header-title': 'Контакты',
+                'home': 'Главная',
+                'contact': 'Контакты',
+                'dark-mode': 'Темная тема',
+                'light-mode': 'Светлая тема',
+                'page-title': 'Республика Узбекистан\nАгентство специализированных образовательных учреждений\nпри Министерстве дошкольного и школьного образования',
+                'address': 'Адрес:',
+                'transport': 'Направления общественного транспорта:',
+                'phone': 'Телефон:',
+                'email': 'Электронная почта:',
+                'email-personal': 'E-mail:',
+                'director': 'Директор:',
+                'location': 'Карта расположения',
+                'agency': 'Агентство',
+                'contact-form-title': 'Свяжитесь с нами',
+                'name': 'Имя и фамилия:',
+                'email-label': 'Электронная почта:',
+                'phone-label': 'Номер телефона:',
+                'subject': 'Тема:',
+                'message': 'Сообщение:',
+                'send': 'Отправить сообщение',
+                'success-message': 'Ваше сообщение успешно отправлено!',
+                'error-message': 'Произошла ошибка. Пожалуйста, попробуйте позже.'
+            },
+            en: {
+                'header-title': 'Contact',
+                'home': 'Home',
+                'contact': 'Contact',
+                'dark-mode': 'Dark mode',
+                'light-mode': 'Light mode',
+                'page-title': 'Republic of Uzbekistan\nAgency of Specialized Educational Institutions\nunder the Ministry of Preschool and School Education',
+                'address': 'Address:',
+                'transport': 'Public transport directions:',
+                'phone': 'Phone:',
+                'email': 'Email:',
+                'email-personal': 'E-mail:',
+                'director': 'Director:',
+                'location': 'Location map',
+                'agency': 'Agency',
+                'contact-form-title': 'Contact us',
+                'name': 'Name and surname:',
+                'email-label': 'Email:',
+                'phone-label': 'Phone number:',
+                'subject': 'Subject:',
+                'message': 'Message:',
+                'send': 'Send message',
+                'success-message': 'Your message has been sent successfully!',
+                'error-message': 'An error occurred. Please try again later.'
+            }
+        };
+
+        let currentLang = 'uz';
+        let currentTheme = localStorage.getItem('theme') || 'light';
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+
+            // Update icon and text
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            const themeKey = theme === 'dark' ? 'light-mode' : 'dark-mode';
+            themeText.textContent = translations[currentLang][themeKey];
+        }
+
+        // Initialize theme
+        setTheme(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        });
+
+        // Language switcher functionality
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLang = btn.dataset.lang;
+                translatePage();
+            });
+        });
+
+        function translatePage() {
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.dataset.translate;
+                if (translations[currentLang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[currentLang][key];
+                    } else {
+                        element.textContent = translations[currentLang][key];
+                    }
+                }
+            });
+
+            // Update theme toggle text
+            const themeKey = currentTheme === 'light' ? 'dark-mode' : 'light-mode';
+            themeText.textContent = translations[currentLang][themeKey];
+        }
+
+        // Contact form functionality with Telegram bot integration
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const loading = submitBtn.querySelector('.loading');
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = new FormData(e.target);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const phone = formData.get('phone') || 'Not provided';
+                const subject = formData.get('subject');
+                const message = formData.get('message');
+                
+                // Format the message for Telegram
+                const telegramMessage = `
+<b>🏛️ Yangi xabar - Agentlik sayti</b>
+
+👤 <b> Full Name:</b> ${ `Full`, name}
+
+📧 <b>Email:</b> ${email}
+
+📞 <b>Phone:</b> ${phone}
+
+📝 <b>Subject:</b> ${subject}
+
+💬 <b>Message:</b> ${message}
+                `.trim();
+                
+                const botToken = '7012510583:AAEjIGP-LqL75etZYOEBnvRFy_K5VAmQw3c';
+                const chatId = '7116193043'; // Replace with your actual chat ID
+                
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: telegramMessage,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.ok) {
+                    showNotification(translations[currentLang]['success-message'], 'success');
+                    e.target.reset();
+                } else {
+                    throw new Error(result.description || 'Failed to send message to Telegram');
+                }
+                
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+                showNotification(translations[currentLang]['error-message'], 'error');
+            } finally {
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Interactive map functionality
+        const interactiveMap = document.getElementById('interactiveMap');
+        let mapClicks = 0;
+
+        interactiveMap.addEventListener('click', (e) => {
+            mapClicks++;
+            const rect = interactiveMap.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Create ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.position = 'absolute';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.background = 'rgba(52, 152, 219, 0.6)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.transform = 'translate(-50%, -50%)';
+            ripple.style.animation = 'ripple 1s ease-out forwards';
+            ripple.style.pointerEvents = 'none';
+            
+            interactiveMap.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 1000);
+
+            // Show different messages based on clicks
+            if (mapClicks === 3) {
+                showNotification(translations[currentLang]['map-loaded'] || 'Xarita to\'liq yuklandi!');
+            } else if (mapClicks === 5) {
+                showNotification(translations[currentLang]['open-yandex'] || 'Yandex Maps-da ochish...');
+                setTimeout(() => {
+                    window.open('https://yandex.uz/maps/', '_blank');
+                }, 1000);
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageSpan = document.getElementById('notificationMessage');
+            messageSpan.textContent = message;
+            
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Social media interactions
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const platform = link.classList[1];
+                showNotification(`${platform.charAt(0).toUpperCase() + platform.slice(1)} sahifasiga o'tilmoqda...`);
+                
+                setTimeout(() => {
+                    const urls = {
+                        facebook: 'https://facebook.com',
+                        telegram: 'https://t.me',
+                        instagram: 'https://instagram.com',
+                        youtube: 'https://youtube.com'
+                    };
+                    window.open(urls[platform], '_blank');
+                }, 1000);
+            });
+        });
+
+        // Route link functionality
+        document.querySelector('.route-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            showNotification(translations[currentLang]['show-route'] || "Yo'nalish xaritada ko'rsatilmoqda...");
+            
+            interactiveMap.style.border = '3px solid var(--error)';
+            setTimeout(() => {
+                interactiveMap.style.border = 'none';
+            }, 2000);
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('998')) {
+                value = '+' + value.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 ($2) $3-$4-$5');
+            }
+            e.target.value = value;
+        });
+
+        // Form validation with real-time feedback
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('blur', () => {
+                if (input.required && !input.value.trim()) {
+                    input.style.borderColor = 'var(--error)';
+                } else if (input.type === 'email' && input.value && !isValidEmail(input.value)) {
+                    input.style.borderColor = 'var(--error)';
+                } else {
+                    input.style.borderColor = 'var(--success)';
+                }
+            });
+            
+            input.addEventListener('focus', () => {
+                input.style.borderColor = 'var(--accent)';
+            });
+        });
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize page
+        translatePage();
+        
+        // Page load notification
+        setTimeout(() => {
+            showNotification(translations[currentLang]['page-loaded'] || "Sahifa to'liq yuklandi!");
+        }, 1000);
+
+        // Easter egg - Konami code
+        let konamiCode = [];
+        const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konami.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konami.join(',')) {
+                document.body.style.animation = 'rainbow 2s infinite';
+                showNotification("🎉 Maxfiy kod topildi! 🎉");
+                
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>
