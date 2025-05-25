@@ -30,11 +30,11 @@
             <nav class="main-nav">
                 <ul class="nav-list">
                     <li class="nav-item dropdown">
-                        <a href="about.html" data-key="nav-about">Agentlik haqida</a>
+                        <a href="./about.html" data-key="nav-about">Rahbariyat</a>
                         <div class="dropdown-content">
-                            <a href="about.html#rahbariyat" data-key="nav-leadership">Rahbariyat</a>
-                            <a href="about.html#tuzilma" data-key="nav-structure">Tashkiliy tuzilma</a>
-                            <a href="about.html#vazifalar" data-key="nav-duties">Vazifa va funksiyalar</a>
+                            <a href="./about.html#maktabHaqida" data-key="nav-leadership">Maktab haqida</a>
+                            <a href="./about.html#tuzilma" data-key="nav-structure">Tashkiliy tuzilma</a>
+                            <a href="./about.html#vazifalar" data-key="nav-duties">Vazifa va funksiyalar</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -82,7 +82,7 @@
 
             <div class="mobile-menu">
                 <ul>
-                    <li><a href="about.html" data-key="nav-about">Agentlik haqida</a></li>
+                    <li><a href="./about.html" data-key="nav-about">Raxbariyat</a></li>
                     <li><a href="documents.html" data-key="nav-documents">Hujjatlar</a></li>
                     <li><a href="activity.html" data-key="nav-activity">Faoliyat</a></li>
                     <li><a href="youth.html" data-key="nav-youth">Yoshlar siyosati</a></li>
@@ -457,7 +457,7 @@
     </footer>
 
     <!-- Notification bar -->
-    <div id="notificationBar" style="position: fixed; bottom: 20px; right: 20px; background-color: #d4af37; color: #1e3a5f; padding: 10px 20px; border-radius: 30px; display: flex; align-items: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); z-index: 100;">
+    <div id="notificationBar" style="position: fixed; bottom: 20px; left: 20px; background-color: #d4af37; color: #1e3a5f; padding: 10px 20px; border-radius: 30px; display: flex; align-items: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); z-index: 100;">
         <i class="fas fa-envelope" style="margin-right: 10px;"></i>
         <span data-key="notification-text">Bizga xabar yuboring</span>
         <span id="closeNotification" style="margin-left: 15px; font-size: 1.2rem; cursor: pointer;">×</span>
@@ -528,6 +528,94 @@
             <button id="accept-cookies" data-key="cookie-accept">Qabul qilish</button>
         </div>
     </div>
+
+
+
+
+
+    <!-- AI chat bot -->
+
+    <!-- Your existing PIIMA website content here -->
+
+
+    <!-- AI Chat Widget -->
+    <div id="ai-chat-widget">
+        <!-- Chat Toggle Button -->
+        <button id="chat-toggle" class="chat-toggle" title="AI Yordamchi">
+            <i class="fas fa-robot"></i>
+            <span class="chat-notification" id="chat-notification">1</span>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chat-window" class="chat-window">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="bot-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="bot-info">
+                        <h4 data-key="chat-title">PIIMA AI Yordamchi</h4>
+                        <span class="bot-status" data-key="chat-status">Onlayn</span>
+                    </div>
+                </div>
+                <div class="chat-controls">
+                    <button id="chat-minimize" title="Kichraytirish">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button id="chat-close" title="Yopish">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Body -->
+            <div class="chat-body">
+                <div id="chat-messages" class="chat-messages">
+                    <!-- Welcome message will be added here -->
+                </div>
+                
+                <!-- Quick Actions -->
+                <div id="quick-actions" class="quick-actions">
+                    <button class="quick-btn" data-message="Maktab haqida ma'lumot">
+                        <i class="fas fa-school"></i>
+                        <span data-key="quick-about">Maktab haqida</span>
+                    </button>
+                    <button class="quick-btn" data-message="Qabul jarayoni">
+                        <i class="fas fa-user-plus"></i>
+                        <span data-key="quick-admission">Qabul</span>
+                    </button>
+                    <button class="quick-btn" data-message="Bog'lanish ma'lumotlari">
+                        <i class="fas fa-phone"></i>
+                        <span data-key="quick-contact">Aloqa</span>
+                    </button>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input">
+                    <div class="input-container">
+                        <input type="text" id="message-input" data-key-placeholder="chat-placeholder" placeholder="Savolingizni yozing...">
+                        <button id="send-message" title="Yuborish">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Selector for Chat -->
+    <div id="chat-lang-selector" class="chat-lang-selector">
+        <button data-lang="uz" class="lang-btn active">O'z</button>
+        <button data-lang="ru" class="lang-btn">Ру</button>
+        <button data-lang="en" class="lang-btn">En</button>
+    </div>
+
+
+
+</body>
+</html>
+
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="./app.js"></script>

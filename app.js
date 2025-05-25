@@ -2,8 +2,8 @@
         const translations = {
             uz: {
               'title': 'PIIMA - Iqtisoslashtirilgan Ta\'lim Muassasalari Agentligi',
-              'nav-about': 'Agentlik haqida',
-              'nav-leadership': 'Rahbariyat',
+              'nav-about': 'Raxbariyat',
+              'nav-leadership': 'Maktab haqida',
               'nav-structure': 'Tashkiliy tuzilma',
               'nav-duties': 'Vazifa va funksiyalar',
               'nav-documents': 'Hujjatlar',
@@ -716,3 +716,385 @@
             adjustFooterLayout();
           });
           
+
+          // chat bot
+
+
+
+
+
+          // AI Chat Widget for PIIMA
+class PIIMAChatWidget {
+  constructor() {
+    this.currentLang = "uz"
+    this.isOpen = false
+    this.isMinimized = false
+    this.messageHistory = []
+
+    this.translations = {
+      uz: {
+        "chat-title": "PIIMA AI Yordamchi",
+        "chat-status": "Onlayn",
+        "chat-placeholder": "Savolingizni yozing...",
+        "quick-about": "Maktab haqida",
+        "quick-admission": "Qabul",
+        "quick-contact": "Aloqa",
+        "welcome-message": "Salom! Men PIIMA maktabining AI yordamchisiman. Sizga qanday yordam bera olaman?",
+        typing: "Yozmoqda...",
+      },
+      ru: {
+        "chat-title": "ПИИМА AI Помощник",
+        "chat-status": "Онлайн",
+        "chat-placeholder": "Напишите ваш вопрос...",
+        "quick-about": "О школе",
+        "quick-admission": "Поступление",
+        "quick-contact": "Контакты",
+        "welcome-message": "Привет! Я AI помощник школы ПИИМА. Как я могу вам помочь?",
+        typing: "Печатает...",
+      },
+      en: {
+        "chat-title": "PIIMA AI Assistant",
+        "chat-status": "Online",
+        "chat-placeholder": "Type your question...",
+        "quick-about": "About School",
+        "quick-admission": "Admission",
+        "quick-contact": "Contact",
+        "welcome-message": "Hello! I am PIIMA school's AI assistant. How can I help you?",
+        typing: "Typing...",
+      },
+    }
+
+    this.responses = {
+      uz: {
+        salom: "Salom! PIIMA maktabiga xush kelibsiz! 🎓",
+        "maktab haqida":
+          "PIIMA - Iqtisoslashtirilgan Ta'lim Muassasalari Agentligi maktabi. Biz iqtidorli o'quvchilar uchun yuqori sifatli ta'lim beramiz. 📚\n\n🏫 Bizda:\n• Prezident maktablari\n• Ijod maktablari  \n• Ixtisoslashgan maktablar\n\nBatafsil ma'lumot uchun saytimizni ko'ring!",
+        qabul:
+          "Qabul jarayoni haqida ma'lumot:\n\n📅 Qabul muddati: Har yili may-iyun oylari\n📝 Kerakli hujjatlar:\n• Ariza\n• Pasport nusxasi\n• Diplom/attestat\n• Tibbiy ma'lumotnoma\n\n📞 Qo'shimcha ma'lumot: +998 97 827 55 77",
+        "bog'lanish":
+          "Bizning aloqa ma'lumotlari:\n\n📍 Manzil: Namangan shahar, Yangi Namangan tumani\n📞 Telefon: +998 97 827 55 77\n📧 Email: info@piima.uz\n🌐 Sayt: www.piima.uz\n\n🕒 Ish vaqti: Dushanba-Juma 8:30-17:30",
+        fanlar:
+          "Bizda quyidagi fanlar bo'yicha chuqurlashtirilgan ta'lim beriladi:\n\n🔬 Aniq fanlar:\n• Matematika\n• Fizika\n• Kimyo\n• Biologiya\n\n💻 Zamonaviy fanlar:\n• Informatika\n• Robotika\n• IT texnologiyalar",
+        imtiyozlar:
+          "Bizning maktab imtiyozlari:\n\n🏆 Yuqori sifatli ta'lim\n🌟 Malakali o'qituvchilar\n💻 Zamonaviy jihozlar\n🎯 Individual yondashuv\n🏅 Olimpiada tayyorlash\n🌍 Xalqaro aloqalar",
+        default:
+          "Kechirasiz, bu savolga aniq javob bera olmadim. 😔\n\nQo'shimcha ma'lumot uchun:\n📞 +998 97 827 55 77\n📧 info@piima.uz\n\nYoki boshqa savol bering! 😊",
+      },
+      ru: {
+        привет: "Привет! Добро пожаловать в школу ПИИМА! 🎓",
+        "о школе":
+          "ПИИМА - Агентство специализированных образовательных учреждений. Мы предоставляем качественное образование для талантливых учеников. 📚\n\n🏫 У нас есть:\n• Президентские школы\n• Творческие школы\n• Специализированные школы\n\nПодробная информация на нашем сайте!",
+        поступление:
+          "Информация о поступлении:\n\n📅 Сроки приема: Май-июнь каждого года\n📝 Необходимые документы:\n• Заявление\n• Копия паспорта\n• Диплом/аттестат\n• Медицинская справка\n\n📞 Дополнительная информация: +998 97 827 55 77",
+        контакты:
+          "Наша контактная информация:\n\n📍 Адрес: г. Наманган, Янги Наманганский район\n📞 Телефон: +998 97 827 55 77\n📧 Email: info@piima.uz\n🌐 Сайт: www.piima.uz\n\n🕒 Рабочее время: Пн-Пт 8:30-17:30",
+        предметы:
+          "У нас углубленное изучение следующих предметов:\n\n🔬 Точные науки:\n• Математика\n• Физика\n• Химия\n• Биология\n\n💻 Современные предметы:\n• Информатика\n• Робототехника\n• IT технологии",
+        преимущества:
+          "Преимущества нашей школы:\n\n🏆 Качественное образование\n🌟 Квалифицированные учителя\n💻 Современное оборудование\n🎯 Индивидуальный подход\n🏅 Подготовка к олимпиадам\n🌍 Международные связи",
+        default:
+          "Извините, не могу дать точный ответ на этот вопрос. 😔\n\nДля дополнительной информации:\n📞 +998 97 827 55 77\n📧 info@piima.uz\n\nИли задайте другой вопрос! 😊",
+      },
+      en: {
+        hello: "Hello! Welcome to PIIMA school! 🎓",
+        "about school":
+          "PIIMA - Agency of Specialized Educational Institutions. We provide quality education for talented students. 📚\n\n🏫 We have:\n• Presidential schools\n• Creative schools\n• Specialized schools\n\nDetailed information on our website!",
+        admission:
+          "Admission information:\n\n📅 Application period: May-June each year\n📝 Required documents:\n• Application\n• Passport copy\n• Diploma/certificate\n• Medical certificate\n\n📞 Additional info: +998 97 827 55 77",
+        contact:
+          "Our contact information:\n\n📍 Address: Namangan city, Yangi Namangan district\n📞 Phone: +998 97 827 55 77\n📧 Email: info@piima.uz\n🌐 Website: www.piima.uz\n\n🕒 Working hours: Mon-Fri 8:30-17:30",
+        subjects:
+          "We provide in-depth education in:\n\n🔬 Exact sciences:\n• Mathematics\n• Physics\n• Chemistry\n• Biology\n\n💻 Modern subjects:\n• Computer Science\n• Robotics\n• IT Technologies",
+        advantages:
+          "Our school advantages:\n\n🏆 Quality education\n🌟 Qualified teachers\n💻 Modern equipment\n🎯 Individual approach\n🏅 Olympiad preparation\n🌍 International connections",
+        default:
+          "Sorry, I cannot give an exact answer to this question. 😔\n\nFor additional information:\n📞 +998 97 827 55 77\n📧 info@piima.uz\n\nOr ask another question! 😊",
+      },
+    }
+
+    this.init()
+  }
+
+  init() {
+    this.bindEvents()
+    this.showWelcomeMessage()
+    this.updateLanguage()
+  }
+
+  bindEvents() {
+    // Chat toggle
+    document.getElementById("chat-toggle").addEventListener("click", () => {
+      this.toggleChat()
+    })
+
+    // Chat controls
+    document.getElementById("chat-close").addEventListener("click", () => {
+      this.closeChat()
+    })
+
+    document.getElementById("chat-minimize").addEventListener("click", () => {
+      this.minimizeChat()
+    })
+
+    // Message sending
+    document.getElementById("send-message").addEventListener("click", () => {
+      this.sendMessage()
+    })
+
+    document.getElementById("message-input").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        this.sendMessage()
+      }
+    })
+
+    // Quick actions
+    document.querySelectorAll(".quick-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const message = btn.getAttribute("data-message")
+        this.sendQuickMessage(message)
+      })
+    })
+
+    // Language switching
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lang = btn.getAttribute("data-lang")
+        this.switchLanguage(lang)
+      })
+    })
+
+    // Show language selector on long press
+    let longPressTimer
+    document.getElementById("chat-toggle").addEventListener("mousedown", () => {
+      longPressTimer = setTimeout(() => {
+        this.showLanguageSelector()
+      }, 1000)
+    })
+
+    document.getElementById("chat-toggle").addEventListener("mouseup", () => {
+      clearTimeout(longPressTimer)
+    })
+
+    // Hide language selector when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".chat-lang-selector") && !e.target.closest("#chat-toggle")) {
+        this.hideLanguageSelector()
+      }
+    })
+  }
+
+  toggleChat() {
+    const chatWindow = document.getElementById("chat-window")
+    const chatToggle = document.getElementById("chat-toggle")
+    const notification = document.getElementById("chat-notification")
+
+    if (this.isOpen) {
+      this.closeChat()
+    } else {
+      chatWindow.classList.add("show")
+      chatToggle.classList.add("active")
+      notification.style.display = "none"
+      this.isOpen = true
+      this.isMinimized = false
+
+      // Focus input
+      setTimeout(() => {
+        document.getElementById("message-input").focus()
+      }, 300)
+    }
+  }
+
+  closeChat() {
+    const chatWindow = document.getElementById("chat-window")
+    const chatToggle = document.getElementById("chat-toggle")
+
+    chatWindow.classList.remove("show")
+    chatToggle.classList.remove("active")
+    this.isOpen = false
+    this.isMinimized = false
+  }
+
+  minimizeChat() {
+    const chatWindow = document.getElementById("chat-window")
+
+    if (this.isMinimized) {
+      chatWindow.classList.remove("minimized")
+      this.isMinimized = false
+    } else {
+      chatWindow.classList.add("minimized")
+      this.isMinimized = true
+    }
+  }
+
+  sendMessage() {
+    const input = document.getElementById("message-input")
+    const message = input.value.trim()
+
+    if (!message) return
+
+    this.addMessage(message, "user")
+    input.value = ""
+
+    // Show typing indicator
+    this.showTypingIndicator()
+
+    // Simulate AI response delay
+    setTimeout(
+      () => {
+        this.hideTypingIndicator()
+        const response = this.getAIResponse(message)
+        this.addMessage(response, "bot")
+      },
+      1000 + Math.random() * 2000,
+    )
+  }
+
+  sendQuickMessage(message) {
+    this.addMessage(message, "user")
+
+    setTimeout(() => {
+      const response = this.getAIResponse(message)
+      this.addMessage(response, "bot")
+    }, 500)
+  }
+
+  addMessage(text, sender) {
+    const messagesContainer = document.getElementById("chat-messages")
+    const messageDiv = document.createElement("div")
+    messageDiv.className = `message ${sender}`
+
+    if (sender === "bot") {
+      messageDiv.innerHTML = `
+                <div class="bot-avatar-small">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">${text}</div>
+            `
+    } else {
+      messageDiv.innerHTML = `
+                <div class="message-content">${text}</div>
+            `
+    }
+
+    messagesContainer.appendChild(messageDiv)
+    messagesContainer.scrollTop = messagesContainer.scrollHeight
+
+    // Store message in history
+    this.messageHistory.push({ text, sender, timestamp: Date.now() })
+  }
+
+  showTypingIndicator() {
+    const messagesContainer = document.getElementById("chat-messages")
+    const typingDiv = document.createElement("div")
+    typingDiv.className = "message bot typing-message"
+    typingDiv.innerHTML = `
+            <div class="bot-avatar-small">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="typing-indicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `
+
+    messagesContainer.appendChild(typingDiv)
+    messagesContainer.scrollTop = messagesContainer.scrollHeight
+  }
+
+  hideTypingIndicator() {
+    const typingMessage = document.querySelector(".typing-message")
+    if (typingMessage) {
+      typingMessage.remove()
+    }
+  }
+
+  getAIResponse(message) {
+    const lowerMessage = message.toLowerCase()
+    const responses = this.responses[this.currentLang]
+
+    // Check for specific keywords
+    for (const key in responses) {
+      if (key !== "default" && lowerMessage.includes(key)) {
+        return responses[key]
+      }
+    }
+
+    // Check for common greetings
+    const greetings = ["salom", "hello", "привет", "hi", "assalomu alaykum"]
+    if (greetings.some((greeting) => lowerMessage.includes(greeting))) {
+      return responses["salom"] || responses["hello"] || responses["привет"]
+    }
+
+    // Check for school-related keywords
+    const schoolKeywords = ["maktab", "school", "школа", "ta'lim", "образование", "education"]
+    if (schoolKeywords.some((keyword) => lowerMessage.includes(keyword))) {
+      return responses["maktab haqida"] || responses["about school"] || responses["о школе"]
+    }
+
+    // Check for admission keywords
+    const admissionKeywords = ["qabul", "admission", "поступление", "kirish", "enter"]
+    if (admissionKeywords.some((keyword) => lowerMessage.includes(keyword))) {
+      return responses["qabul"] || responses["admission"] || responses["поступление"]
+    }
+
+    // Check for contact keywords
+    const contactKeywords = ["aloqa", "contact", "контакт", "telefon", "phone", "телефон"]
+    if (contactKeywords.some((keyword) => lowerMessage.includes(keyword))) {
+      return responses["bog'lanish"] || responses["contact"] || responses["контакты"]
+    }
+
+    return responses["default"]
+  }
+
+  showWelcomeMessage() {
+    setTimeout(() => {
+      const welcomeMessage = this.translations[this.currentLang]["welcome-message"]
+      this.addMessage(welcomeMessage, "bot")
+    }, 1000)
+  }
+
+  switchLanguage(lang) {
+    this.currentLang = lang
+    this.updateLanguage()
+    this.updateActiveLanguage()
+    this.hideLanguageSelector()
+  }
+
+  updateLanguage() {
+    const elements = document.querySelectorAll("[data-key]")
+    elements.forEach((element) => {
+      const key = element.getAttribute("data-key")
+      if (this.translations[this.currentLang] && this.translations[this.currentLang][key]) {
+        element.textContent = this.translations[this.currentLang][key]
+      }
+    })
+
+    // Update placeholder
+    const input = document.getElementById("message-input")
+    if (input) {
+      input.placeholder = this.translations[this.currentLang]["chat-placeholder"]
+    }
+  }
+
+  updateActiveLanguage() {
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === this.currentLang)
+    })
+  }
+
+  showLanguageSelector() {
+    document.getElementById("chat-lang-selector").classList.add("show")
+  }
+
+  hideLanguageSelector() {
+    document.getElementById("chat-lang-selector").classList.remove("show")
+  }
+}
+
+// Initialize chat widget when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new PIIMAChatWidget()
+})
