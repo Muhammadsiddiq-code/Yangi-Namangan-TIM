@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -288,7 +288,11 @@ body {
 
 .ch a{
     font-weight: 900;
-    
+    text-decoration: none;
+}
+
+.ch{
+	margin-left: -1400px;
 }
 
     </style>
@@ -465,6 +469,635 @@ function handleSwipe() {
 }
 
 updateCarousel(0);
+
+</script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raxbariyat</title>
+    <style>
+        * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+	--bg-color: #f5f5f5;
+	--text-color: rgb(8, 42, 123);
+	--text-secondary: #848696;
+	--card-bg: white;
+	--shadow-color: rgba(0, 0, 0, 0.15);
+	--arrow-bg: rgba(8, 42, 123, 0.6);
+	--dot-bg: rgba(8, 42, 123, 0.2);
+	--dot-active: rgb(8, 42, 123);
+	--gradient-start: rgb(8 42 123 / 35%);
+	--gradient-end: rgb(255 255 255 / 0%);
+}
+
+[data-theme="dark"] {
+	--bg-color: #1a1a1a;
+	--text-color: #64b5f6;
+	--text-secondary: #b0b0b0;
+	--card-bg: #2d2d2d;
+	--shadow-color: rgba(0, 0, 0, 0.3);
+	--arrow-bg: rgba(100, 181, 246, 0.6);
+	--dot-bg: rgba(100, 181, 246, 0.2);
+	--dot-active: #64b5f6;
+	--gradient-start: rgb(100 181 246 / 35%);
+	--gradient-end: rgb(26 26 26 / 0%);
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bg-color);
+	overflow: hidden;
+	transition: background-color 0.3s ease;
+}
+
+.theme-toggle {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	background: var(--card-bg);
+	border: 2px solid var(--text-color);
+	border-radius: 50px;
+	padding: 8px 16px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-color);
+	transition: all 0.3s ease;
+	z-index: 1000;
+	box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.theme-toggle:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.theme-icon {
+	font-size: 16px;
+	transition: transform 0.3s ease;
+}
+
+.close-btn {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	background: var(--card-bg);
+	border: 2px solid var(--text-color);
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	color: var(--text-color);
+	font-size: 20px;
+	font-weight: 900;
+	transition: all 0.3s ease;
+	z-index: 1000;
+	box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.close-btn:hover {
+	transform: scale(1.1) rotate(90deg);
+	box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.about-title {
+	font-size: 7.5rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: -0.02em;
+	position: absolute;
+	top: 45px;
+	left: 50%;
+	transform: translateX(-50%);
+	pointer-events: none;
+	white-space: nowrap;
+	font-family: "Arial Black", "Arial Bold", Arial, sans-serif;
+	background: linear-gradient(
+		to bottom,
+		var(--gradient-start) 30%,
+		var(--gradient-end) 76%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	transition: all 0.3s ease;
+}
+
+.carousel-container {
+	width: 100%;
+	max-width: 1200px;
+	height: 450px;
+	position: relative;
+	perspective: 1000px;
+	margin-top: 80px;
+}
+
+.carousel-track {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	transform-style: preserve-3d;
+	transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card {
+	position: absolute;
+	width: 280px;
+	height: 380px;
+	background: var(--card-bg);
+	border-radius: 20px;
+	overflow: hidden;
+	box-shadow: 0 20px 40px var(--shadow-color);
+	transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	cursor: pointer;
+}
+
+.card img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card.center {
+	z-index: 10;
+	transform: scale(1.1) translateZ(0);
+}
+
+.card.center img {
+	filter: none;
+}
+
+.card.left-2 {
+	z-index: 1;
+	transform: translateX(-400px) scale(0.8) translateZ(-300px);
+	opacity: 0.7;
+}
+
+.card.left-2 img {
+	filter: grayscale(100%);
+}
+
+.card.left-1 {
+	z-index: 5;
+	transform: translateX(-200px) scale(0.9) translateZ(-100px);
+	opacity: 0.9;
+}
+
+.card.left-1 img {
+	filter: grayscale(100%);
+}
+
+.card.right-1 {
+	z-index: 5;
+	transform: translateX(200px) scale(0.9) translateZ(-100px);
+	opacity: 0.9;
+}
+
+.card.right-1 img {
+	filter: grayscale(100%);
+}
+
+.card.right-2 {
+	z-index: 1;
+	transform: translateX(400px) scale(0.8) translateZ(-300px);
+	opacity: 0.7;
+}
+
+.card.right-2 img {
+	filter: grayscale(100%);
+}
+
+.card.hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.member-info {
+	text-align: center;
+	margin-top: 40px;
+	transition: all 0.5s ease-out;
+}
+
+.member-name {
+	color: var(--text-color);
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-bottom: 10px;
+	position: relative;
+	display: inline-block;
+	transition: color 0.3s ease;
+}
+
+.member-name::before,
+.member-name::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	width: 100px;
+	height: 2px;
+	background: var(--text-color);
+	transition: background 0.3s ease;
+}
+
+.member-name::before {
+	left: -120px;
+}
+
+.member-name::after {
+	right: -120px;
+}
+
+.member-role {
+	color: var(--text-secondary);
+	font-size: 1.5rem;
+	font-weight: 500;
+	opacity: 0.8;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding: 10px 0;
+	margin-top: -15px;
+	position: relative;
+	transition: color 0.3s ease;
+}
+
+.dots {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 60px;
+}
+
+.dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--dot-bg);
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.dot.active {
+	background: var(--dot-active);
+	transform: scale(1.2);
+}
+
+.nav-arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: var(--arrow-bg);
+	color: white;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 20;
+	transition: all 0.3s ease;
+	font-size: 1.5rem;
+	border: none;
+	outline: none;
+	padding-bottom: 4px;
+}
+
+.nav-arrow:hover {
+	background: var(--arrow-bg);
+	opacity: 0.9;
+	transform: translateY(-50%) scale(1.1);
+}
+
+.nav-arrow.left {
+	left: 20px;
+	padding-right: 3px;
+}
+
+.nav-arrow.right {
+	right: 20px;
+	padding-left: 3px;
+}
+
+@media (max-width: 768px) {
+	.about-title {
+		font-size: 4.5rem;
+	}
+
+	.card {
+		width: 200px;
+		height: 280px;
+	}
+
+	.card.left-2 {
+		transform: translateX(-250px) scale(0.8) translateZ(-300px);
+	}
+
+	.card.left-1 {
+		transform: translateX(-120px) scale(0.9) translateZ(-100px);
+	}
+
+	.card.right-1 {
+		transform: translateX(120px) scale(0.9) translateZ(-100px);
+	}
+
+	.card.right-2 {
+		transform: translateX(250px) scale(0.8) translateZ(-300px);
+	}
+
+	.member-name {
+		font-size: 2rem;
+	}
+
+	.member-role {
+		font-size: 1.2rem;
+	}
+
+	.member-name::before,
+	.member-name::after {
+		width: 50px;
+	}
+
+	.member-name::before {
+		left: -70px;
+	}
+
+	.member-name::after {
+		right: -70px;
+	}
+
+	.theme-toggle {
+		top: 15px;
+		right: 15px;
+		padding: 6px 12px;
+		font-size: 12px;
+	}
+
+	.close-btn {
+		top: 15px;
+		left: 15px;
+		width: 35px;
+		height: 35px;
+		font-size: 18px;
+	}
+}
+    </style>
+</head>
+<body>
+    <a href="./index.html" class="close-btn">×</a>
+    
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span class="theme-icon">🌙</span>
+        <span class="theme-text">Dark</span>
+    </button>
+
+    <h1 class="about-title">OUR TEAM</h1>
+
+<div class="carousel-container">
+	<button class="nav-arrow left">‹</button>
+	<div class="carousel-track">
+		<div class="card" data-index="0">
+			<img src="./images/photo_2025-05-23_10-38-22.jpg" alt="Team Member 1">
+		</div>
+		<div class="card" data-index="1">
+			<img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Team Member 2">
+		</div>
+		<div class="card" data-index="2">
+			<img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmVzc2lvbmFsJTIwcGVvcGxlfGVufDB8fDB8fHww" alt="Team Member 3">
+		</div>
+		<div class="card" data-index="3">
+			<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cHJvZmVzc2lvbmFsJTIwcGVvcGxlfGVufDB8fDB8fHww" alt="Team Member 4">
+		</div>
+		<div class="card" data-index="4">
+			<img src="https://images.unsplash.com/photo-1655249481446-25d575f1c054?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fHByb2Zlc3Npb25hbCUyMHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Team Member 5">
+		</div>
+		<div class="card" data-index="5">
+			<img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Team Member 6">
+		</div>
+	</div>
+	<button class="nav-arrow right">›</button>
+</div>
+
+<div class="member-info">
+	<h2 class="member-name">David Kim</h2>
+	<p class="member-role">Founder</p>
+</div>
+
+<div class="dots">
+	<div class="dot active" data-index="0"></div>
+	<div class="dot" data-index="1"></div>
+	<div class="dot" data-index="2"></div>
+	<div class="dot" data-index="3"></div>
+	<div class="dot" data-index="4"></div>
+	<div class="dot" data-index="5"></div>
+</div>
+
+<script>
+    const teamMembers = [
+	{ name: "Baxodir Maxmut", role: "Direktor" },
+	{ name: "Michael Steward", role: "Creative Director" },
+	{ name: "Emma Rodriguez", role: "Lead Developer" },
+	{ name: "Julia Gimmel", role: "UX Designer" },
+	{ name: "Lisa Anderson", role: "Marketing Manager" },
+	{ name: "James Wilson", role: "Product Manager" }
+];
+
+const cards = document.querySelectorAll(".card");
+const dots = document.querySelectorAll(".dot");
+const memberName = document.querySelector(".member-name");
+const memberRole = document.querySelector(".member-role");
+const leftArrow = document.querySelector(".nav-arrow.left");
+const rightArrow = document.querySelector(".nav-arrow.right");
+let currentIndex = 0;
+let isAnimating = false;
+
+// Theme functionality
+function toggleTheme() {
+	const body = document.body;
+	const themeIcon = document.querySelector('.theme-icon');
+	const themeText = document.querySelector('.theme-text');
+	
+	const currentTheme = body.getAttribute('data-theme');
+	const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+	
+	body.setAttribute('data-theme', newTheme);
+	
+	if (newTheme === 'dark') {
+		themeIcon.textContent = '☀️';
+		themeText.textContent = 'Light';
+	} else {
+		themeIcon.textContent = '🌙';
+		themeText.textContent = 'Dark';
+	}
+	
+	// Save theme preference
+	localStorage.setItem('theme', newTheme);
+}
+
+// Load saved theme
+function loadTheme() {
+	const savedTheme = localStorage.getItem('theme') || 'light';
+	const body = document.body;
+	const themeIcon = document.querySelector('.theme-icon');
+	const themeText = document.querySelector('.theme-text');
+	
+	body.setAttribute('data-theme', savedTheme);
+	
+	if (savedTheme === 'dark') {
+		themeIcon.textContent = '☀️';
+		themeText.textContent = 'Light';
+	} else {
+		themeIcon.textContent = '🌙';
+		themeText.textContent = 'Dark';
+	}
+}
+
+function updateCarousel(newIndex) {
+	if (isAnimating) return;
+	isAnimating = true;
+
+	currentIndex = (newIndex + cards.length) % cards.length;
+
+	cards.forEach((card, i) => {
+		const offset = (i - currentIndex + cards.length) % cards.length;
+
+		card.classList.remove(
+			"center",
+			"left-1",
+			"left-2",
+			"right-1",
+			"right-2",
+			"hidden"
+		);
+
+		if (offset === 0) {
+			card.classList.add("center");
+		} else if (offset === 1) {
+			card.classList.add("right-1");
+		} else if (offset === 2) {
+			card.classList.add("right-2");
+		} else if (offset === cards.length - 1) {
+			card.classList.add("left-1");
+		} else if (offset === cards.length - 2) {
+			card.classList.add("left-2");
+		} else {
+			card.classList.add("hidden");
+		}
+	});
+
+	dots.forEach((dot, i) => {
+		dot.classList.toggle("active", i === currentIndex);
+	});
+
+	memberName.style.opacity = "0";
+	memberRole.style.opacity = "0";
+
+	setTimeout(() => {
+		memberName.textContent = teamMembers[currentIndex].name;
+		memberRole.textContent = teamMembers[currentIndex].role;
+		memberName.style.opacity = "1";
+		memberRole.style.opacity = "1";
+	}, 300);
+
+	setTimeout(() => {
+		isAnimating = false;
+	}, 800);
+}
+
+leftArrow.addEventListener("click", () => {
+	updateCarousel(currentIndex - 1);
+});
+
+rightArrow.addEventListener("click", () => {
+	updateCarousel(currentIndex + 1);
+});
+
+dots.forEach((dot, i) => {
+	dot.addEventListener("click", () => {
+		updateCarousel(i);
+	});
+});
+
+cards.forEach((card, i) => {
+	card.addEventListener("click", () => {
+		updateCarousel(i);
+	});
+});
+
+document.addEventListener("keydown", (e) => {
+	if (e.key === "ArrowLeft") {
+		updateCarousel(currentIndex - 1);
+	} else if (e.key === "ArrowRight") {
+		updateCarousel(currentIndex + 1);
+	}
+});
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener("touchstart", (e) => {
+	touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener("touchend", (e) => {
+	touchEndX = e.changedTouches[0].screenX;
+	handleSwipe();
+});
+
+function handleSwipe() {
+	const swipeThreshold = 50;
+	const diff = touchStartX - touchEndX;
+
+	if (Math.abs(diff) > swipeThreshold) {
+		if (diff > 0) {
+			updateCarousel(currentIndex + 1);
+		} else {
+			updateCarousel(currentIndex - 1);
+		}
+	}
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+	loadTheme();
+	updateCarousel(0);
+});
 
 </script>
 </body>

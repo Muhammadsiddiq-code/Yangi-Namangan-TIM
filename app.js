@@ -733,7 +733,7 @@ class PIIMAChatWidget {
 
     this.translations = {
       uz: {
-        "chat-title": "PIIMA AI Yordamchi",
+        "chat-title": "  ixtisoslasjtirilgan maktab AI ",
         "chat-status": "Onlayn",
         "chat-placeholder": "Savolingizni yozing...",
         "quick-about": "Maktab haqida",
@@ -766,15 +766,15 @@ class PIIMAChatWidget {
 
     this.responses = {
       uz: {
-        salom: "Salom! PIIMA maktabiga xush kelibsiz! 🎓",
+        salom: "Salom! Yangi Namangan Ixtisoslashtirilgan maktabiga xush kelibsiz! 🎓",
         "maktab haqida":
-          "PIIMA - Iqtisoslashtirilgan Ta'lim Muassasalari Agentligi maktabi. Biz iqtidorli o'quvchilar uchun yuqori sifatli ta'lim beramiz. 📚\n\n🏫 Bizda:\n• Prezident maktablari\n• Ijod maktablari  \n• Ixtisoslashgan maktablar\n\nBatafsil ma'lumot uchun saytimizni ko'ring!",
+          "Yangi Namangan tumani - Iqtisoslashtirilgan Ta'lim Muassasalari Agentligi maktabi. Biz iqtidorli o'quvchilar uchun yuqori sifatli ta'lim beramiz. 📚\n\n🏫 Bizda:\n• Prezident maktablari\n• Ijod maktablari  \n• Ixtisoslashgan maktablar\n\nBatafsil ma'lumot uchun saytimizni ko'ring!",
         qabul:
-          "Qabul jarayoni haqida ma'lumot:\n\n📅 Qabul muddati: Har yili may-iyun oylari\n📝 Kerakli hujjatlar:\n• Ariza\n• Pasport nusxasi\n• Diplom/attestat\n• Tibbiy ma'lumotnoma\n\n📞 Qo'shimcha ma'lumot: +998 97 827 55 77",
+          "Qabul jarayoni haqida ma'lumot:\n\n📅 Qabul muddati: Har yili may-iyun oylari\n📝 Kerakli hujjatlar:\n• Ariza\n• Pasport nusxasi yoki metirka\n• Diplom/attestat\n• Tibbiy ma'lumotnoma\n\n📞 Qo'shimcha ma'lumot: +998 97 827 55 77",
         "bog'lanish":
-          "Bizning aloqa ma'lumotlari:\n\n📍 Manzil: Namangan shahar, Yangi Namangan tumani\n📞 Telefon: +998 97 827 55 77\n📧 Email: info@piima.uz\n🌐 Sayt: www.piima.uz\n\n🕒 Ish vaqti: Dushanba-Juma 8:30-17:30",
+          "Bizning aloqa ma'lumotlari:\n\n📍 Manzil: Namangan shahar, Yangi Namangan tumani\n📞 Telefon: +998 97 827 55 77\n📧 Telegram: https://t.me/YangiNamanganTIM\n🌐 Sayt: https://yntimuz.vercel.app\n\n🕒 Ish vaqti: Dushanbadan-Jumagacha 8:30-17:30",
         fanlar:
-          "Bizda quyidagi fanlar bo'yicha chuqurlashtirilgan ta'lim beriladi:\n\n🔬 Aniq fanlar:\n• Matematika\n• Fizika\n• Kimyo\n• Biologiya\n\n💻 Zamonaviy fanlar:\n• Informatika\n• Robotika\n• IT texnologiyalar",
+          "Bizda quyidagi fanlar bo'yicha chuqurlashtirilgan ta'lim beriladi:\n\n🔬 Aniq fanlar:\n• Algebra\n• Fizika\n• Geometriya\n• English\n\n💻 Zamonaviy fanlar:\n• Informatika\n• Robotika\n• IT texnologiyalar",
         imtiyozlar:
           "Bizning maktab imtiyozlari:\n\n🏆 Yuqori sifatli ta'lim\n🌟 Malakali o'qituvchilar\n💻 Zamonaviy jihozlar\n🎯 Individual yondashuv\n🏅 Olimpiada tayyorlash\n🌍 Xalqaro aloqalar",
         default:
