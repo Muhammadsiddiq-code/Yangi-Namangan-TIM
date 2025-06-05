@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0044cc" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/icon-192.png" type="image/png" />
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0044cc;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        #add-news-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #ffffff;
+            color: #0044cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #news-container {
+            padding: 1rem;
+        }
+
+        .news-item {
+            background: white;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-left: 5px solid #0044cc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <title>YNTIMUZ - Maktab Sayti</title>
+</head>
+
+<body>
+    <header>
+        <h1>YNTIMUZ Maktab Rasmiy Sayti</h1>
+        <button id="add-news-btn">+ Yangilik qo‘shish</button>
+    </header>
+
+    <main>
+        <section id="news-container">
+            <!-- Yangiliklar shu yerda paydo bo‘ladi -->
+        </section>
+    </main>
+
+    <script src="/script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('✅ Service Worker ro‘yxatdan o‘tdi'))
+                .catch((error) => console.error('❌ Xatolik:', error));
+        }
+    </script>
+    <script>
+        const newsContainer = document.getElementById('news-container');
+        const addNewsBtn = document.getElementById('add-news-btn');
+
+        addNewsBtn.addEventListener('click', () => {
+            const newNews = document.createElement('div');
+            newNews.classList.add('news-item');
+            newNews.innerHTML = `<h3>Yangi yangilik</h3><p>${new Date().toLocaleString()}</p>`;
+            newsContainer.prepend(newNews);
+        });
+
+    </script>
+</body>
+
+</html>

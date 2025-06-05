@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Kirish</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-background">
+            <div class="clouds"></div>
+            <div class="building-silhouette"></div>
+        </div>
+        
+        <div class="login-form-container">
+            <div class="login-form">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h1>Admin Panel</h1>
+                    <p>Tizimga kirish uchun ma'lumotlaringizni kiriting</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i>
+                            Foydalanuvchi nomi
+                        </label>
+                        <input type="text" id="username" name="username" required>
+                        <span class="input-border"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            Parol
+                        </label>
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="passwordIcon"></i>
+                        </button>
+                        <span class="input-border"></span>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <span class="checkmark"></span>
+                            Meni eslab qol
+                        </label>
+                        <a href="#" class="forgot-password">Parolni unutdingizmi?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <span>Kirish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                
+                <div class="error-message" id="errorMessage"></div>
+                
+                <div class="footer-links">
+                    <a href="./index.html" target="_blank">
+                        <i class="fas fa-home"></i>
+                        Asosiy saytga qaytish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="login.js"></script>
+</body>
+</html>

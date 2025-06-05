@@ -1098,3 +1098,455 @@ class PIIMAChatWidget {
 document.addEventListener("DOMContentLoaded", () => {
   new PIIMAChatWidget()
 })
+
+
+
+
+
+
+
+// news
+
+
+
+
+
+        // Global variables
+        let allNews = [];
+        let filteredNews = [];
+        let currentPage = 1;
+        const newsPerPage = 6;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNews();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', debounce(filterNews, 300));
+            document.getElementById('categoryFilter').addEventListener('change', filterNews);
+            document.getElementById('sortFilter').addEventListener('change', filterNews);
+        }
+
+        // Load news from localStorage (admin panel data)
+        function loadNews() {
+            showLoading();
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                // Get news from localStorage (same as admin panel)
+                const newsData = localStorage.getItem('news');
+                if (newsData) {
+                    allNews = JSON.parse(newsData).filter(news => news.published);
+                } else {
+                    // Sample data if no admin data exists
+                    allNews = getSampleNews();
+                }
+                
+                filteredNews = [...allNews];
+                displayFeaturedNews();
+                displayNews();
+                hideLoading();
+            }, 500);
+        }
+
+        // Sample news data
+        function getSampleNews() {
+            return [
+                {
+                    id: 1,
+                    title: "Yangi ta'lim dasturi ishga tushirildi",
+                    content: "Maktablarda yangi ta'lim dasturi joriy etilmoqda. Bu dastur zamonaviy texnologiyalar va innovatsion yondashuvlarni o'z ichiga oladi. Dastur barcha yoshdagi o'quvchilar uchun mo'ljallangan va kelajakda ta'lim sifatini oshirishga qaratilgan.",
+                    category: "talim",
+                    author: "Administrator",
+                    date: new Date().toISOString(),
+                    views: 156,
+                    image: "/placeholder.svg?height=200&width=400",
+                    published: true
+                },
+                {
+                    id: 2,
+                    title: "Sport musobaqalari e'lon qilindi",
+                    content: "Yillik sport musobaqalari uchun ro'yxatdan o'tish boshlandi. Barcha yoshdagi ishtirokchilar qatnashishlari mumkin. Musobaqalar kelgusi oy o'tkaziladi va turli sport turlarini qamrab oladi.",
+                    category: "sport",
+                    author: "Administrator",
+                    date: new Date(Date.now() - 86400000).toISOString(),
+                    views: 89,
+                    image: "/placeholder.svg?height=200&width=400",
+                    published: true
+                },
+                {
+                    id: 3,
+                    title: "Madaniy tadbirlar haftaligi",
+                    content: "Kelgusi hafta madaniy tadbirlar haftaligi o'tkaziladi. Konsertlar, ko'rgazmalar va boshqa qiziqarli tadbirlar kutilmoqda. Barcha aholini taklif qilamiz va bepul kirish imkoniyati mavjud.",
+                    category: "tadbir",
+                    author: "Administrator",
+                    date: new Date(Date.now() - 172800000).toISOString(),
+                    views: 234,
+                    image: "/placeholder.svg?height=200&width=400",
+                    published: true
+                },
+                {
+                    id: 4,
+                    title: "Yangi texnologiyalar seminari",
+                    content: "IT sohasidagi yangi texnologiyalar bo'yicha seminar o'tkaziladi. Mutaxassislar o'z tajribalarini bo'lishadi va zamonaviy dasturlash tillari haqida ma'lumot beradi.",
+                    category: "texnologiya",
+                    author: "Administrator",
+                    date: new Date(Date.now() - 259200000).toISOString(),
+                    views: 67,
+                    image: "/placeholder.svg?height=200&width=400",
+                    published: true
+                },
+                {
+                    id: 5,
+                    title: "Muhim e'lon: Yangi qoidalar",
+                    content: "Barcha foydalanuvchilar uchun yangi qoidalar e'lon qilinadi. Iltimos, diqqat bilan o'qing va belgilangan muddatlarga rioya qiling.",
+                    category: "elon",
+                    author: "Administrator",
+                    date: new Date(Date.now() - 345600000).toISOString(),
+                    views: 445,
+                    image: "/placeholder.svg?height=200&width=400",
+                    published: true
+                }
+            ];
+        }
+
+        // Display featured news
+        function displayFeaturedNews() {
+            const featuredContainer = document.getElementById('featuredNews');
+            if (filteredNews.length === 0) {
+                featuredContainer.style.display = 'none';
+                return;
+            }
+
+            const featuredNews = filteredNews[0]; // First news as featured
+            featuredContainer.style.display = 'block';
+            
+            featuredContainer.innerHTML = `
+                <div class="featured-card">
+                    <img src="${featuredNews.image}" alt="${featuredNews.title}" class="featured-image">
+                    <div class="featured-content">
+                        <span class="featured-badge">Asosiy yangilik</span>
+                        <h2 class="featured-title">${featuredNews.title}</h2>
+                        <p class="featured-excerpt">${truncateText(featuredNews.content, 150)}</p>
+                        <div class="news-meta">
+                            <span class="news-date">
+                                <i class="fas fa-calendar"></i>
+                                ${formatDate(featuredNews.date)}
+                            </span>
+                            <span class="news-views">
+                                <i class="fas fa-eye"></i>
+                                ${featuredNews.views} ko'rishlar
+                            </span>
+                        </div>
+                        <a href="#" class="read-more" onclick="readMore(${featuredNews.id})">
+                            Batafsil o'qish
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display news
+        function displayNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (filteredNews.length === 0) {
+                newsGrid.style.display = 'none';
+                noResults.style.display = 'block';
+                document.getElementById('pagination').style.display = 'none';
+                return;
+            }
+
+            newsGrid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            // Skip first news (featured)
+            const newsToShow = filteredNews.slice(1);
+            const startIndex = (currentPage - 1) * newsPerPage;
+            const endIndex = startIndex + newsPerPage;
+            const currentNews = newsToShow.slice(startIndex, endIndex);
+
+            newsGrid.innerHTML = currentNews.map(news => `
+                <div class="news-card">
+                    <img src="${news.image}" alt="${news.title}" class="news-image">
+                    <div class="news-content">
+                        <span class="news-category category-${news.category}">
+                            ${getCategoryIcon(news.category)} ${getCategoryName(news.category)}
+                        </span>
+                        <h3 class="news-title">${news.title}</h3>
+                        <p class="news-excerpt">${truncateText(news.content, 120)}</p>
+                        <a href="#" class="read-more" onclick="readMore(${news.id})">
+                            Batafsil o'qish
+                        </a>
+                        <div class="news-meta">
+                            <span class="news-date">
+                                <i class="fas fa-calendar"></i>
+                                ${formatDate(news.date)}
+                            </span>
+                            <span class="news-views">
+                                <i class="fas fa-eye"></i>
+                                ${news.views} ko'rishlar
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            displayPagination(newsToShow.length);
+        }
+
+        // Display pagination
+        function displayPagination(totalNews) {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(totalNews / newsPerPage);
+
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+
+            pagination.style.display = 'flex';
+
+            let paginationHTML = '';
+
+            // Previous button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage || i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `
+                        <button onclick="changePage(${i})" ${i === currentPage ? 'class="active"' : ''}>
+                            ${i}
+                        </button>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += '<span>...</span>';
+                }
+            }
+
+            // Next button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Change page
+        function changePage(page) {
+            const totalNews = filteredNews.slice(1).length; // Exclude featured
+            const totalPages = Math.ceil(totalNews / newsPerPage);
+            
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            displayNews();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Filter news
+        function filterNews() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const sortBy = document.getElementById('sortFilter').value;
+
+            // Filter by search and category
+            filteredNews = allNews.filter(news => {
+                const matchesSearch = news.title.toLowerCase().includes(searchTerm) || 
+                                    news.content.toLowerCase().includes(searchTerm);
+                const matchesCategory = !category || news.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort
+            switch (sortBy) {
+                case 'newest':
+                    filteredNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'oldest':
+                    filteredNews.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'popular':
+                    filteredNews.sort((a, b) => b.views - a.views);
+                    break;
+            }
+
+            currentPage = 1;
+            displayFeaturedNews();
+            displayNews();
+        }
+
+        // Read more function
+        function readMore(newsId) {
+            const news = allNews.find(n => n.id === newsId);
+            if (news) {
+                // Increment views
+                news.views++;
+                localStorage.setItem('news', JSON.stringify(allNews));
+                
+                // Show full news (you can implement modal or redirect to detail page)
+                showNewsModal(news);
+            }
+        }
+
+        // Show news modal
+        function showNewsModal(news) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 20px;
+            `;
+
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 15px;
+                    max-width: 800px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    position: relative;
+                ">
+                    <button onclick="this.closest('div').remove()" style="
+                        position: absolute;
+                        top: 15px;
+                        right: 15px;
+                        background: none;
+                        border: none;
+                        font-size: 24px;
+                        cursor: pointer;
+                        z-index: 1001;
+                        color: #666;
+                    ">&times;</button>
+                    
+                    <img src="${news.image}" alt="${news.title}" style="
+                        width: 100%;
+                        height: 300px;
+                        object-fit: cover;
+                        border-radius: 15px 15px 0 0;
+                    ">
+                    
+                    <div style="padding: 30px;">
+                        <span class="news-category category-${news.category}" style="margin-bottom: 15px; display: inline-block;">
+                            ${getCategoryIcon(news.category)} ${getCategoryName(news.category)}
+                        </span>
+                        
+                        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #2c3e50;">
+                            ${news.title}
+                        </h2>
+                        
+                        <div style="display: flex; gap: 20px; margin-bottom: 20px; color: #6c757d; font-size: 14px;">
+                            <span><i class="fas fa-calendar"></i> ${formatDate(news.date)}</span>
+                            <span><i class="fas fa-user"></i> ${news.author}</span>
+                            <span><i class="fas fa-eye"></i> ${news.views} ko'rishlar</span>
+                        </div>
+                        
+                        <div style="line-height: 1.8; color: #333; font-size: 16px;">
+                            ${news.content}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Close on outside click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Utility functions
+        function getCategoryIcon(category) {
+            const icons = {
+                elon: '📢',
+                tadbir: '🎉',
+                talim: '🏫',
+                sport: '⚽',
+                texnologiya: '💻'
+            };
+            return icons[category] || '📰';
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                elon: "E'lonlar",
+                tadbir: 'Tadbirlar',
+                talim: "Ta'lim",
+                sport: 'Sport',
+                texnologiya: 'Texnologiya'
+            };
+            return names[category] || 'Boshqa';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            return date.toLocaleDateString('uz-UZ', options);
+        }
+
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substr(0, maxLength) + '...';
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('newsGrid').style.display = 'none';
+            document.getElementById('featuredNews').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Auto-refresh news every 30 seconds
+        setInterval(() => {
+            const currentNewsData = localStorage.getItem('news');
+            if (currentNewsData) {
+                const newNews = JSON.parse(currentNewsData).filter(news => news.published);
+                if (JSON.stringify(newNews) !== JSON.stringify(allNews)) {
+                    allNews = newNews;
+                    filterNews();
+                }
+            }
+        }, 30000);

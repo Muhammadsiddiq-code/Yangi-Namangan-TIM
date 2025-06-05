@@ -1,0 +1,315 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    height: 100vh;
+    position: relative;
+}
+
+.login-background {
+    flex: 1;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 50%, #1e5f99 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path d="M0,100 Q250,50 500,100 T1000,100 L1000,300 L0,300 Z" fill="rgba(255,255,255,0.1)"/></svg>') repeat-x;
+    animation: float 20s ease-in-out infinite;
+}
+
+.building-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(0px) translateY(0px); }
+    50% { transform: translateX(-20px) translateY(-10px); }
+}
+
+.login-form-container {
+    flex: 0 0 450px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+}
+
+.login-form {
+    width: 100%;
+    max-width: 350px;
+}
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+}
+
+.logo i {
+    font-size: 2rem;
+    color: white;
+}
+
+.logo-section h1 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.logo-section p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group label i {
+    margin-right: 0.5rem;
+    color: #4a90e2;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e1e8ed;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #4a90e2;
+}
+
+.input-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    transition: width 0.3s ease;
+}
+
+.form-group input:focus + .password-toggle + .input-border,
+.form-group input:focus + .input-border {
+    width: 100%;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #2c3e50;
+}
+
+.remember-me input {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #e1e8ed;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.remember-me input:checked + .checkmark {
+    background: #4a90e2;
+    border-color: #4a90e2;
+}
+
+.remember-me input:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    color: white;
+    font-size: 12px;
+}
+
+.forgot-password {
+    color: #4a90e2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #357abd;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    background: rgba(231, 76, 60, 0.1);
+    display: none;
+}
+
+.footer-links {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e1e8ed;
+}
+
+.footer-links a {
+    color: #7f8c8d;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #4a90e2;
+}
+
+.footer-links i {
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+    
+    .login-background {
+        flex: 0 0 40%;
+    }
+    
+    .login-form-container {
+        flex: 1;
+        padding: 1rem;
+    }
+}
+
+/* Loading animation */
+.login-btn.loading {
+    pointer-events: none;
+}
+
+.login-btn.loading span {
+    opacity: 0;
+}
+
+.login-btn.loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
