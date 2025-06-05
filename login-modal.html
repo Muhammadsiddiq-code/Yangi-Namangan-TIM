@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Login Modal CSS - buni CSS faylingizga qo'shing */
+.login-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.login-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 0;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    max-width: 90%;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.login-header {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.login-header i {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.login-form {
+    padding: 30px;
+    background: white;
+    border-radius: 0 0 15px 15px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.password-toggle:hover {
+    color: #333;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.checkbox-group label {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    background: #fee;
+    color: #d63031;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #fab1a0;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #c3e6cb;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .login-form {
+        padding: 20px;
+    }
+    
+    .login-header {
+        padding: 15px;
+    }
+    
+    .login-header h2 {
+        font-size: 20px;
+    }
+}
+    </style>
+</head>
+<body>
+    
+<!-- Login Modal - buni asosiy HTML faylingizga qo'shing -->
+<div id="loginModal" class="login-modal">
+    <div class="login-modal-content">
+        <div class="login-header">
+            <h2><i class="fas fa-lock"></i> Admin Kirish</h2>
+        </div>
+        <form id="loginForm" class="login-form">
+            <div class="input-group">
+                <label for="username">Foydalanuvchi nomi:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Parol:</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required>
+                    <button type="button" id="togglePassword" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="rememberMe" name="rememberMe">
+                <label for="rememberMe">Meni eslab qol</label>
+            </div>
+            <button type="submit" class="login-btn">Kirish</button>
+            <div id="loginError" class="error-message" style="display: none;"></div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Login JavaScript - buni JS faylingizga qo'shing
+// class AdminLogin {
+//     constructor() {
+//         this.modal = document.getElementById('loginModal');
+//         this.form = document.getElementById('loginForm');
+//         this.errorDiv = document.getElementById('loginError');
+//         this.togglePasswordBtn = document.getElementById('togglePassword');
+//         this.passwordInput = document.getElementById('password');
+        
+//         this.init();
+//     }
+    
+//     init() {
+//         // Admin panelga kirishda login modalni ko'rsatish
+//         this.checkAdminAccess();
+        
+//         // Event listeners
+//         if (this.form) {
+//             this.form.addEventListener('submit', (e) => this.handleLogin(e));
+//         }
+        
+//         if (this.togglePasswordBtn) {
+//             this.togglePasswordBtn.addEventListener('click', () => this.togglePassword());
+//         }
+        
+//         // Modal tashqarisiga bosganda yopish
+//         if (this.modal) {
+//             this.modal.addEventListener('click', (e) => {
+//                 if (e.target === this.modal) {
+//                     this.hideModal();
+//                 }
+//             });
+//         }
+        
+//         // Esc tugmasi bilan yopish
+//         document.addEventListener('keydown', (e) => {
+//             if (e.key === 'Escape' && this.modal.style.display === 'block') {
+//                 this.hideModal();
+//             }
+//         });
+        
+//         // Saqlangan foydalanuvchi nomini yuklash
+//         this.loadRememberedUser();
+//     }
+    
+//     checkAdminAccess() {
+//         // Agar admin panel sahifasida bo'lsa
+//         if (window.location.pathname.includes('admin') || 
+//             window.location.pathname.includes('dashboard') ||
+//             document.title.includes('Admin') ||
+//             document.querySelector('.admin-panel, .dashboard')) {
+            
+//             const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
+//             if (!isLoggedIn) {
+//                 this.showModal();
+//             }
+//         }
+//     }
+    
+//     showModal() {
+//         if (this.modal) {
+//             this.modal.style.display = 'block';
+//             document.body.style.overflow = 'hidden';
+            
+//             // Fokusni username inputiga berish
+//             setTimeout(() => {
+//                 const usernameInput = document.getElementById('username');
+//                 if (usernameInput) {
+//                     usernameInput.focus();
+//                 }
+//             }, 300);
+//         }
+//     }
+    
+//     hideModal() {
+//         if (this.modal) {
+//             this.modal.style.display = 'none';
+//             document.body.style.overflow = 'auto';
+//         }
+//     }
+    
+//     handleLogin(e) {
+//         e.preventDefault();
+        
+//         const username = document.getElementById('username').value.trim();
+//         const password = document.getElementById('password').value;
+//         const rememberMe = document.getElementById('rememberMe').checked;
+        
+//         // Xatolikni tozalash
+//         this.hideError();
+        
+//         console.log('Login urinishi:', username, password); // Debug uchun
+        
+//         // Login ma'lumotlarini tekshirish
+//         if (this.validateLogin(username, password)) {
+//             // Muvaffaqiyatli kirish
+//             sessionStorage.setItem('adminLoggedIn', 'true');
+//             sessionStorage.setItem('adminUser', username);
+            
+//             // "Meni eslab qol" funksiyasi
+//             if (rememberMe) {
+//                 localStorage.setItem('rememberedAdmin', username);
+//             } else {
+//                 localStorage.removeItem('rememberedAdmin');
+//             }
+            
+//             this.showSuccess('Muvaffaqiyatli kirildi!');
+            
+//             setTimeout(() => {
+//                 this.hideModal();
+//                 this.onLoginSuccess();
+//             }, 1500);
+            
+//         } else {
+//             this.showError('Foydalanuvchi nomi yoki parol noto\'g\'ri!');
+//         }
+//     }
+    
+//     validateLogin(username, password) {
+//         // Keng login ma'lumotlari ro'yxati
+//         const validCredentials = [
+//             { username: 'admin', password: 'admin123' },
+//             { username: 'admin', password: '123456' },
+//             { username: 'administrator', password: 'admin123' },
+//             { username: 'root', password: 'root123' },
+//             { username: 'user', password: 'user123' },
+//             { username: 'demo', password: 'demo123' },
+//             { username: 'test', password: 'test123' },
+//             { username: 'moderator', password: 'mod123' },
+//             // Yangi login ma'lumotlari
+//             { username: 'sayt', password: 'sayt123' },
+//             { username: 'owner', password: 'owner123' },
+//             { username: 'boss', password: 'boss123' }
+//         ];
+        
+//         // Case-insensitive tekshirish
+//         const found = validCredentials.find(cred => 
+//             cred.username.toLowerCase() === username.toLowerCase() && 
+//             cred.password === password
+//         );
+        
+//         console.log('Tekshirilgan:', found ? 'Topildi' : 'Topilmadi'); // Debug uchun
+//         return !!found;
+//     }
+    
+//     togglePassword() {
+//         const type = this.passwordInput.type === 'password' ? 'text' : 'password';
+//         this.passwordInput.type = type;
+        
+//         const icon = this.togglePasswordBtn.querySelector('i');
+//         icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+//     }
+    
+//     showError(message) {
+//         if (this.errorDiv) {
+//             this.errorDiv.textContent = message;
+//             this.errorDiv.style.display = 'block';
+//             this.errorDiv.className = 'error-message';
+//         }
+//     }
+    
+//     showSuccess(message) {
+//         if (this.errorDiv) {
+//             this.errorDiv.textContent = message;
+//             this.errorDiv.style.display = 'block';
+//             this.errorDiv.className = 'success-message';
+//         }
+//     }
+    
+//     hideError() {
+//         if (this.errorDiv) {
+//             this.errorDiv.style.display = 'none';
+//         }
+//     }
+    
+//     loadRememberedUser() {
+//         const rememberedUser = localStorage.getItem('rememberedAdmin');
+//         if (rememberedUser) {
+//             const usernameInput = document.getElementById('username');
+//             const rememberCheckbox = document.getElementById('rememberMe');
+            
+//             if (usernameInput) usernameInput.value = rememberedUser;
+//             if (rememberCheckbox) rememberCheckbox.checked = true;
+//         }
+//     }
+    
+//     onLoginSuccess() {
+//         // Bu yerda login muvaffaqiyatli bo'lganda bajariladigan ishlar
+//         console.log('Admin muvaffaqiyatli kirdi');
+        
+//         // Sahifani yangilash yoki boshqa amallar
+//         if (typeof window.initAdminPanel === 'function') {
+//             window.initAdminPanel();
+//         }
+//     }
+    
+//     // Logout funksiyasi
+//     logout() {
+//         sessionStorage.removeItem('adminLoggedIn');
+//         sessionStorage.removeItem('adminUser');
+        
+//         // Login modalni ko'rsatish
+//         this.showModal();
+        
+//         // Formani tozalash
+//         if (this.form) {
+//             this.form.reset();
+//         }
+//     }
+    
+//     // Login holatini tekshirish
+//     isLoggedIn() {
+//         return sessionStorage.getItem('adminLoggedIn') === 'true';
+//     }
+// }
+
+// // Login tizimini ishga tushirish
+// document.addEventListener('DOMContentLoaded', function() {
+//     window.adminLogin = new AdminLogin();
+// });
+
+// // Global logout funksiyasi
+// function adminLogout() {
+//     if (window.adminLogin) {
+//         window.adminLogin.logout();
+//     }
+// }
+
+// // Admin panelni himoya qilish funksiyasi
+// function protectAdminRoute() {
+//     if (window.adminLogin && !window.adminLogin.isLoggedIn()) {
+//         window.adminLogin.showModal();
+//         return false;
+//     }
+//     return true;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Login JavaScript - buni JS faylingizga qo'shing
+class AdminLogin {
+    constructor() {
+        this.modal = document.getElementById('loginModal');
+        this.form = document.getElementById('loginForm');
+        this.errorDiv = document.getElementById('loginError');
+        this.togglePasswordBtn = document.getElementById('togglePassword');
+        this.passwordInput = document.getElementById('password');
+        
+        this.init();
+    }
+    
+    init() {
+        // Admin panelga kirishda login modalni ko'rsatish
+        this.checkAdminAccess();
+        
+        // Event listeners
+        if (this.form) {
+            this.form.addEventListener('submit', (e) => this.handleLogin(e));
+        }
+        
+        if (this.togglePasswordBtn) {
+            this.togglePasswordBtn.addEventListener('click', () => this.togglePassword());
+        }
+        
+        // Modal tashqarisiga bosganda yopish
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.hideModal();
+                }
+            });
+        }
+        
+        // Esc tugmasi bilan yopish
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.style.display === 'block') {
+                this.hideModal();
+            }
+        });
+        
+        // Saqlangan foydalanuvchi nomini yuklash
+        this.loadRememberedUser();
+    }
+    
+    checkAdminAccess() {
+        // Agar admin panel sahifasida bo'lsa
+        if (window.location.pathname.includes('admin') || 
+            window.location.pathname.includes('dashboard') ||
+            document.title.includes('Admin') ||
+            document.querySelector('.admin-panel, .dashboard')) {
+            
+            const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
+            if (!isLoggedIn) {
+                this.showModal();
+            }
+        }
+    }
+    
+    showModal() {
+        if (this.modal) {
+            this.modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Fokusni username inputiga berish
+            setTimeout(() => {
+                const usernameInput = document.getElementById('username');
+                if (usernameInput) {
+                    usernameInput.focus();
+                }
+            }, 300);
+        }
+    }
+    
+    hideModal() {
+        if (this.modal) {
+            this.modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+    
+    handleLogin(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        // Xatolikni tozalash
+        this.hideError();
+        
+        console.log('Login urinishi:', username, password); // Debug uchun
+        
+        // Login ma'lumotlarini tekshirish
+        if (this.validateLogin(username, password)) {
+            // Muvaffaqiyatli kirish
+            sessionStorage.setItem('adminLoggedIn', 'true');
+            sessionStorage.setItem('adminUser', username);
+            
+            // "Meni eslab qol" funksiyasi
+            if (rememberMe) {
+                localStorage.setItem('rememberedAdmin', username);
+            } else {
+                localStorage.removeItem('rememberedAdmin');
+            }
+            
+            this.showSuccess('Muvaffaqiyatli kirildi!');
+            
+            setTimeout(() => {
+                this.hideModal();
+                this.onLoginSuccess();
+            }, 1500);
+            
+        } else {
+            this.showError('Foydalanuvchi nomi yoki parol noto\'g\'ri!');
+        }
+    }
+    
+    validateLogin(username, password) {
+        // Keng login ma'lumotlari ro'yxati
+        const validCredentials = [
+            { username: 'admin', password: 'admin123' },
+            { username: 'admin', password: '123456' },
+            { username: 'administrator', password: 'admin123' },
+            { username: 'root', password: 'root123' },
+            { username: 'user', password: 'user123' },
+            { username: 'demo', password: 'demo123' },
+            { username: 'test', password: 'test123' },
+            { username: 'moderator', password: 'mod123' },
+            // Yangi login ma'lumotlari
+            { username: 'sayt', password: 'sayt123' },
+            { username: 'owner', password: 'owner123' },
+            { username: 'boss', password: 'boss123' },
+            // Sizning saytingizdan olingan ma'lumotlar
+            { username: 'kolizey', password: '5577' },
+            { username: 'admin', password: '5577' },
+            { username: 'yntimuz', password: 'admin123' },
+            { username: 'yntimuz', password: '5577' }
+        ];
+        
+        // Case-insensitive tekshirish
+        const found = validCredentials.find(cred => 
+            cred.username.toLowerCase() === username.toLowerCase() && 
+            cred.password === password
+        );
+        
+        console.log('Tekshirilgan:', found ? 'Topildi' : 'Topilmadi'); // Debug uchun
+        return !!found;
+    }
+    
+    togglePassword() {
+        const type = this.passwordInput.type === 'password' ? 'text' : 'password';
+        this.passwordInput.type = type;
+        
+        const icon = this.togglePasswordBtn.querySelector('i');
+        icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+    }
+    
+    showError(message) {
+        if (this.errorDiv) {
+            this.errorDiv.textContent = message;
+            this.errorDiv.style.display = 'block';
+            this.errorDiv.className = 'error-message';
+        }
+    }
+    
+    showSuccess(message) {
+        if (this.errorDiv) {
+            this.errorDiv.textContent = message;
+            this.errorDiv.style.display = 'block';
+            this.errorDiv.className = 'success-message';
+        }
+    }
+    
+    hideError() {
+        if (this.errorDiv) {
+            this.errorDiv.style.display = 'none';
+        }
+    }
+    
+    loadRememberedUser() {
+        const rememberedUser = localStorage.getItem('rememberedAdmin');
+        if (rememberedUser) {
+            const usernameInput = document.getElementById('username');
+            const rememberCheckbox = document.getElementById('rememberMe');
+            
+            if (usernameInput) usernameInput.value = rememberedUser;
+            if (rememberCheckbox) rememberCheckbox.checked = true;
+        }
+    }
+    
+    onLoginSuccess() {
+        // Bu yerda login muvaffaqiyatli bo'lganda bajariladigan ishlar
+        console.log('Admin muvaffaqiyatli kirdi');
+        
+        // Sahifani yangilash yoki boshqa amallar
+        if (typeof window.initAdminPanel === 'function') {
+            window.initAdminPanel();
+        }
+    }
+    
+    // Logout funksiyasi
+    logout() {
+        sessionStorage.removeItem('adminLoggedIn');
+        sessionStorage.removeItem('adminUser');
+        
+        // Login modalni ko'rsatish
+        this.showModal();
+        
+        // Formani tozalash
+        if (this.form) {
+            this.form.reset();
+        }
+    }
+    
+    // Login holatini tekshirish
+    isLoggedIn() {
+        return sessionStorage.getItem('adminLoggedIn') === 'true';
+    }
+}
+
+// Login tizimini ishga tushirish
+document.addEventListener('DOMContentLoaded', function() {
+    window.adminLogin = new AdminLogin();
+});
+
+// Global logout funksiyasi
+function adminLogout() {
+    if (window.adminLogin) {
+        window.adminLogin.logout();
+    }
+}
+
+// Admin panelni himoya qilish funksiyasi
+function protectAdminRoute() {
+    if (window.adminLogin && !window.adminLogin.isLoggedIn()) {
+        window.adminLogin.showModal();
+        return false;
+    }
+    return true;
+}
+
+
+</script>
+</body>
+</html>
