@@ -3,76 +3,1224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Kirish</title>
-    <link rel="stylesheet" href="login.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Zamonaviy Login Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary-color: #764ba2;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --border-color: #e5e7eb;
+            --border-focus: #3b82f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
+            --border-color: #374151;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            min-height: calc(100vh - 50px);
+            background: var(--bg-primary);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .image-placeholder .icon {
+            position: relative;
+            z-index: 1;
+        }
+
+        .image-text {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            color: white;
+            z-index: 1;
+        }
+
+        .image-text h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-text p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .login-section {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-color);
+            transform: scale(1.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-left: 2.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input.error {
+            border-color: var(--error-color);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input.success {
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            z-index: 1;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .password-toggle:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .error-message {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--error-color);
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--success-color);
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+
+        .strength-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: var(--error-color); }
+        .strength-medium { background: var(--warning-color); }
+        .strength-strong { background: var(--success-color); }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .checkbox.checked {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider span {
+            background: var(--bg-primary);
+            padding: 0 1rem;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .social-button:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .signup-link {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .security-info {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .demo-credentials {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.75rem;
+        }
+
+        .demo-credentials h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-user {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .demo-user:last-child {
+            margin-bottom: 0;
+        }
+
+        .demo-user strong {
+            color: var(--text-primary);
+        }
+
+        .demo-user span {
+            color: var(--text-secondary);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 25px 15px;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                min-height: calc(100vh - 50px);
+            }
+
+            .image-section {
+                display: none;
+            }
+
+            .login-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-section {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus visible for keyboard navigation */
+        .login-button:focus-visible,
+        .social-button:focus-visible,
+        .forgot-password:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Animation for form validation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Success animation */
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(45deg); }
+            50% { transform: scale(1.2) rotate(45deg); }
+            100% { transform: scale(1) rotate(45deg); }
+        }
+
+        .success-checkmark {
+            animation: checkmark 0.6s ease-in-out;
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-background">
-            <div class="clouds"></div>
-            <div class="building-silhouette"></div>
-        </div>
-        
-        <div class="login-form-container">
-            <div class="login-form">
-                <div class="logo-section">
-                    <div class="logo">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h1>Admin Panel</h1>
-                    <p>Tizimga kirish uchun ma'lumotlaringizni kiriting</p>
+    <div class="main-container">
+        <!-- Image Section - Chap tomon -->
+        <div class="image-section">
+            <div class="image-placeholder">
+                <div class="icon">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
-                
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="username">
-                            <i class="fas fa-user"></i>
-                            Foydalanuvchi nomi
-                        </label>
-                        <input type="text" id="username" name="username" required>
-                        <span class="input-border"></span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">
-                            <i class="fas fa-lock"></i>
-                            Parol
-                        </label>
-                        <input type="password" id="password" name="password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword()">
-                            <i class="fas fa-eye" id="passwordIcon"></i>
-                        </button>
-                        <span class="input-border"></span>
-                    </div>
-                    
-                    <div class="form-options">
-                        <label class="remember-me">
-                            <input type="checkbox" id="remember">
-                            <span class="checkmark"></span>
-                            Meni eslab qol
-                        </label>
-                        <a href="#" class="forgot-password">Parolni unutdingizmi?</a>
-                    </div>
-                    
-                    <button type="submit" class="login-btn">
-                        <span>Kirish</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </form>
-                
-                <div class="error-message" id="errorMessage"></div>
-                
-                <div class="footer-links">
-                    <a href="./index.html" target="_blank">
-                        <i class="fas fa-home"></i>
-                        Asosiy saytga qaytish
-                    </a>
+                <div class="image-text">
+                    <h2>Xavfsiz va Ishonchli</h2>
+                    <p>Bizning platformamiz eng yuqori xavfsizlik standartlariga mos keladi va sizning ma'lumotlaringizni himoya qiladi.</p>
                 </div>
             </div>
         </div>
+
+        <!-- Login Section - O'ng tomon -->
+        <div class="login-section">
+            <button class="theme-toggle" id="themeToggle" aria-label="Mavzuni o'zgartirish">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1>Xavfsiz Kirish</h1>
+                <p>Hisobingizga kirish uchun ma'lumotlaringizni kiriting</p>
+            </div>
+
+            <!-- Demo Credentials -->
+            <div class="demo-credentials">
+                <h4><i class="fas fa-info-circle"></i> Test uchun login ma'lumotlari:</h4>
+                <div class="demo-user">
+                    <strong>Admin:</strong> <span>admin@example.com / Admin123!</span>
+                </div>
+                <div class="demo-user">
+                    <strong>User:</strong> <span>user@test.com / User123!</span>
+                </div>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email manzil</label>
+                    <div class="input-container">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input"
+                            placeholder="example@email.com"
+                            autocomplete="email"
+                            required
+                            aria-describedby="email-error"
+                        >
+                    </div>
+                    <div class="error-message" id="email-error" role="alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span></span>
+                    </div>
+                    <div class="success-message" id="email-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span>To'g'ri email format</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Parol</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input"
+                            placeholder="Parolingizni kiriting"
+                            autocomplete="current-password"
+                            required
+                            aria-describedby="password-error password-strength"
+                        >
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Parolni ko'rsatish/yashirish">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="password-error" role="alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span></span>
+                    </div>
+                    <div class="password-strength" id="password-strength">
+                        <div class="strength-label">Parol kuchi: <span id="strength-text">Zaif</span></div>
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <div class="checkbox" id="rememberCheckbox"></div>
+                        <span>Meni eslab qol</span>
+                        <input type="checkbox" id="remember" name="remember" class="sr-only">
+                    </label>
+                    <a href="#" class="forgot-password" id="forgotPassword">Parolni unutdingizmi?</a>
+                </div>
+
+                <button type="submit" class="login-button" id="loginButton">
+                    <div class="button-content">
+                        <div class="loading-spinner" id="loadingSpinner"></div>
+                        <span id="buttonText">Kirish</span>
+                    </div>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>yoki</span>
+            </div>
+
+            <div class="social-login">
+                <a href="#" class="social-button" id="googleLogin">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </a>
+                <a href="#" class="social-button" id="facebookLogin">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+            </div>
+
+            <div class="signup-link">
+                Hisobingiz yo'qmi? <a href="#" id="signupLink">Ro'yxatdan o'ting</a>
+            </div>
+
+            <div class="security-info">
+                <i class="fas fa-shield-alt"></i>
+                Ma'lumotlaringiz 256-bit SSL shifrlash bilan himoyalangan
+            </div>
+        </div>
     </div>
-    
-    <script src="login.js"></script>
+
+    <script>
+        class LoginForm {
+            constructor() {
+                this.form = document.getElementById('loginForm');
+                this.emailInput = document.getElementById('email');
+                this.passwordInput = document.getElementById('password');
+                this.passwordToggle = document.getElementById('passwordToggle');
+                this.rememberCheckbox = document.getElementById('rememberCheckbox');
+                this.rememberInput = document.getElementById('remember');
+                this.loginButton = document.getElementById('loginButton');
+                this.loadingSpinner = document.getElementById('loadingSpinner');
+                this.buttonText = document.getElementById('buttonText');
+                this.themeToggle = document.getElementById('themeToggle');
+                this.themeIcon = document.getElementById('themeIcon');
+
+                this.isLoading = false;
+                this.attempts = 0;
+                this.maxAttempts = 5;
+                this.lockoutTime = 15 * 60 * 1000; // 15 minutes
+
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadTheme();
+                this.checkLockout();
+                this.loadRememberedEmail();
+            }
+
+            setupEventListeners() {
+                // Form submission
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+                // Real-time validation
+                this.emailInput.addEventListener('input', this.debounce(() => this.validateEmail(), 300));
+                this.emailInput.addEventListener('blur', () => this.validateEmail());
+                
+                this.passwordInput.addEventListener('input', this.debounce(() => this.validatePassword(), 300));
+                this.passwordInput.addEventListener('blur', () => this.validatePassword());
+
+                // Password toggle
+                this.passwordToggle.addEventListener('click', () => this.togglePassword());
+
+                // Remember me checkbox
+                this.rememberCheckbox.addEventListener('click', () => this.toggleRemember());
+
+                // Theme toggle
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+
+                // Social login buttons
+                document.getElementById('googleLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleSocialLogin('google');
+                });
+
+                document.getElementById('facebookLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleSocialLogin('facebook');
+                });
+
+                // Forgot password
+                document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleForgotPassword();
+                });
+
+                // Signup link
+                document.getElementById('signupLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleSignup();
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        this.form.dispatchEvent(new Event('submit'));
+                    }
+                });
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+
+                if (this.isLoading) return;
+
+                // Check lockout
+                if (this.isLockedOut()) {
+                    this.showError('general', 'Juda ko\'p urinish. Keyinroq qayta urinib ko\'ring.');
+                    return;
+                }
+
+                // Validate all fields
+                const isEmailValid = this.validateEmail();
+                const isPasswordValid = this.validatePassword();
+
+                if (!isEmailValid || !isPasswordValid) {
+                    this.shakeForm();
+                    return;
+                }
+
+                this.setLoading(true);
+
+                try {
+                    // Simulate API call
+                    const result = await this.authenticateUser({
+                        email: this.emailInput.value,
+                        password: this.passwordInput.value,
+                        remember: this.rememberInput.checked
+                    });
+
+                    if (result.success) {
+                        this.handleLoginSuccess(result);
+                    } else {
+                        this.handleLoginError(result.message);
+                    }
+                } catch (error) {
+                    this.handleLoginError('Tarmoq xatosi. Qayta urinib ko\'ring.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async authenticateUser(credentials) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // 2 ta login va 2 ta parol
+                const validCredentials = [
+                    {
+                        email: 'admin@example.com',
+                        password: 'Admin123!',
+                        role: 'admin',
+                        name: 'Admin User'
+                    },
+                    {
+                        email: 'user@test.com',
+                        password: 'User123!',
+                        role: 'user',
+                        name: 'Test User'
+                    }
+                ];
+
+                // Kiritilgan ma'lumotlarni tekshirish
+                const user = validCredentials.find(cred => 
+                    cred.email === credentials.email && 
+                    cred.password === credentials.password
+                );
+
+                if (user) {
+                    return { 
+                        success: true, 
+                        user: {
+                            email: user.email,
+                            name: user.name,
+                            role: user.role
+                        },
+                        token: 'demo-jwt-token-' + user.role
+                    };
+                } else {
+                    this.attempts++;
+                    this.saveAttempts();
+                    return { 
+                        success: false, 
+                        message: 'Email yoki parol noto\'g\'ri' 
+                    };
+                }
+            }
+
+            handleLoginSuccess(result) {
+                // Save user data
+                if (this.rememberInput.checked) {
+                    localStorage.setItem('rememberedEmail', this.emailInput.value);
+                    localStorage.setItem('authToken', result.token);
+                }
+
+                // Save user info
+                localStorage.setItem('userInfo', JSON.stringify(result.user));
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // Clear attempts
+                this.attempts = 0;
+                localStorage.removeItem('loginAttempts');
+                localStorage.removeItem('lockoutTime');
+
+                // Show success animation
+                this.showSuccessAnimation();
+
+                // Redirect after animation
+                setTimeout(() => {
+                    window.location.href = 'admin-panel.html';
+                }, 1500);
+            }
+
+            handleLoginError(message) {
+                this.showError('general', message);
+                this.shakeForm();
+
+                // Check if should lock out
+                if (this.attempts >= this.maxAttempts) {
+                    this.lockout();
+                }
+            }
+
+            validateEmail() {
+                const email = this.emailInput.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!email) {
+                    this.showError('email', 'Email manzil kiritilishi shart');
+                    return false;
+                }
+
+                if (!emailRegex.test(email)) {
+                    this.showError('email', 'Email manzil formati noto\'g\'ri');
+                    return false;
+                }
+
+                this.showSuccess('email');
+                return true;
+            }
+
+            validatePassword() {
+                const password = this.passwordInput.value;
+
+                if (!password) {
+                    this.showError('password', 'Parol kiritilishi shart');
+                    this.updatePasswordStrength(0);
+                    return false;
+                }
+
+                if (password.length < 8) {
+                    this.showError('password', 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak');
+                    this.updatePasswordStrength(1);
+                    return false;
+                }
+
+                // Calculate password strength
+                const strength = this.calculatePasswordStrength(password);
+                this.updatePasswordStrength(strength);
+
+                if (strength < 2) {
+                    this.showError('password', 'Parol juda zaif. Katta harf, raqam va maxsus belgi qo\'shing');
+                    return false;
+                }
+
+                this.clearError('password');
+                return true;
+            }
+
+            calculatePasswordStrength(password) {
+                let strength = 0;
+                
+                // Length check
+                if (password.length >= 8) strength++;
+                if (password.length >= 12) strength++;
+                
+                // Character variety checks
+                if (/[a-z]/.test(password)) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+                
+                return Math.min(strength, 4);
+            }
+
+            updatePasswordStrength(strength) {
+                const strengthFill = document.getElementById('strength-fill');
+                const strengthText = document.getElementById('strength-text');
+                
+                const levels = [
+                    { text: 'Juda zaif', class: 'strength-weak', width: '20%' },
+                    { text: 'Zaif', class: 'strength-weak', width: '40%' },
+                    { text: 'O\'rtacha', class: 'strength-medium', width: '60%' },
+                    { text: 'Kuchli', class: 'strength-strong', width: '80%' },
+                    { text: 'Juda kuchli', class: 'strength-strong', width: '100%' }
+                ];
+
+                const level = levels[strength] || levels[0];
+                
+                strengthFill.className = `strength-fill ${level.class}`;
+                strengthFill.style.width = level.width;
+                strengthText.textContent = level.text;
+            }
+
+            togglePassword() {
+                const type = this.passwordInput.type === 'password' ? 'text' : 'password';
+                this.passwordInput.type = type;
+                
+                const icon = this.passwordToggle.querySelector('i');
+                icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+            }
+
+            toggleRemember() {
+                const isChecked = this.rememberInput.checked;
+                this.rememberInput.checked = !isChecked;
+                this.rememberCheckbox.classList.toggle('checked', !isChecked);
+            }
+
+            toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                this.themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            loadTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                this.themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            loadRememberedEmail() {
+                const rememberedEmail = localStorage.getItem('rememberedEmail');
+                if (rememberedEmail) {
+                    this.emailInput.value = rememberedEmail;
+                    this.rememberInput.checked = true;
+                    this.rememberCheckbox.classList.add('checked');
+                }
+            }
+
+            showError(field, message) {
+                const input = field === 'email' ? this.emailInput : this.passwordInput;
+                const errorElement = document.getElementById(`${field}-error`);
+                const successElement = document.getElementById(`${field}-success`);
+
+                if (input) {
+                    input.classList.add('error');
+                    input.classList.remove('success');
+                }
+                
+                if (errorElement) {
+                    errorElement.querySelector('span').textContent = message;
+                    errorElement.classList.add('show');
+                }
+                
+                if (successElement) {
+                    successElement.classList.remove('show');
+                }
+            }
+
+            showSuccess(field) {
+                const input = field === 'email' ? this.emailInput : this.passwordInput;
+                const errorElement = document.getElementById(`${field}-error`);
+                const successElement = document.getElementById(`${field}-success`);
+
+                input.classList.remove('error');
+                input.classList.add('success');
+                
+                if (errorElement) {
+                    errorElement.classList.remove('show');
+                }
+                
+                if (successElement) {
+                    successElement.classList.add('show');
+                }
+            }
+
+            clearError(field) {
+                const input = field === 'email' ? this.emailInput : this.passwordInput;
+                const errorElement = document.getElementById(`${field}-error`);
+
+                input.classList.remove('error');
+                
+                if (errorElement) {
+                    errorElement.classList.remove('show');
+                }
+            }
+
+            setLoading(loading) {
+                this.isLoading = loading;
+                this.loginButton.disabled = loading;
+                
+                if (loading) {
+                    this.loadingSpinner.style.display = 'block';
+                    this.buttonText.textContent = 'Tekshirilmoqda...';
+                } else {
+                    this.loadingSpinner.style.display = 'none';
+                    this.buttonText.textContent = 'Kirish';
+                }
+            }
+
+            shakeForm() {
+                this.form.classList.add('shake');
+                setTimeout(() => {
+                    this.form.classList.remove('shake');
+                }, 500);
+            }
+
+            showSuccessAnimation() {
+                this.loginButton.innerHTML = `
+                    <div class="button-content">
+                        <i class="fas fa-check success-checkmark"></i>
+                        <span>Muvaffaqiyatli!</span>
+                    </div>
+                `;
+                this.loginButton.style.background = 'var(--success-color)';
+            }
+
+            handleSocialLogin(provider) {
+                alert(`${provider} orqali kirish funksiyasi ishlab chiqilmoqda`);
+            }
+
+            handleForgotPassword() {
+                const email = this.emailInput.value.trim();
+                if (email) {
+                    alert(`Parolni tiklash havolasi ${email} manziliga yuborildi`);
+                } else {
+                    alert('Iltimos, avval email manzilni kiriting');
+                    this.emailInput.focus();
+                }
+            }
+
+            handleSignup() {
+                alert('Ro\'yxatdan o\'tish sahifasiga yo\'naltirilmoqda...');
+            }
+
+            // Utility functions
+            debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            isLockedOut() {
+                const lockoutTime = localStorage.getItem('lockoutTime');
+                if (!lockoutTime) return false;
+                
+                return Date.now() < parseInt(lockoutTime);
+            }
+
+            lockout() {
+                const lockoutUntil = Date.now() + this.lockoutTime;
+                localStorage.setItem('lockoutTime', lockoutUntil.toString());
+                
+                const minutes = Math.ceil(this.lockoutTime / (60 * 1000));
+                this.showError('general', `Juda ko'p urinish. ${minutes} daqiqadan keyin qayta urinib ko'ring.`);
+            }
+
+            checkLockout() {
+                if (this.isLockedOut()) {
+                    const lockoutTime = localStorage.getItem('lockoutTime');
+                    const remainingTime = Math.ceil((parseInt(lockoutTime) - Date.now()) / (60 * 1000));
+                    this.showError('general', `Hisob vaqtincha bloklangan. ${remainingTime} daqiqadan keyin qayta urinib ko'ring.`);
+                    this.loginButton.disabled = true;
+                }
+            }
+
+            saveAttempts() {
+                localStorage.setItem('loginAttempts', this.attempts.toString());
+            }
+        }
+
+        // Initialize the login form when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginForm();
+        });
+    </script>
 </body>
 </html>
