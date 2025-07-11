@@ -6,2546 +6,1504 @@
     <title>Professional Admin Dashboard</title>
     <style>
         :root {
-  --primary-color: #3b82f6;
-  --primary-dark: #2563eb;
-  --secondary-color: #64748b;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --danger-color: #ef4444;
-  --info-color: #06b6d4;
-  --dark-color: #1e293b;
-  --light-color: #f8fafc;
-  --border-color: #e2e8f0;
-  --text-color: #334155;
-  --text-muted: #64748b;
-  --bg-color: #ffffff;
-  --bg-secondary: #f1f5f9;
-  --sidebar-width: 280px;
-  --header-height: 70px;
-  --border-radius: 12px;
-  --border-radius-sm: 8px;
-  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --box-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: all 0.15s ease;
-}
-
-[data-theme="dark"] {
-  --bg-color: #0f172a;
-  --bg-secondary: #1e293b;
-  --text-color: #e2e8f0;
-  --text-muted: #94a3b8;
-  --border-color: #334155;
-  --light-color: #1e293b;
-  --dark-color: #f8fafc;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  line-height: 1.6;
-  transition: var(--transition);
-  overflow-x: hidden;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-
-/* Toast Notifications */
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.toast {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  padding: 16px 20px;
-  box-shadow: var(--box-shadow-lg);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 300px;
-  max-width: 400px;
-  transform: translateX(100%);
-  opacity: 0;
-  transition: var(--transition);
-}
-
-.toast.show {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.toast.success {
-  border-left: 4px solid var(--success-color);
-}
-
-.toast.error {
-  border-left: 4px solid var(--danger-color);
-}
-
-.toast.warning {
-  border-left: 4px solid var(--warning-color);
-}
-
-.toast.info {
-  border-left: 4px solid var(--info-color);
-}
-
-.toast-icon {
-  font-size: 20px;
-}
-
-.toast.success .toast-icon {
-  color: var(--success-color);
-}
-
-.toast.error .toast-icon {
-  color: var(--danger-color);
-}
-
-.toast.warning .toast-icon {
-  color: var(--warning-color);
-}
-
-.toast.info .toast-icon {
-  color: var(--info-color);
-}
-
-.toast-content {
-  flex: 1;
-}
-
-.toast-title {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.toast-message {
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: var(--transition-fast);
-}
-
-.toast-close:hover {
-  background: var(--bg-secondary);
-}
-
-/* Scroll to Top Button */
-.scroll-to-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  box-shadow: var(--box-shadow);
-  transition: var(--transition);
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-}
-
-.scroll-to-top.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.scroll-to-top:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-}
-
-/* Login Styles */
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.login-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-  opacity: 0.3;
-}
-
-.login-box {
-  background: var(--bg-color);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: var(--box-shadow-lg);
-  width: 100%;
-  max-width: 420px;
-  position: relative;
-  z-index: 1;
-  backdrop-filter: blur(10px);
-}
-
-.login-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.logo-container i {
-  font-size: 48px;
-  color: var(--primary-color);
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-container h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-color);
-}
-
-.login-header p {
-  color: var(--text-muted);
-  font-size: 16px;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.input-group {
-  position: relative;
-}
-
-.input-group i {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 18px;
-  z-index: 1;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 16px 16px 16px 50px;
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 16px;
-  transition: var(--transition);
-  background: var(--bg-color);
-  color: var(--text-color);
-}
-
-.input-group input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.toggle-password {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 4px;
-  transition: var(--transition-fast);
-}
-
-.toggle-password:hover {
-  background: var(--bg-secondary);
-}
-
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--text-color);
-}
-
-.checkbox-container input {
-  display: none;
-}
-
-.checkmark {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--border-color);
-  border-radius: 4px;
-  position: relative;
-  transition: var(--transition-fast);
-}
-
-.checkbox-container input:checked + .checkmark {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.checkbox-container input:checked + .checkmark::after {
-  content: "✓";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  position: relative;
-  overflow: hidden;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow-lg);
-}
-
-.login-btn:active {
-  transform: translateY(0);
-}
-
-.loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid white;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.demo-info {
-  margin-top: 30px;
-  padding: 20px;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  text-align: center;
-}
-
-.demo-info h4 {
-  margin-bottom: 12px;
-  color: var(--text-color);
-  font-size: 16px;
-}
-
-.demo-info p {
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-/* Dashboard Layout */
-.dashboard {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* Sidebar */
-.sidebar {
-  width: var(--sidebar-width);
-  background: var(--bg-color);
-  border-right: 1px solid var(--border-color);
-  position: fixed;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-  transition: var(--transition);
-  overflow-y: auto;
-  box-shadow: var(--box-shadow);
-}
-
-.sidebar.collapsed {
-  width: 70px;
-}
-
-.sidebar-header {
-  padding: 20px;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-color);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.logo i {
-  font-size: 28px;
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.sidebar.collapsed .logo span {
-  display: none;
-}
-
-.sidebar-toggle {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  transition: var(--transition-fast);
-  font-size: 16px;
-}
-
-.sidebar-toggle:hover {
-  background: var(--bg-secondary);
-}
-
-.sidebar-nav {
-  padding: 20px 0;
-}
-
-.sidebar-nav ul {
-  list-style: none;
-}
-
-.sidebar-nav li {
-  margin-bottom: 4px;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 20px;
-  color: var(--text-color);
-  text-decoration: none;
-  transition: var(--transition);
-  border-right: 3px solid transparent;
-  position: relative;
-}
-
-.nav-link:hover {
-  background: var(--bg-secondary);
-  color: var(--primary-color);
-}
-
-.nav-link.active {
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--primary-color);
-  border-right-color: var(--primary-color);
-}
-
-.nav-link i {
-  font-size: 18px;
-  width: 20px;
-  text-align: center;
-}
-
-.sidebar.collapsed .nav-link span {
-  display: none;
-}
-
-.sidebar.collapsed .nav-link {
-  justify-content: center;
-  padding: 14px;
-}
-
-/* Main Content */
-.main-content {
-  flex: 1;
-  margin-left: var(--sidebar-width);
-  transition: var(--transition);
-  min-height: 100vh;
-  background: var(--bg-secondary);
-}
-
-.sidebar.collapsed + .main-content {
-  margin-left: 70px;
-}
-
-/* Header */
-.header {
-  height: var(--header-height);
-  background: var(--bg-color);
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: var(--box-shadow);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 18px;
-  transition: var(--transition-fast);
-}
-
-.mobile-menu-btn:hover {
-  background: var(--bg-secondary);
-}
-
-.header-center {
-  flex: 1;
-  max-width: 400px;
-  margin: 0 40px;
-}
-
-.search-container {
-  position: relative;
-  width: 100%;
-}
-
-.search-container i {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 16px;
-}
-
-.search-container input {
-  width: 100%;
-  padding: 12px 16px 12px 44px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--bg-secondary);
-  color: var(--text-color);
-  font-size: 14px;
-  transition: var(--transition-fast);
-}
-
-.search-container input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: var(--bg-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.clock-container {
-  text-align: right;
-  font-size: 14px;
-}
-
-.current-time {
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.current-date {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.theme-toggle {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 50%;
-  transition: var(--transition-fast);
-  font-size: 18px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-toggle:hover {
-  background: var(--bg-secondary);
-}
-
-.notifications {
-  position: relative;
-}
-
-.notification-btn {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 50%;
-  transition: var(--transition-fast);
-  font-size: 18px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.notification-btn:hover {
-  background: var(--bg-secondary);
-}
-
-.notification-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: var(--danger-color);
-  color: white;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 10px;
-  min-width: 18px;
-  text-align: center;
-}
-
-.notification-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow-lg);
-  min-width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: var(--transition);
-  z-index: 1000;
-}
-
-.notification-dropdown.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.notification-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.notification-header h4 {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.notification-header button {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: var(--transition-fast);
-}
-
-.notification-header button:hover {
-  background: var(--bg-secondary);
-}
-
-.notification-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color);
-  transition: var(--transition-fast);
-  cursor: pointer;
-}
-
-.notification-item:hover {
-  background: var(--bg-secondary);
-}
-
-.notification-item:last-child {
-  border-bottom: none;
-}
-
-.notification-item.unread {
-  background: rgba(59, 130, 246, 0.05);
-  border-left: 3px solid var(--primary-color);
-}
-
-.notification-content {
-  display: flex;
-  gap: 12px;
-}
-
-.notification-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  color: white;
-  flex-shrink: 0;
-}
-
-.notification-icon.success {
-  background: var(--success-color);
-}
-
-.notification-icon.warning {
-  background: var(--warning-color);
-}
-
-.notification-icon.info {
-  background: var(--info-color);
-}
-
-.notification-text {
-  flex: 1;
-}
-
-.notification-title {
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 14px;
-}
-
-.notification-message {
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.notification-time {
-  color: var(--text-muted);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.user-menu {
-  position: relative;
-}
-
-.user-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: var(--border-radius);
-  transition: var(--transition-fast);
-}
-
-.user-btn:hover {
-  background: var(--bg-secondary);
-}
-
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border-color);
-}
-
-.user-name {
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.user-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow-lg);
-  min-width: 180px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: var(--transition);
-  z-index: 1000;
-}
-
-.user-dropdown.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.user-dropdown a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  color: var(--text-color);
-  text-decoration: none;
-  transition: var(--transition-fast);
-  font-size: 14px;
-}
-
-.user-dropdown a:hover {
-  background: var(--bg-secondary);
-}
-
-.dropdown-divider {
-  height: 1px;
-  background: var(--border-color);
-  margin: 8px 0;
-}
-
-/* Content */
-.content {
-  padding: 30px;
-}
-
-.content-section {
-  display: none;
-  animation: fadeIn 0.3s ease;
-}
-
-.content-section.active {
-  display: block;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.section-header h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-color);
-}
-
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: var(--primary-color);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--box-shadow);
-}
-
-.btn-secondary {
-  background: var(--secondary-color);
-  color: white;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #475569;
-}
-
-.btn-success {
-  background: var(--success-color);
-  color: white;
-}
-
-.btn-success:hover:not(:disabled) {
-  background: #059669;
-}
-
-.btn-warning {
-  background: var(--warning-color);
-  color: white;
-}
-
-.btn-warning:hover:not(:disabled) {
-  background: #d97706;
-}
-
-.btn-danger {
-  background: var(--danger-color);
-  color: white;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background: #dc2626;
-}
-
-.btn-sm {
-  padding: 8px 16px;
-  font-size: 12px;
-}
-
-.btn-lg {
-  padding: 16px 24px;
-  font-size: 16px;
-}
-
-/* Statistics Cards */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 40px;
-}
-
-.stat-card {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
-}
-
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--box-shadow-lg);
-}
-
-.stat-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-icon::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-  border-radius: inherit;
-}
-
-.stat-icon.news {
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-}
-
-.stat-icon.users {
-  background: linear-gradient(135deg, var(--success-color), #06b6d4);
-}
-
-.stat-icon.views {
-  background: linear-gradient(135deg, var(--warning-color), #f97316);
-}
-
-.stat-icon.comments {
-  background: linear-gradient(135deg, var(--info-color), #3b82f6);
-}
-
-.stat-info {
-  flex: 1;
-}
-
-.stat-info h3 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--text-color);
-}
-
-.stat-info p {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.stat-change {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.stat-change.positive {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
-}
-
-.stat-change.negative {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger-color);
-}
-
-.stat-change::before {
-  content: "↗";
-  font-size: 10px;
-}
-
-.stat-change.negative::before {
-  content: "↘";
-}
-
-/* Charts Section - KICHIKROQ QILINDI */
-.charts-section {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  margin-bottom: 40px;
-}
-
-.chart-container {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 20px; /* 24px dan 20px ga */
-  height: 300px; /* Aniq balandlik qo'shildi */
-}
-
-.chart-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px; /* 24px dan 16px ga */
-}
-
-.chart-header h3 {
-  font-size: 16px; /* 18px dan 16px ga */
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.chart-controls select {
-  padding: 6px 10px; /* 8px 12px dan kichikroq */
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-size: 12px; /* 14px dan 12px ga */
-}
-
-.popular-content {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 20px; /* 24px dan 20px ga */
-  height: 300px; /* Aniq balandlik */
-  overflow-y: auto;
-}
-
-.popular-content h3 {
-  font-size: 16px; /* 18px dan 16px ga */
-  font-weight: 600;
-  margin-bottom: 16px; /* 20px dan 16px ga */
-  color: var(--text-color);
-}
-
-.popular-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px; /* 16px dan 12px ga */
-}
-
-.popular-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px; /* 16px dan 12px ga */
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius-sm);
-  transition: var(--transition-fast);
-}
-
-.popular-item:hover {
-  background: var(--border-color);
-}
-
-.popular-item-info {
-  flex: 1;
-}
-
-.popular-item-title {
-  font-weight: 500;
-  margin-bottom: 4px;
-  color: var(--text-color);
-  font-size: 13px; /* 14px dan 13px ga */
-}
-
-.popular-item-category {
-  font-size: 11px; /* 12px dan 11px ga */
-  color: var(--text-muted);
-}
-
-.popular-item-views {
-  font-size: 11px; /* 12px dan 11px ga */
-  font-weight: 600;
-  color: var(--primary-color);
-  background: rgba(59, 130, 246, 0.1);
-  padding: 3px 6px; /* 4px 8px dan kichikroq */
-  border-radius: 10px; /* 12px dan 10px ga */
-}
-
-/* Recent Activity */
-.recent-activity {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 24px;
-}
-
-.recent-activity h3 {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: var(--text-color);
-}
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius-sm);
-  transition: var(--transition-fast);
-}
-
-.activity-item:hover {
-  background: var(--border-color);
-}
-
-.activity-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  color: white;
-  flex-shrink: 0;
-}
-
-.activity-icon.create {
-  background: var(--success-color);
-}
-
-.activity-icon.edit {
-  background: var(--warning-color);
-}
-
-.activity-icon.delete {
-  background: var(--danger-color);
-}
-
-.activity-icon.login {
-  background: var(--info-color);
-}
-
-.activity-content {
-  flex: 1;
-}
-
-.activity-title {
-  font-weight: 500;
-  margin-bottom: 4px;
-  color: var(--text-color);
-  font-size: 14px;
-}
-
-.activity-description {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.activity-time {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-/* Filters Container */
-.filters-container {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  margin-bottom: 24px;
-}
-
-.search-filters {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.search-box {
-  position: relative;
-  flex: 1;
-  min-width: 250px;
-}
-
-.search-box i {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 16px;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 12px 16px 12px 44px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-secondary);
-  color: var(--text-color);
-  font-size: 14px;
-  transition: var(--transition-fast);
-}
-
-.search-box input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: var(--bg-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.filters-container select {
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-size: 14px;
-  min-width: 150px;
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-
-.filters-container select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Loading Skeleton */
-.loading-skeleton {
-  display: none;
-}
-
-.loading-skeleton.show {
-  display: block;
-}
-
-.skeleton-item {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 24px;
-  margin-bottom: 16px;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-header {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.skeleton-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--border-color);
-}
-
-.skeleton-info {
-  flex: 1;
-}
-
-.skeleton-title {
-  height: 20px;
-  background: var(--border-color);
-  border-radius: 4px;
-  margin-bottom: 8px;
-  width: 60%;
-}
-
-.skeleton-subtitle {
-  height: 16px;
-  background: var(--border-color);
-  border-radius: 4px;
-  width: 40%;
-}
-
-.skeleton-content {
-  height: 16px;
-  background: var(--border-color);
-  border-radius: 4px;
-  margin-bottom: 8px;
-}
-
-.skeleton-content:last-child {
-  width: 80%;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-/* News Container */
-.news-container {
-  position: relative;
-}
-
-.news-list {
-  display: grid;
-  gap: 20px;
-}
-
-.news-item {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 24px;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.news-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--primary-color);
-  transform: scaleY(0);
-  transition: var(--transition);
-}
-
-.news-item:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow-lg);
-}
-
-.news-item:hover::before {
-  transform: scaleY(1);
-}
-
-.news-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  gap: 16px;
-}
-
-.news-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--text-color);
-  line-height: 1.4;
-}
-
-.news-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 14px;
-  color: var(--text-muted);
-  flex-wrap: wrap;
-}
-
-.news-category {
-  background: var(--primary-color);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.news-category.elon {
-  background: var(--warning-color);
-}
-
-.news-category.tadbir {
-  background: var(--success-color);
-}
-
-.news-category.talim {
-  background: var(--info-color);
-}
-
-.news-category.sport {
-  background: var(--danger-color);
-}
-
-.news-category.texnologiya {
-  background: var(--primary-color);
-}
-
-.news-content {
-  color: var(--text-color);
-  line-height: 1.6;
-  margin-bottom: 20px;
-  font-size: 15px;
-}
-
-.news-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: var(--border-radius-sm);
-  margin-bottom: 16px;
-}
-
-.news-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.news-stats {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-.news-stat {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Analytics Grid - KICHIKROQ QILINDI */
-.analytics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 400px dan 300px ga */
-  gap: 20px; /* 24px dan 20px ga */
-}
-
-.analytics-card {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 20px; /* 24px dan 20px ga */
-  height: 280px; /* Aniq balandlik qo'shildi */
-}
-
-.analytics-card h3 {
-  font-size: 16px; /* 18px dan 16px ga */
-  font-weight: 600;
-  margin-bottom: 16px; /* 20px dan 16px ga */
-  color: var(--text-color);
-}
-
-.analytics-card canvas {
-  max-height: 220px; /* 300px dan 220px ga */
-}
-
-.export-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-/* Users Container */
-.users-container {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-}
-
-.users-filters {
-  padding: 20px;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.users-filters input {
-  flex: 1;
-  min-width: 200px;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-secondary);
-  color: var(--text-color);
-  font-size: 14px;
-}
-
-.users-filters select {
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-size: 14px;
-  min-width: 150px;
-}
-
-.users-table-container {
-  overflow-x: auto;
-}
-
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.users-table th,
-.users-table td {
-  padding: 16px;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.users-table th {
-  background: var(--bg-secondary);
-  font-weight: 600;
-  color: var(--text-color);
-  font-size: 14px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.users-table td {
-  font-size: 14px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.user-avatar-small {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border-color);
-}
-
-.user-details {
-  flex: 1;
-}
-
-.user-name {
-  font-weight: 500;
-  margin-bottom: 2px;
-  color: var(--text-color);
-}
-
-.user-email {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.user-role {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: capitalize;
-}
-
-.user-role.admin {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger-color);
-}
-
-.user-role.moderator {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--warning-color);
-}
-
-.user-role.user {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
-}
-
-.user-status {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.user-status.active {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
-}
-
-.user-status.banned {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger-color);
-}
-
-.user-actions {
-  display: flex;
-  gap: 8px;
-}
-
-/* Comments */
-.comment-stats {
-  display: flex;
-  gap: 16px;
-}
-
-.stat-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.stat-badge.pending {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--warning-color);
-}
-
-.stat-badge.approved {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
-}
-
-.comments-filters {
-  margin-bottom: 24px;
-}
-
-.comments-filters select {
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-size: 14px;
-  min-width: 200px;
-}
-
-.comments-list {
-  display: grid;
-  gap: 16px;
-}
-
-.comment-item {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  transition: var(--transition-fast);
-}
-
-.comment-item:hover {
-  box-shadow: var(--box-shadow);
-}
-
-.comment-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.comment-author-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.comment-author {
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.comment-date {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.comment-status {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.comment-status.pending {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--warning-color);
-}
-
-.comment-status.approved {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success-color);
-}
-
-.comment-status.rejected {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger-color);
-}
-
-.comment-content {
-  margin-bottom: 16px;
-  line-height: 1.6;
-  color: var(--text-color);
-}
-
-.comment-news-title {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-  padding: 8px 12px;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius-sm);
-}
-
-.comment-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-/* Settings Grid */
-.settings-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 24px;
-}
-
-.settings-card {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 24px;
-}
-
-.settings-card h3 {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: var(--text-color);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: var(--text-color);
-  font-size: 14px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  font-size: 14px;
-  background: var(--bg-color);
-  color: var(--text-color);
-  transition: var(--transition-fast);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.image-upload {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  border: 2px dashed var(--border-color);
-  border-radius: 50%;
-  cursor: pointer;
-  overflow: hidden;
-  transition: var(--transition-fast);
-}
-
-.image-upload:hover {
-  border-color: var(--primary-color);
-}
-
-.image-upload img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.upload-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  opacity: 0;
-  transition: var(--transition-fast);
-  font-size: 12px;
-  text-align: center;
-  padding: 8px;
-}
-
-.image-upload:hover .upload-overlay {
-  opacity: 1;
-}
-
-.upload-overlay i {
-  font-size: 20px;
-  margin-bottom: 4px;
-}
-
-.setting-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.setting-item:last-child {
-  border-bottom: none;
-}
-
-.setting-item span {
-  font-size: 14px;
-  color: var(--text-color);
-}
-
-/* Switch Toggle */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--border-color);
-  transition: var(--transition-fast);
-  border-radius: 24px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: var(--transition-fast);
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--primary-color);
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/* Modal Styles */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition);
-  backdrop-filter: blur(4px);
-}
-
-.modal.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-.modal-content {
-  background: var(--bg-color);
-  border-radius: var(--border-radius);
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  transform: scale(0.9) translateY(-20px);
-  transition: var(--transition);
-  box-shadow: var(--box-shadow-lg);
-}
-
-.modal-content.small {
-  max-width: 400px;
-}
-
-.modal.show .modal-content {
-  transform: scale(1) translateY(0);
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-}
-
-.modal-header h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  transition: var(--transition-fast);
-  font-size: 18px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-btn:hover {
-  background: var(--border-color);
-}
-
-.modal form {
-  padding: 24px;
-}
-
-.modal-body {
-  padding: 24px;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  padding: 24px;
-  border-top: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-}
-
-/* File Upload Area */
-.file-upload-area {
-  border: 2px dashed var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 40px 20px;
-  text-align: center;
-  transition: var(--transition-fast);
-  cursor: pointer;
-  position: relative;
-}
-
-.file-upload-area:hover {
-  border-color: var(--primary-color);
-  background: rgba(59, 130, 246, 0.05);
-}
-
-.file-upload-area.dragover {
-  border-color: var(--primary-color);
-  background: rgba(59, 130, 246, 0.1);
-}
-
-.upload-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.upload-content i {
-  font-size: 48px;
-  color: var(--text-muted);
-}
-
-.upload-content p {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.upload-link {
-  color: var(--primary-color);
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.file-upload-area input[type="file"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.image-preview {
-  position: relative;
-  max-width: 200px;
-  margin: 0 auto;
-}
-
-.image-preview img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--border-radius-sm);
-}
-
-.remove-image {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: var(--danger-color);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  transition: var(--transition-fast);
-}
-
-.remove-image:hover {
-  background: #dc2626;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .charts-section {
-    grid-template-columns: 1fr;
-  }
-
-  .analytics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 350px dan 280px ga */
-  }
-
-  .settings-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    width: 280px;
-  }
-
-  .sidebar.show {
-    transform: translateX(0);
-  }
-
-  .main-content {
-    margin-left: 0;
-  }
-
-  .mobile-menu-btn {
-    display: block;
-  }
-
-  .header {
-    padding: 0 20px;
-  }
-
-  .header-center {
-    display: none;
-  }
-
-  .content {
-    padding: 20px;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .search-filters {
-    flex-direction: column;
-  }
-
-  .search-box {
-    min-width: auto;
-  }
-
-  .users-table-container {
-    overflow-x: auto;
-  }
-
-  .modal-content {
-    width: 95%;
-    margin: 20px;
-  }
-
-  .modal form,
-  .modal-body,
-  .modal-actions {
-    padding: 20px;
-  }
-
-  .export-buttons {
-    flex-direction: column;
-  }
-
-  .comment-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .user-actions {
-    flex-direction: column;
-  }
-
-  .news-actions {
-    flex-direction: column;
-  }
-
-  .comment-actions {
-    flex-direction: column;
-  }
-
-  /* Chart container mobile */
-  .chart-container,
-  .analytics-card {
-    height: 250px; /* Mobile da yanada kichikroq */
-  }
-
-  .analytics-card canvas {
-    max-height: 180px;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    padding: 0 15px;
-  }
-
-  .content {
-    padding: 15px;
-  }
-
-  .stat-card {
-    padding: 20px;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .stat-icon {
-    width: 56px;
-    height: 56px;
-  }
-
-  .news-item,
-  .comment-item,
-  .settings-card {
-    padding: 20px;
-  }
-
-  .modal-content {
-    width: 100%;
-    margin: 10px;
-    border-radius: var(--border-radius-sm);
-  }
-
-  .login-box {
-    padding: 30px 20px;
-  }
-
-  .toast {
-    min-width: 280px;
-    margin: 0 10px;
-  }
-
-  .scroll-to-top {
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-  }
-
-  /* Chart container mobile kichik */
-  .chart-container,
-  .analytics-card {
-    height: 220px;
-  }
-
-  .analytics-card canvas {
-    max-height: 160px;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .sidebar,
-  .header,
-  .scroll-to-top,
-  .toast-container,
-  .modal {
-    display: none !important;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-  }
-
-  .content {
-    padding: 0 !important;
-  }
-
-  .btn {
-    display: none !important;
-  }
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  :root {
-    --border-color: #000000;
-    --text-muted: #000000;
-  }
-
-  [data-theme="dark"] {
-    --border-color: #ffffff;
-    --text-muted: #ffffff;
-  }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Focus Styles for Accessibility */
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-/* Custom Scrollbar for Webkit */
-.modal-content::-webkit-scrollbar,
-.sidebar::-webkit-scrollbar,
-.notification-dropdown::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal-content::-webkit-scrollbar-track,
-.sidebar::-webkit-scrollbar-track,
-.notification-dropdown::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-.modal-content::-webkit-scrollbar-thumb,
-.sidebar::-webkit-scrollbar-thumb,
-.notification-dropdown::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover,
-.sidebar::-webkit-scrollbar-thumb:hover,
-.notification-dropdown::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-color: #334155;
+            --text-muted: #64748b;
+            --bg-color: #ffffff;
+            --bg-secondary: #f1f5f9;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --box-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --light-color: #1e293b;
+            --dark-color: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 16px 20px;
+            box-shadow: var(--box-shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-left: 4px solid var(--success-color); }
+        .toast.error { border-left: 4px solid var(--danger-color); }
+        .toast.warning { border-left: 4px solid var(--warning-color); }
+        .toast.info { border-left: 4px solid var(--info-color); }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast.success .toast-icon { color: var(--success-color); }
+        .toast.error .toast-icon { color: var(--danger-color); }
+        .toast.warning .toast-icon { color: var(--warning-color); }
+        .toast.info .toast-icon { color: var(--info-color); }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Login Styles */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .login-box {
+            background: var(--bg-color);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--box-shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .logo-container i {
+            font-size: 48px;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-container h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+            z-index: 1;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: var(--transition-fast);
+        }
+
+        .toggle-password:hover {
+            background: var(--bg-secondary);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+            transition: var(--transition-fast);
+        }
+
+        .checkbox-container input:checked + .checkmark {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-container input:checked + .checkmark::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .demo-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .demo-info h4 {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .demo-info p {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            overflow-y: auto;
+            box-shadow: var(--box-shadow);
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar.collapsed .logo span {
+            display: none;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition-fast);
+            font-size: 16px;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            border-right: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+            border-right-color: var(--primary-color);
+        }
+
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 14px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+            min-height: 100vh;
+            background: var(--bg-secondary);
+        }
+
+        .sidebar.collapsed + .main-content {
+            margin-left: 70px;
+        }
+
+        /* Header */
+        .header {
+            height: var(--header-height);
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 18px;
+            transition: var(--transition-fast);
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .header-center {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 40px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-secondary);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: var(--transition-fast);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--bg-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .clock-container {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .current-time {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .current-date {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition-fast);
+        }
+
+        .user-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-lg);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            font-size: 14px;
+        }
+
+        .user-dropdown a:hover {
+            background: var(--bg-secondary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 8px 0;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #475569;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .btn-lg {
+            padding: 16px 24px;
+            font-size: 16px;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .stat-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            border-radius: inherit;
+        }
+
+        .stat-icon.news {
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+        }
+
+        .stat-icon.users {
+            background: linear-gradient(135deg, var(--success-color), #06b6d4);
+        }
+
+        .stat-icon.views {
+            background: linear-gradient(135deg, var(--warning-color), #f97316);
+        }
+
+        .stat-icon.comments {
+            background: linear-gradient(135deg, var(--info-color), #3b82f6);
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .stat-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .stat-change::before {
+            content: "↗";
+            font-size: 10px;
+        }
+
+        .stat-change.negative::before {
+            content: "↘";
+        }
+
+        /* News Container */
+        .news-container {
+            position: relative;
+        }
+
+        .news-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .news-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            transform: scaleY(0);
+            transition: var(--transition);
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .news-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 16px;
+        }
+
+        .news-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .news-category {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .news-category.elon { background: var(--warning-color); }
+        .news-category.tadbir { background: var(--success-color); }
+        .news-category.talim { background: var(--info-color); }
+        .news-category.sport { background: var(--danger-color); }
+        .news-category.texnologiya { background: var(--primary-color); }
+
+        .news-content {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 16px;
+        }
+
+        .news-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .news-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .news-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Filters Container */
+        .filters-container {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-secondary);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: var(--transition-fast);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--bg-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .filters-container select {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            min-width: 150px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .filters-container select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(-20px);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .modal-content.small {
+            max-width: 400px;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition-fast);
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: var(--border-color);
+        }
+
+        .modal form {
+            padding: 24px;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition-fast);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 40px 20px;
+            text-align: center;
+            transition: var(--transition-fast);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .upload-content i {
+            font-size: 48px;
+            color: var(--text-muted);
+        }
+
+        .upload-content p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .upload-link {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .file-upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-preview {
+            position: relative;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: var(--transition-fast);
+        }
+
+        .remove-image:hover {
+            background: #dc2626;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .header {
+                padding: 0 20px;
+            }
+
+            .header-center {
+                display: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filters {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal form,
+            .modal-body,
+            .modal-actions {
+                padding: 20px;
+            }
+
+            .news-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stat-icon {
+                width: 56px;
+                height: 56px;
+            }
+
+            .news-item {
+                padding: 20px;
+            }
+
+            .modal-content {
+                width: 100%;
+                margin: 10px;
+                border-radius: var(--border-radius-sm);
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+
+            .toast {
+                min-width: 280px;
+                margin: 0 10px;
+            }
+        }
+
+        /* Error States */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 14px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .offline-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--danger-color);
+            color: white;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            z-index: 10000;
+            transform: translateY(100px);
+            transition: var(--transition);
+        }
+
+        .offline-indicator.show {
+            transform: translateY(0);
+        }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Toast Container -->
     <div id="toastContainer" class="toast-container"></div>
 
-    <!-- Scroll to Top Button -->
-    <button id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator">
+        <i class="fas fa-wifi"></i>
+        Internet aloqasi yo'q
+    </div>
 
     <!-- Login Page -->
     <div id="loginPage" class="login-container">
@@ -2592,7 +1550,6 @@ a:focus-visible {
                 <p><strong>Username:</strong> kolizey</p>
                 <p><strong>Password:</strong> 5577</p>
             </div>
-
         </div>
     </div>
 
@@ -2625,12 +1582,6 @@ a:focus-visible {
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="showSection('analytics')" class="nav-link">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Tahlillar</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="#" onclick="showSection('users')" class="nav-link">
                             <i class="fas fa-users"></i>
                             <span>Foydalanuvchilar</span>
@@ -2640,12 +1591,6 @@ a:focus-visible {
                         <a href="#" onclick="showSection('comments')" class="nav-link">
                             <i class="fas fa-comments"></i>
                             <span>Izohlar</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="showSection('settings')" class="nav-link">
-                            <i class="fas fa-cog"></i>
-                            <span>Sozlamalar</span>
                         </a>
                     </li>
                 </ul>
@@ -2680,38 +1625,13 @@ a:focus-visible {
                         <i class="fas fa-moon"></i>
                     </button>
                     
-                    <div class="notifications">
-                        <button class="notification-btn" onclick="toggleNotifications()">
-                            <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
-                        </button>
-                        <div class="notification-dropdown" id="notificationDropdown">
-                            <div class="notification-header">
-                                <h4>Bildirishnomalar</h4>
-                                <button onclick="clearNotifications()">Tozalash</button>
-                            </div>
-                            <div class="notification-list" id="notificationList">
-                                <!-- Notifications will be populated here -->
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div class="user-menu">
                         <button class="user-btn" onclick="toggleUserMenu()">
-                            <img src="" alt="Admin" class="user-avatar">
+                            <!-- <img src="/placeholder.svg?height=40&width=40" alt="Admin" class="user-avatar"> -->
                             <span class="user-name">Administrator</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="user-dropdown" id="userDropdown">
-                            <a href="#" onclick="showSection('profile')">
-                                <i class="fas fa-user"></i>
-                                Profil
-                            </a>
-                            <a href="#" onclick="showSection('settings')">
-                                <i class="fas fa-cog"></i>
-                                Sozlamalar
-                            </a>
-                            <div class="dropdown-divider"></div>
                             <a href="#" onclick="logout()">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Chiqish
@@ -2727,7 +1647,7 @@ a:focus-visible {
                 <section id="dashboardSection" class="content-section active">
                     <!-- Statistics Cards -->
                     <div class="stats-grid">
-                        <div class="stat-card" data-aos="fade-up">
+                        <div class="stat-card">
                             <div class="stat-icon news">
                                 <i class="fas fa-newspaper"></i>
                             </div>
@@ -2738,7 +1658,7 @@ a:focus-visible {
                             </div>
                         </div>
                         
-                        <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-card">
                             <div class="stat-icon users">
                                 <i class="fas fa-users"></i>
                             </div>
@@ -2749,18 +1669,18 @@ a:focus-visible {
                             </div>
                         </div>
                         
-                        <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-card">
                             <div class="stat-icon views">
                                 <i class="fas fa-eye"></i>
                             </div>
                             <div class="stat-info">
-                                <h3 id="dailyViews">0</h3>
+                                <h3 id="dailyViews">1247</h3>
                                 <p>Bugungi ko'rishlar</p>
                                 <span class="stat-change positive">+24%</span>
                             </div>
                         </div>
                         
-                        <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-card">
                             <div class="stat-icon comments">
                                 <i class="fas fa-comments"></i>
                             </div>
@@ -2769,38 +1689,6 @@ a:focus-visible {
                                 <p>Izohlar</p>
                                 <span class="stat-change negative">-2%</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Charts Section -->
-                    <div class="charts-section">
-                        <div class="chart-container">
-                            <div class="chart-header">
-                                <h3>Oylik statistika</h3>
-                                <div class="chart-controls">
-                                    <select id="chartPeriod" onchange="updateChart()">
-                                        <option value="month">Bu oy</option>
-                                        <option value="week">Bu hafta</option>
-                                        <option value="year">Bu yil</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <canvas id="monthlyChart"></canvas>
-                        </div>
-                        
-                        <div class="popular-content">
-                            <h3>Eng mashhur yangiliklar</h3>
-                            <div id="popularNews" class="popular-list">
-                                <!-- Popular news will be populated here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Activity -->
-                    <div class="recent-activity">
-                        <h3>So'nggi faollik</h3>
-                        <div id="recentActivity" class="activity-list">
-                            <!-- Recent activities will be populated here -->
                         </div>
                     </div>
                 </section>
@@ -2841,50 +1729,12 @@ a:focus-visible {
                     </div>
 
                     <div class="news-container">
-                        <div id="newsLoading" class="loading-skeleton">
-                            <!-- Skeleton loading will be populated here -->
+                        <div id="newsLoading" class="loading hidden">
+                            <div class="spinner"></div>
+                            Yangiliklar yuklanmoqda...
                         </div>
                         <div id="newsList" class="news-list">
                             <!-- News items will be populated here -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Analytics Section -->
-                <section id="analyticsSection" class="content-section">
-                    <div class="section-header">
-                        <h2>Tahlillar va hisobotlar</h2>
-                        <div class="export-buttons">
-                            <button class="btn btn-secondary" onclick="exportData('json')">
-                                <i class="fas fa-download"></i>
-                                JSON eksport
-                            </button>
-                            <button class="btn btn-secondary" onclick="exportData('csv')">
-                                <i class="fas fa-file-csv"></i>
-                                CSV eksport
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="analytics-grid">
-                        <div class="analytics-card">
-                            <h3>Tashriflar tahlili</h3>
-                            <canvas id="visitsChart"></canvas>
-                        </div>
-                        
-                        <div class="analytics-card">
-                            <h3>Kategoriyalar bo'yicha</h3>
-                            <canvas id="categoriesChart"></canvas>
-                        </div>
-                        
-                        <div class="analytics-card">
-                            <h3>Foydalanuvchilar faolligi</h3>
-                            <canvas id="usersChart"></canvas>
-                        </div>
-                        
-                        <div class="analytics-card">
-                            <h3>Eng faol vaqtlar</h3>
-                            <canvas id="timeChart"></canvas>
                         </div>
                     </div>
                 </section>
@@ -2893,41 +1743,10 @@ a:focus-visible {
                 <section id="usersSection" class="content-section">
                     <div class="section-header">
                         <h2>Foydalanuvchilar</h2>
-                        <button class="btn btn-primary" onclick="openUserModal()">
-                            <i class="fas fa-user-plus"></i>
-                            Foydalanuvchi qo'shish
-                        </button>
                     </div>
-                    
-                    <div class="users-container">
-                        <div class="users-filters">
-                            <input type="text" id="userSearch" placeholder="Foydalanuvchi qidirish..." onkeyup="searchUsers()">
-                            <select id="roleFilter" onchange="filterUsers()">
-                                <option value="">Barcha rollar</option>
-                                <option value="admin">Administrator</option>
-                                <option value="moderator">Moderator</option>
-                                <option value="user">Foydalanuvchi</option>
-                            </select>
-                        </div>
-                        
-                        <div class="users-table-container">
-                            <table class="users-table">
-                                <thead>
-                                    <tr>
-                                        <th>Foydalanuvchi</th>
-                                        <th>Email</th>
-                                        <th>Telefon</th>
-                                        <th>Rol</th>
-                                        <th>Status</th>
-                                        <th>Qo'shilgan sana</th>
-                                        <th>Amallar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usersTableBody">
-                                    <!-- Users will be populated here -->
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="usersList" class="loading">
+                        <div class="spinner"></div>
+                        Foydalanuvchilar yuklanmoqda...
                     </div>
                 </section>
 
@@ -2935,110 +1754,10 @@ a:focus-visible {
                 <section id="commentsSection" class="content-section">
                     <div class="section-header">
                         <h2>Izohlar boshqaruvi</h2>
-                        <div class="comment-stats">
-                            <span class="stat-badge pending">Kutilmoqda: <span id="pendingComments">0</span></span>
-                            <span class="stat-badge approved">Tasdiqlangan: <span id="approvedComments">0</span></span>
-                        </div>
                     </div>
-                    
-                    <div class="comments-filters">
-                        <select id="commentStatusFilter" onchange="filterComments()">
-                            <option value="">Barcha izohlar</option>
-                            <option value="pending">Kutilmoqda</option>
-                            <option value="approved">Tasdiqlangan</option>
-                            <option value="rejected">Rad etilgan</option>
-                        </select>
-                    </div>
-                    
-                    <div id="commentsList" class="comments-list">
-                        <!-- Comments will be populated here -->
-                    </div>
-                </section>
-
-                <!-- Settings Section -->
-                <section id="settingsSection" class="content-section">
-                    <div class="section-header">
-                        <h2>Sozlamalar</h2>
-                    </div>
-                    
-                    <div class="settings-grid">
-                        <div class="settings-card">
-                            <h3>Profil sozlamalari</h3>
-                            <form id="profileForm">
-                                <div class="form-group">
-                                    <label>Profil rasmi</label>
-                                    <div class="image-upload" onclick="document.getElementById('profileImage').click()">
-                                        <img id="profilePreview" src="" alt="Profil rasmi">
-                                        <div class="upload-overlay">
-                                            <i class="fas fa-camera"></i>
-                                            <span>Rasm yuklash</span>
-                                        </div>
-                                        <input type="file" id="profileImage" accept="image/*" onchange="previewImage(this, 'profilePreview')" hidden>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="adminName">Ism</label>
-                                    <input type="text" id="adminName" value="Administrator">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="adminEmail">Email</label>
-                                    <input type="email" id="adminEmail" value="admin@example.com">
-                                </div>
-                                
-                                <button type="submit" class="btn btn-primary">Saqlash</button>
-                            </form>
-                        </div>
-                        
-                        <div class="settings-card">
-                            <h3>Parolni o'zgartirish</h3>
-                            <form id="passwordForm">
-                                <div class="form-group">
-                                    <label for="currentPassword">Joriy parol</label>
-                                    <input type="password" id="currentPassword" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="newPassword">Yangi parol</label>
-                                    <input type="password" id="newPassword" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="confirmPassword">Parolni tasdiqlash</label>
-                                    <input type="password" id="confirmPassword" required>
-                                </div>
-                                
-                                <button type="submit" class="btn btn-primary">Parolni yangilash</button>
-                            </form>
-                        </div>
-                        
-                        <div class="settings-card">
-                            <h3>Tizim sozlamalari</h3>
-                            <div class="setting-item">
-                                <span>Email bildirishnomalar</span>
-                                <label class="switch">
-                                    <input type="checkbox" id="emailNotifications" checked>
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                            
-                            <div class="setting-item">
-                                <span>Avtomatik saqlash</span>
-                                <label class="switch">
-                                    <input type="checkbox" id="autoSave" checked>
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                            
-                            <div class="setting-item">
-                                <span>Avtomatik qorong'i rejim</span>
-                                <label class="switch">
-                                    <input type="checkbox" id="darkModeAuto">
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                        </div>
+                    <div id="commentsList" class="loading">
+                        <div class="spinner"></div>
+                        Izohlar yuklanmoqda...
                     </div>
                 </section>
             </div>
@@ -3089,7 +1808,7 @@ a:focus-visible {
                             <input type="file" id="newsImageFile" accept="image/*" onchange="handleImageUpload(this)">
                         </div>
                         <div class="image-preview" id="imagePreview" style="display: none;">
-                            <img id="previewImg" src="" alt="Preview">
+                            <!-- <img id="previewImg" src="/placeholder.svg" alt="Preview"> -->
                             <button type="button" class="remove-image" onclick="removeImage()">
                                 <i class="fas fa-times"></i>
                             </button>
@@ -3116,56 +1835,6 @@ a:focus-visible {
         </div>
     </div>
 
-    <!-- User Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="userModalTitle">Foydalanuvchi qo'shish</h3>
-                <button class="close-btn" onclick="closeUserModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <form id="userForm">
-                <input type="hidden" id="userId">
-                
-                <div class="form-group">
-                    <label for="userName">To'liq ism *</label>
-                    <input type="text" id="userName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="userEmail">Email *</label>
-                    <input type="email" id="userEmail" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="userPhone">Telefon raqami</label>
-                    <input type="tel" id="userPhone" placeholder="+998 90 123 45 67">
-                </div>
-                
-                <div class="form-group">
-                    <label for="userRole">Rol *</label>
-                    <select id="userRole" required>
-                        <option value="user">Foydalanuvchi</option>
-                        <option value="moderator">Moderator</option>
-                        <option value="admin">Administrator</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="userPassword">Parol *</label>
-                    <input type="password" id="userPassword" required>
-                </div>
-                
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeUserModal()">Bekor qilish</button>
-                    <button type="submit" class="btn btn-primary">Saqlash</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Confirmation Modal -->
     <div id="confirmModal" class="modal">
         <div class="modal-content small">
@@ -3187,14 +1856,18 @@ a:focus-visible {
         </div>
     </div>
 
-    <script>
-        // Global variables
+    <!-- <script src="app.js"></script> -->
+     <script>
+      // API Configuration
+const API_BASE_URL = "http://localhost:3000"
+
+// Global variables
 let currentUser = null
 let currentTheme =
   localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
 let sidebarCollapsed = false
 let currentAction = null
-const charts = {}
+let isOnline = navigator.onLine
 
 // Initialize app
 document.addEventListener("DOMContentLoaded", () => {
@@ -3205,15 +1878,6 @@ function initializeApp() {
   // Set theme
   document.documentElement.setAttribute("data-theme", currentTheme)
   updateThemeIcon()
-
-  // Auto theme detection
-  if (localStorage.getItem("autoTheme") === "true") {
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-      currentTheme = e.matches ? "dark" : "light"
-      document.documentElement.setAttribute("data-theme", currentTheme)
-      updateThemeIcon()
-    })
-  }
 
   // Check if user is logged in
   const savedUser = localStorage.getItem("currentUser")
@@ -3226,9 +1890,6 @@ function initializeApp() {
     showLogin()
   }
 
-  // Initialize data
-  initializeData()
-
   // Setup event listeners
   setupEventListeners()
 
@@ -3236,215 +1897,63 @@ function initializeApp() {
   updateClock()
   setInterval(updateClock, 1000)
 
-  // Setup scroll to top
-  setupScrollToTop()
+  // Setup network monitoring
+  setupNetworkMonitoring()
 
   // Setup drag and drop
   setupDragAndDrop()
-
-  // Load notifications
-  loadNotifications()
 }
 
-function initializeData() {
-  // Initialize sample data if not exists
-  if (!localStorage.getItem("news")) {
-    const sampleNews = [
-      {
-        id: 1,
-        title: "Yangi ta'lim dasturi ishga tushirildi",
-        content:
-          "Maktablarda yangi ta'lim dasturi joriy etilmoqda. Bu dastur zamonaviy texnologiyalar va innovatsion yondashuvlarni o'z ichiga oladi. Dastur barcha yoshdagi o'quvchilar uchun mo'ljallangan.",
-        category: "talim",
-        author: "Administrator",
-        date: new Date().toISOString(),
-        views: 156,
-        image: "/placeholder.svg?height=200&width=400",
-        published: true,
-      },
-      {
-        id: 2,
-        title: "Sport musobaqalari e'lon qilindi",
-        content:
-          "Yillik sport musobaqalari uchun ro'yxatdan o'tish boshlandi. Barcha yoshdagi ishtirokchilar qatnashishlari mumkin. Musobaqalar kelgusi oy o'tkaziladi.",
-        category: "sport",
-        author: "Administrator",
-        date: new Date(Date.now() - 86400000).toISOString(),
-        views: 89,
-        image: "/placeholder.svg?height=200&width=400",
-        published: true,
-      },
-      {
-        id: 3,
-        title: "Madaniy tadbirlar haftaligi",
-        content:
-          "Kelgusi hafta madaniy tadbirlar haftaligi o'tkaziladi. Konsertlar, ko'rgazmalar va boshqa qiziqarli tadbirlar kutilmoqda. Barcha aholini taklif qilamiz.",
-        category: "tadbir",
-        author: "Administrator",
-        date: new Date(Date.now() - 172800000).toISOString(),
-        views: 234,
-        image: "/placeholder.svg?height=200&width=400",
-        published: true,
-      },
-      {
-        id: 4,
-        title: "Yangi texnologiyalar seminari",
-        content:
-          "IT sohasidagi yangi texnologiyalar bo'yicha seminar o'tkaziladi. Mutaxassislar o'z tajribalarini bo'lishadi.",
-        category: "texnologiya",
-        author: "Administrator",
-        date: new Date(Date.now() - 259200000).toISOString(),
-        views: 67,
-        image: "/placeholder.svg?height=200&width=400",
-        published: true,
-      },
-      {
-        id: 5,
-        title: "Muhim e'lon: Yangi qoidalar",
-        content: "Barcha foydalanuvchilar uchun yangi qoidalar e'lon qilinadi. Iltimos, diqqat bilan o'qing.",
-        category: "elon",
-        author: "Administrator",
-        date: new Date(Date.now() - 345600000).toISOString(),
-        views: 445,
-        image: "/placeholder.svg?height=200&width=400",
-        published: true,
-      },
-    ]
-    localStorage.setItem("news", JSON.stringify(sampleNews))
+// Network monitoring
+function setupNetworkMonitoring() {
+  window.addEventListener("online", () => {
+    isOnline = true
+    document.getElementById("offlineIndicator").classList.remove("show")
+    showToast("success", "Aloqa tiklandi!", "Internet aloqasi qayta tiklandi")
+    // Refresh data when back online
+    if (currentUser) {
+      loadAllData()
+    }
+  })
+
+  window.addEventListener("offline", () => {
+    isOnline = false
+    document.getElementById("offlineIndicator").classList.add("show")
+    showToast("warning", "Internet yo'q!", "Internet aloqasi uzildi")
+  })
+}
+
+// API Helper Functions
+async function apiRequest(endpoint, options = {}) {
+  if (!isOnline) {
+    throw new Error("Internet aloqasi yo'q")
   }
 
-  if (!localStorage.getItem("users")) {
-    const sampleUsers = [
-      {
-        id: 1,
-        name: "Administrator",
-        email: "admin@example.com",
-        phone: "+998 90 123 45 67",
-        username: "kolizey", // Login uchun username qo'shildi
-        password: "5577", // Login uchun parol qo'shildi
-        role: "admin",
-        status: "active",
-        joinDate: new Date().toISOString(),
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-      {
-        id: 2,
-        name: "Alisher Navoiy",
-        email: "alisher@example.com",
-        phone: "+998 91 234 56 78",
-        username: "alisher",
-        password: "123456",
-        role: "moderator",
-        status: "active",
-        joinDate: new Date(Date.now() - 86400000).toISOString(),
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-      {
-        id: 3,
-        name: "Gulnora Karimova",
-        email: "gulnora@example.com",
-        phone: "+998 93 345 67 89",
-        username: "gulnora",
-        password: "123456",
-        role: "user",
-        status: "active",
-        joinDate: new Date(Date.now() - 172800000).toISOString(),
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-      {
-        id: 4,
-        name: "Bobur Mirzo",
-        email: "bobur@example.com",
-        phone: "+998 94 456 78 90",
-        username: "bobur",
-        password: "123456",
-        role: "user",
-        status: "banned",
-        joinDate: new Date(Date.now() - 259200000).toISOString(),
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-    ]
-    localStorage.setItem("users", JSON.stringify(sampleUsers))
+  const url = `${API_BASE_URL}${endpoint}`
+  const defaultOptions = {
+    headers: {
+      "Content-Type": "application/json",
+    },
   }
 
-  if (!localStorage.getItem("comments")) {
-    const sampleComments = [
-      {
-        id: 1,
-        newsId: 1,
-        author: "Foydalanuvchi",
-        email: "user@example.com",
-        content: "Juda yaxshi yangilik! Bu dastur haqiqatan ham foydali bo'ladi. Davom eting!",
-        date: new Date().toISOString(),
-        status: "pending",
-      },
-      {
-        id: 2,
-        newsId: 1,
-        author: "Anonim",
-        email: "anonim@example.com",
-        content: "Bu haqida batafsil ma'lumot bera olasizmi? Qachon boshlanadi?",
-        date: new Date(Date.now() - 3600000).toISOString(),
-        status: "approved",
-      },
-      {
-        id: 3,
-        newsId: 2,
-        author: "Sport sevuvchi",
-        email: "sport@example.com",
-        content: "Qachon ro'yxatdan o'tish tugaydi? Ishtirok etishni xohlayman.",
-        date: new Date(Date.now() - 7200000).toISOString(),
-        status: "approved",
-      },
-      {
-        id: 4,
-        newsId: 3,
-        author: "Madaniyat ishqibozi",
-        email: "madaniyat@example.com",
-        content: "Ajoyib! Bunday tadbirlar ko'proq bo'lishi kerak.",
-        date: new Date(Date.now() - 10800000).toISOString(),
-        status: "rejected",
-      },
-    ]
-    localStorage.setItem("comments", JSON.stringify(sampleComments))
-  }
+  const config = { ...defaultOptions, ...options }
 
-  // Initialize view counts and other stats
-  if (!localStorage.getItem("dailyViews")) {
-    localStorage.setItem("dailyViews", "1247")
-  }
+  try {
+    const response = await fetch(url, config)
 
-  if (!localStorage.getItem("notifications")) {
-    const sampleNotifications = [
-      {
-        id: 1,
-        title: "Yangi izoh",
-        message: "Yangi izoh kutilmoqda",
-        type: "info",
-        time: new Date().toISOString(),
-        read: false,
-      },
-      {
-        id: 2,
-        title: "Yangi foydalanuvchi",
-        message: "Yangi foydalanuvchi ro'yxatdan o'tdi",
-        type: "success",
-        time: new Date(Date.now() - 3600000).toISOString(),
-        read: false,
-      },
-      {
-        id: 3,
-        title: "Tizim yangilanishi",
-        message: "Tizim muvaffaqiyatli yangilandi",
-        type: "success",
-        time: new Date(Date.now() - 7200000).toISOString(),
-        read: true,
-      },
-    ]
-    localStorage.setItem("notifications", JSON.stringify(sampleNotifications))
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error("API Request failed:", error)
+    showToast("error", "Xato!", "Server bilan aloqa o'rnatilmadi")
+    throw error
   }
 }
 
+// Authentication
 function setupEventListeners() {
   // Login form
   document.getElementById("loginForm").addEventListener("submit", handleLogin)
@@ -3452,28 +1961,14 @@ function setupEventListeners() {
   // News form
   document.getElementById("newsForm").addEventListener("submit", handleNewsSubmit)
 
-  // User form
-  document.getElementById("userForm").addEventListener("submit", handleUserSubmit)
-
-  // Profile form
-  document.getElementById("profileForm").addEventListener("submit", handleProfileSubmit)
-
-  // Password form
-  document.getElementById("passwordForm").addEventListener("submit", handlePasswordSubmit)
-
   // Close modals when clicking outside
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("modal")) {
       closeAllModals()
     }
-
     // Close dropdowns when clicking outside
     if (!e.target.closest(".user-menu")) {
       document.getElementById("userDropdown").classList.remove("show")
-    }
-
-    if (!e.target.closest(".notifications")) {
-      document.getElementById("notificationDropdown").classList.remove("show")
     }
   })
 
@@ -3482,42 +1977,21 @@ function setupEventListeners() {
     if (e.key === "Escape") {
       closeAllModals()
       document.getElementById("userDropdown").classList.remove("show")
-      document.getElementById("notificationDropdown").classList.remove("show")
     }
-
     // Ctrl/Cmd + K for global search
     if ((e.ctrlKey || e.metaKey) && e.key === "k") {
       e.preventDefault()
       document.getElementById("globalSearch").focus()
     }
   })
-
-  // Auto-save functionality
-  const autoSaveInputs = document.querySelectorAll("input[data-autosave], textarea[data-autosave]")
-  autoSaveInputs.forEach((input) => {
-    input.addEventListener(
-      "input",
-      debounce(() => {
-        if (document.getElementById("autoSave").checked) {
-          showToast("success", "Avtomatik saqlandi", "Ma'lumotlar avtomatik saqlandi")
-        }
-      }, 2000),
-    )
-  })
 }
 
-// Authentication - YAXSHILANGAN LOGIN TIZIMI
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault()
-
-  console.log("Login attempt started")
 
   const usernameOrEmail = document.getElementById("username").value.trim()
   const password = document.getElementById("password").value.trim()
   const rememberMe = document.getElementById("rememberMe").checked
-
-  console.log("Username/Email:", usernameOrEmail)
-  console.log("Password length:", password.length)
 
   // Show loading
   const loginBtn = document.querySelector(".login-btn")
@@ -3528,38 +2002,26 @@ function handleLogin(e) {
   spinner.classList.remove("hidden")
   loginBtn.disabled = true
 
-  // Simulate API call
-  setTimeout(() => {
-    console.log("Checking credentials...")
+  try {
+    // Get users from API
+    const users = await apiRequest("/users")
 
-    // Foydalanuvchilarni olish
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    
-    // Username yoki email bo'yicha foydalanuvchini topish
-    const user = users.find(u => 
-      (u.username && u.username.toLowerCase() === usernameOrEmail.toLowerCase()) ||
-      (u.email && u.email.toLowerCase() === usernameOrEmail.toLowerCase())
+    // Find user by username or email
+    const user = users.find(
+      (u) =>
+        (u.username && u.username.toLowerCase() === usernameOrEmail.toLowerCase()) ||
+        (u.email && u.email.toLowerCase() === usernameOrEmail.toLowerCase()),
     )
 
-    console.log("Found user:", user)
-
     if (user && user.password === password) {
-      console.log("Login successful!")
-
-      // Foydalanuvchi faol emasligini tekshirish
       if (user.status === "banned") {
         showToast("error", "Kirish rad etildi!", "Sizning hisobingiz bloklangan")
-        
-        // Reset button
-        btnText.style.display = "inline"
-        spinner.classList.add("hidden")
-        loginBtn.disabled = false
         return
       }
 
       currentUser = {
         id: user.id,
-        username: user.username || user.email.split('@')[0],
+        username: user.username || user.email.split("@")[0],
         name: user.name,
         email: user.email,
         role: user.role,
@@ -3570,25 +2032,30 @@ function handleLogin(e) {
       localStorage.setItem("rememberMe", rememberMe.toString())
 
       // Add login activity
-      addActivity("login", "Tizimga kirish", `${currentUser.name} tizimga kirdi`)
+      await addActivity("login", "Tizimga kirish", `${currentUser.name} tizimga kirdi`)
 
       showToast("success", "Muvaffaqiyatli!", "Tizimga muvaffaqiyatli kirdingiz")
       showDashboard()
     } else {
-      console.log("Login failed - wrong credentials")
       showToast("error", "Xato!", "Noto'g'ri foydalanuvchi nomi/email yoki parol")
-
-      // Reset button
-      btnText.style.display = "inline"
-      spinner.classList.add("hidden")
-      loginBtn.disabled = false
     }
-  }, 1500)
+  } catch (error) {
+    showToast("error", "Xato!", "Server bilan aloqa o'rnatilmadi")
+  } finally {
+    // Reset button
+    btnText.style.display = "inline"
+    spinner.classList.add("hidden")
+    loginBtn.disabled = false
+  }
 }
 
-function logout() {
-  // Add logout activity
-  addActivity("login", "Tizimdan chiqish", `${currentUser.name} tizimdan chiqdi`)
+async function logout() {
+  try {
+    // Add logout activity
+    await addActivity("login", "Tizimdan chiqish", `${currentUser.name} tizimdan chiqdi`)
+  } catch (error) {
+    console.error("Failed to log activity:", error)
+  }
 
   currentUser = null
   localStorage.removeItem("currentUser")
@@ -3623,12 +2090,16 @@ function showDashboard() {
   document.querySelector(".user-avatar").src = currentUser.avatar
 
   // Load initial data
-  loadStatistics()
-  loadNews()
-  loadUsers()
-  loadComments()
-  loadRecentActivity()
-  initializeCharts()
+  loadAllData()
+}
+
+async function loadAllData() {
+  try {
+    await Promise.all([loadStatistics(), loadNews(), loadUsers(), loadComments()])
+  } catch (error) {
+    console.error("Failed to load data:", error)
+    showToast("error", "Xato!", "Ma'lumotlarni yuklashda xato yuz berdi")
+  }
 }
 
 // Password toggle
@@ -3651,13 +2122,6 @@ function toggleTheme() {
   document.documentElement.setAttribute("data-theme", currentTheme)
   localStorage.setItem("theme", currentTheme)
   updateThemeIcon()
-
-  // Update charts if they exist
-  Object.values(charts).forEach((chart) => {
-    if (chart) {
-      chart.update()
-    }
-  })
 }
 
 function updateThemeIcon() {
@@ -3711,20 +2175,15 @@ function showSection(sectionName) {
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.classList.remove("active")
   })
-
   event.target.closest(".nav-link").classList.add("active")
 
   // Update page title
   const titles = {
     dashboard: "Bosh sahifa",
     news: "Yangiliklar",
-    analytics: "Tahlillar",
     users: "Foydalanuvchilar",
     comments: "Izohlar",
-    settings: "Sozlamalar",
-    profile: "Profil",
   }
-
   document.getElementById("pageTitle").textContent = titles[sectionName]
 
   // Close sidebar on mobile
@@ -3734,15 +2193,15 @@ function showSection(sectionName) {
 
   // Load section-specific data
   switch (sectionName) {
-    case "analytics":
-      loadAnalytics()
-      break
     case "news":
       showNewsLoading()
-      setTimeout(() => {
-        hideNewsLoading()
-        loadNews()
-      }, 1000)
+      loadNews()
+      break
+    case "users":
+      loadUsers()
+      break
+    case "comments":
+      loadComments()
       break
   }
 }
@@ -3752,102 +2211,6 @@ function toggleUserMenu() {
   document.getElementById("userDropdown").classList.toggle("show")
 }
 
-// Notifications
-function toggleNotifications() {
-  document.getElementById("notificationDropdown").classList.toggle("show")
-}
-
-function loadNotifications() {
-  const notifications = JSON.parse(localStorage.getItem("notifications") || "[]")
-  const notificationList = document.getElementById("notificationList")
-  const badge = document.querySelector(".notification-badge")
-
-  // Update badge
-  const unreadCount = notifications.filter((n) => !n.read).length
-  badge.textContent = unreadCount
-  badge.style.display = unreadCount > 0 ? "block" : "none"
-
-  // Populate notifications
-  notificationList.innerHTML = ""
-
-  if (notifications.length === 0) {
-    notificationList.innerHTML =
-      '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Bildirishnomalar yo\'q</div>'
-    return
-  }
-
-  notifications.slice(0, 10).forEach((notification) => {
-    const notificationItem = document.createElement("div")
-    notificationItem.className = `notification-item ${!notification.read ? "unread" : ""}`
-    notificationItem.innerHTML = `
-            <div class="notification-content">
-                <div class="notification-icon ${notification.type}">
-                    <i class="fas fa-${getNotificationIcon(notification.type)}"></i>
-                </div>
-                <div class="notification-text">
-                    <div class="notification-title">${notification.title}</div>
-                    <div class="notification-message">${notification.message}</div>
-                    <div class="notification-time">${formatTimeAgo(notification.time)}</div>
-                </div>
-            </div>
-        `
-
-    notificationItem.addEventListener("click", () => {
-      markNotificationAsRead(notification.id)
-    })
-
-    notificationList.appendChild(notificationItem)
-  })
-}
-
-function getNotificationIcon(type) {
-  const icons = {
-    success: "check-circle",
-    warning: "exclamation-triangle",
-    error: "times-circle",
-    info: "info-circle",
-  }
-  return icons[type] || "bell"
-}
-
-function markNotificationAsRead(notificationId) {
-  const notifications = JSON.parse(localStorage.getItem("notifications") || "[]")
-  const notification = notifications.find((n) => n.id === notificationId)
-  if (notification) {
-    notification.read = true
-    localStorage.setItem("notifications", JSON.stringify(notifications))
-    loadNotifications()
-  }
-}
-
-function clearNotifications() {
-  localStorage.setItem("notifications", "[]")
-  loadNotifications()
-  showToast("info", "Tozalandi", "Barcha bildirishnomalar tozalandi")
-}
-
-function addNotification(type, title, message) {
-  const notifications = JSON.parse(localStorage.getItem("notifications") || "[]")
-  const newNotification = {
-    id: Date.now(),
-    type,
-    title,
-    message,
-    time: new Date().toISOString(),
-    read: false,
-  }
-
-  notifications.unshift(newNotification)
-
-  // Keep only last 50 notifications
-  if (notifications.length > 50) {
-    notifications.splice(50)
-  }
-
-  localStorage.setItem("notifications", JSON.stringify(notifications))
-  loadNotifications()
-}
-
 // Toast notifications
 function showToast(type, title, message) {
   const toastContainer = document.getElementById("toastContainer")
@@ -3855,7 +2218,6 @@ function showToast(type, title, message) {
   toast.className = `toast ${type}`
 
   const icon = getToastIcon(type)
-
   toast.innerHTML = `
         <div class="toast-icon">
             <i class="fas fa-${icon}"></i>
@@ -3900,41 +2262,22 @@ function closeToast(button) {
   }, 300)
 }
 
-// Scroll to top
-function setupScrollToTop() {
-  const scrollBtn = document.getElementById("scrollToTop")
-
-  window.addEventListener("scroll", () => {
-    if (window.pageYOffset > 300) {
-      scrollBtn.classList.add("show")
-    } else {
-      scrollBtn.classList.remove("show")
-    }
-  })
-}
-
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  })
-}
-
 // Statistics
-function loadStatistics() {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-  const dailyViews = localStorage.getItem("dailyViews") || "0"
+async function loadStatistics() {
+  try {
+    const [news, users, comments] = await Promise.all([
+      apiRequest("/news"),
+      apiRequest("/users"),
+      apiRequest("/comments"),
+    ])
 
-  // Animate counters
-  animateCounter("totalNews", news.length)
-  animateCounter("totalUsers", users.length)
-  animateCounter("dailyViews", Number.parseInt(dailyViews))
-  animateCounter("totalComments", comments.length)
-
-  // Load popular news
-  loadPopularNews()
+    // Animate counters
+    animateCounter("totalNews", news.length)
+    animateCounter("totalUsers", users.length)
+    animateCounter("totalComments", comments.length)
+  } catch (error) {
+    console.error("Failed to load statistics:", error)
+  }
 }
 
 function animateCounter(elementId, targetValue) {
@@ -3958,88 +2301,31 @@ function animateCounter(elementId, targetValue) {
   requestAnimationFrame(updateCounter)
 }
 
-function loadPopularNews() {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const popularNews = news.sort((a, b) => b.views - a.views).slice(0, 5)
-
-  const popularList = document.getElementById("popularNews")
-  popularList.innerHTML = ""
-
-  popularNews.forEach((item, index) => {
-    const popularItem = document.createElement("div")
-    popularItem.className = "popular-item"
-    popularItem.innerHTML = `
-            <div class="popular-item-info">
-                <div class="popular-item-title">${item.title}</div>
-                <div class="popular-item-category">${getCategoryName(item.category)}</div>
-            </div>
-            <div class="popular-item-views">${item.views}</div>
-        `
-    popularList.appendChild(popularItem)
-  })
-}
-
-// Recent Activity
-function loadRecentActivity() {
-  const activities = JSON.parse(localStorage.getItem("recentActivity") || "[]")
-  const activityList = document.getElementById("recentActivity")
-
-  activityList.innerHTML = ""
-
-  activities.slice(0, 10).forEach((activity) => {
-    const activityItem = document.createElement("div")
-    activityItem.className = "activity-item"
-    activityItem.innerHTML = `
-            <div class="activity-icon ${activity.type}">
-                <i class="fas fa-${getActivityIcon(activity.type)}"></i>
-            </div>
-            <div class="activity-content">
-                <div class="activity-title">${activity.title}</div>
-                <div class="activity-description">${activity.description}</div>
-                <div class="activity-time">${formatTimeAgo(activity.time)}</div>
-            </div>
-        `
-    activityList.appendChild(activityItem)
-  })
-}
-
-function addActivity(type, title, description) {
-  const activities = JSON.parse(localStorage.getItem("recentActivity") || "[]")
-  const newActivity = {
-    id: Date.now(),
-    type,
-    title,
-    description,
-    time: new Date().toISOString(),
-  }
-
-  activities.unshift(newActivity)
-
-  // Keep only last 50 activities
-  if (activities.length > 50) {
-    activities.splice(50)
-  }
-
-  localStorage.setItem("recentActivity", JSON.stringify(activities))
-  loadRecentActivity()
-}
-
-function getActivityIcon(type) {
-  const icons = {
-    create: "plus",
-    edit: "edit",
-    delete: "trash",
-    login: "sign-in-alt",
-    logout: "sign-out-alt",
-  }
-  return icons[type] || "info"
-}
-
 // News Management
-function loadNews() {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const newsList = document.getElementById("newsList")
+async function loadNews() {
+  try {
+    const news = await apiRequest("/news")
+    displayNews(news)
+    hideNewsLoading()
+  } catch (error) {
+    console.error("Failed to load news:", error)
+    hideNewsLoading()
+    document.getElementById("newsList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Yangiliklarni yuklashda xato yuz berdi. Iltimos, qayta urinib ko'ring.</p>
+                <button class="btn btn-primary" onclick="loadNews()" style="margin-top: 16px;">
+                    <i class="fas fa-refresh"></i>
+                    Qayta yuklash
+                </button>
+            </div>
+        `
+  }
+}
 
+function displayNews(news) {
+  const newsList = document.getElementById("newsList")
   newsList.innerHTML = ""
 
   if (news.length === 0) {
@@ -4097,133 +2383,64 @@ function loadNews() {
 }
 
 function showNewsLoading() {
-  const loadingContainer = document.getElementById("newsLoading")
-  loadingContainer.classList.add("show")
-  loadingContainer.innerHTML = ""
-
-  // Create skeleton items
-  for (let i = 0; i < 3; i++) {
-    const skeletonItem = document.createElement("div")
-    skeletonItem.className = "skeleton-item"
-    skeletonItem.innerHTML = `
-            <div class="skeleton-header">
-                <div class="skeleton-avatar"></div>
-                <div class="skeleton-info">
-                    <div class="skeleton-title"></div>
-                    <div class="skeleton-subtitle"></div>
-                </div>
-            </div>
-            <div class="skeleton-content"></div>
-            <div class="skeleton-content"></div>
-            <div class="skeleton-content"></div>
-        `
-    loadingContainer.appendChild(skeletonItem)
-  }
+  document.getElementById("newsLoading").classList.remove("hidden")
 }
 
 function hideNewsLoading() {
-  document.getElementById("newsLoading").classList.remove("show")
+  document.getElementById("newsLoading").classList.add("hidden")
 }
 
-function searchNews() {
+async function searchNews() {
   const searchTerm = document.getElementById("newsSearch").value.toLowerCase()
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-
-  const filteredNews = news.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchTerm) ||
-      item.content.toLowerCase().includes(searchTerm) ||
-      item.author.toLowerCase().includes(searchTerm),
-  )
-
-  displayFilteredNews(filteredNews)
+  try {
+    const news = await apiRequest("/news")
+    const filteredNews = news.filter(
+      (item) =>
+        item.title.toLowerCase().includes(searchTerm) ||
+        item.content.toLowerCase().includes(searchTerm) ||
+        item.author.toLowerCase().includes(searchTerm),
+    )
+    displayNews(filteredNews)
+  } catch (error) {
+    console.error("Failed to search news:", error)
+  }
 }
 
-function filterNews() {
+async function filterNews() {
   const category = document.getElementById("categoryFilter").value
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-
-  const filteredNews = category ? news.filter((item) => item.category === category) : news
-
-  displayFilteredNews(filteredNews)
+  try {
+    const news = await apiRequest("/news")
+    const filteredNews = category ? news.filter((item) => item.category === category) : news
+    displayNews(filteredNews)
+  } catch (error) {
+    console.error("Failed to filter news:", error)
+  }
 }
 
-function sortNews() {
+async function sortNews() {
   const sortBy = document.getElementById("sortFilter").value
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
+  try {
+    const news = await apiRequest("/news")
+    const sortedNews = [...news]
 
-  let sortedNews = [...news]
-
-  switch (sortBy) {
-    case "newest":
-      sortedNews.sort((a, b) => new Date(b.date) - new Date(a.date))
-      break
-    case "oldest":
-      sortedNews.sort((a, b) => new Date(a.date) - new Date(b.date))
-      break
-    case "popular":
-      sortedNews.sort((a, b) => b.views - a.views)
-      break
-    case "alphabetical":
-      sortedNews.sort((a, b) => a.title.localeCompare(b.title))
-      break
+    switch (sortBy) {
+      case "newest":
+        sortedNews.sort((a, b) => new Date(b.date) - new Date(a.date))
+        break
+      case "oldest":
+        sortedNews.sort((a, b) => new Date(a.date) - new Date(b.date))
+        break
+      case "popular":
+        sortedNews.sort((a, b) => b.views - a.views)
+        break
+      case "alphabetical":
+        sortedNews.sort((a, b) => a.title.localeCompare(b.title))
+        break
+    }
+    displayNews(sortedNews)
+  } catch (error) {
+    console.error("Failed to sort news:", error)
   }
-
-  displayFilteredNews(sortedNews)
-}
-
-function displayFilteredNews(news) {
-  const newsList = document.getElementById("newsList")
-  newsList.innerHTML = ""
-
-  if (news.length === 0) {
-    newsList.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
-                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px;"></i>
-                <h3>Hech narsa topilmadi</h3>
-                <p>Qidiruv bo'yicha hech qanday yangilik topilmadi.</p>
-            </div>
-        `
-    return
-  }
-
-  news.forEach((item) => {
-    const newsItem = document.createElement("div")
-    newsItem.className = "news-item"
-    newsItem.innerHTML = `
-            <div class="news-header">
-                <div>
-                    <h3 class="news-title">${item.title}</h3>
-                    <div class="news-meta">
-                        <span class="news-category ${item.category}">${getCategoryName(item.category)}</span>
-                        <span><i class="fas fa-user"></i> ${item.author}</span>
-                        <span><i class="fas fa-calendar"></i> ${formatDate(item.date)}</span>
-                        <span><i class="fas fa-eye"></i> ${item.views} ko'rishlar</span>
-                    </div>
-                </div>
-            </div>
-            
-            ${item.image ? `<img src="${item.image}" alt="${item.title}" class="news-image">` : ""}
-            
-            <div class="news-content">${item.content}</div>
-            
-            <div class="news-actions">
-                <button class="btn btn-sm btn-primary" onclick="editNews(${item.id})">
-                    <i class="fas fa-edit"></i>
-                    Tahrirlash
-                </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteNews(${item.id})">
-                    <i class="fas fa-trash"></i>
-                    O'chirish
-                </button>
-                <button class="btn btn-sm btn-secondary" onclick="duplicateNews(${item.id})">
-                    <i class="fas fa-copy"></i>
-                    Nusxalash
-                </button>
-            </div>
-        `
-    newsList.appendChild(newsItem)
-  })
 }
 
 function openNewsModal(newsId = null) {
@@ -4232,22 +2449,9 @@ function openNewsModal(newsId = null) {
   const title = document.getElementById("newsModalTitle")
 
   if (newsId) {
-    // Edit mode
-    const news = JSON.parse(localStorage.getItem("news") || "[]")
-    const newsItem = news.find((item) => item.id === newsId)
-
-    if (newsItem) {
-      title.textContent = "Yangilikni tahrirlash"
-      document.getElementById("newsId").value = newsItem.id
-      document.getElementById("newsTitle").value = newsItem.title
-      document.getElementById("newsCategory").value = newsItem.category
-      document.getElementById("newsContent").value = newsItem.content
-      document.getElementById("newsPublished").checked = newsItem.published
-
-      if (newsItem.image) {
-        showImagePreview(newsItem.image)
-      }
-    }
+    // Edit mode - load news data
+    loadNewsForEdit(newsId)
+    title.textContent = "Yangilikni tahrirlash"
   } else {
     // Add mode
     title.textContent = "Yangilik qo'shish"
@@ -4258,16 +2462,34 @@ function openNewsModal(newsId = null) {
   modal.classList.add("show")
 }
 
+async function loadNewsForEdit(newsId) {
+  try {
+    const newsItem = await apiRequest(`/news/${newsId}`)
+
+    document.getElementById("newsId").value = newsItem.id
+    document.getElementById("newsTitle").value = newsItem.title
+    document.getElementById("newsCategory").value = newsItem.category
+    document.getElementById("newsContent").value = newsItem.content
+    document.getElementById("newsPublished").checked = newsItem.published
+
+    if (newsItem.image) {
+      showImagePreview(newsItem.image)
+    }
+  } catch (error) {
+    console.error("Failed to load news for edit:", error)
+    showToast("error", "Xato!", "Yangilikni yuklashda xato yuz berdi")
+  }
+}
+
 function closeNewsModal() {
   document.getElementById("newsModal").classList.remove("show")
   document.getElementById("newsForm").reset()
   hideImagePreview()
 }
 
-function handleNewsSubmit(e) {
+async function handleNewsSubmit(e) {
   e.preventDefault()
 
-  const formData = new FormData(e.target)
   const newsId = document.getElementById("newsId").value
   const title = document.getElementById("newsTitle").value.trim()
   const category = document.getElementById("newsCategory").value
@@ -4279,445 +2501,185 @@ function handleNewsSubmit(e) {
     return
   }
 
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
   const imagePreview = document.getElementById("previewImg")
   const image = imagePreview.style.display !== "none" ? imagePreview.src : null
 
-  if (newsId) {
-    // Edit existing news
-    const index = news.findIndex((item) => item.id === Number.parseInt(newsId))
-    if (index !== -1) {
-      news[index] = {
-        ...news[index],
-        title,
-        category,
-        content,
-        published,
-        image,
-        updatedAt: new Date().toISOString(),
-      }
-
-      addActivity("edit", "Yangilik tahrirlandi", `"${title}" yangiligi tahrirlandi`)
-      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli yangilandi")
-    }
-  } else {
-    // Add new news
-    const newNews = {
-      id: Date.now(),
-      title,
-      category,
-      content,
-      published,
-      image,
-      author: currentUser.name,
-      date: new Date().toISOString(),
-      views: 0,
-    }
-
-    news.unshift(newNews)
-    addActivity("create", "Yangi yangilik", `"${title}" yangiligi qo'shildi`)
-    addNotification("success", "Yangi yangilik", `"${title}" yangiligi qo'shildi`)
-    showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli qo'shildi")
+  const newsData = {
+    title,
+    category,
+    content,
+    published,
+    image,
+    author: currentUser.name,
+    date: new Date().toISOString(),
+    views: 0,
   }
 
-  localStorage.setItem("news", JSON.stringify(news))
-  loadNews()
-  loadStatistics()
-  closeNewsModal()
+  try {
+    if (newsId) {
+      // Edit existing news
+      await apiRequest(`/news/${newsId}`, {
+        method: "PUT",
+        body: JSON.stringify({ ...newsData, id: Number.parseInt(newsId) }),
+      })
+
+      await addActivity("edit", "Yangilik tahrirlandi", `"${title}" yangiligi tahrirlandi`)
+      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli yangilandi")
+    } else {
+      // Add new news
+      await apiRequest("/news", {
+        method: "POST",
+        body: JSON.stringify(newsData),
+      })
+
+      await addActivity("create", "Yangi yangilik", `"${title}" yangiligi qo'shildi`)
+      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli qo'shildi")
+    }
+
+    loadNews()
+    loadStatistics()
+    closeNewsModal()
+  } catch (error) {
+    console.error("Failed to save news:", error)
+    showToast("error", "Xato!", "Yangilikni saqlashda xato yuz berdi")
+  }
 }
 
-function editNews(newsId) {
+async function editNews(newsId) {
   openNewsModal(newsId)
 }
 
-function deleteNews(newsId) {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const newsItem = news.find((item) => item.id === newsId)
+async function deleteNews(newsId) {
+  try {
+    const newsItem = await apiRequest(`/news/${newsId}`)
 
-  if (newsItem) {
     showConfirmModal(
       "Yangilikni o'chirish",
       `"${newsItem.title}" yangiligini o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.`,
-      () => {
-        const updatedNews = news.filter((item) => item.id !== newsId)
-        localStorage.setItem("news", JSON.stringify(updatedNews))
+      async () => {
+        try {
+          await apiRequest(`/news/${newsId}`, {
+            method: "DELETE",
+          })
 
-        addActivity("delete", "Yangilik o'chirildi", `"${newsItem.title}" yangiligi o'chirildi`)
-        showToast("success", "O'chirildi!", "Yangilik muvaffaqiyatli o'chirildi")
-
-        loadNews()
-        loadStatistics()
+          await addActivity("delete", "Yangilik o'chirildi", `"${newsItem.title}" yangiligi o'chirildi`)
+          showToast("success", "O'chirildi!", "Yangilik muvaffaqiyatli o'chirildi")
+          loadNews()
+          loadStatistics()
+        } catch (error) {
+          console.error("Failed to delete news:", error)
+          showToast("error", "Xato!", "Yangilikni o'chirishda xato yuz berdi")
+        }
       },
     )
+  } catch (error) {
+    console.error("Failed to load news for delete:", error)
+    showToast("error", "Xato!", "Yangilikni yuklashda xato yuz berdi")
   }
 }
 
-function duplicateNews(newsId) {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const newsItem = news.find((item) => item.id === newsId)
+async function duplicateNews(newsId) {
+  try {
+    const newsItem = await apiRequest(`/news/${newsId}`)
 
-  if (newsItem) {
     const duplicatedNews = {
       ...newsItem,
-      id: Date.now(),
       title: `${newsItem.title} (nusxa)`,
       date: new Date().toISOString(),
       views: 0,
     }
 
-    news.unshift(duplicatedNews)
-    localStorage.setItem("news", JSON.stringify(news))
+    delete duplicatedNews.id // Remove ID so server assigns new one
 
-    addActivity("create", "Yangilik nusxalandi", `"${newsItem.title}" yangiligi nusxalandi`)
+    await apiRequest("/news", {
+      method: "POST",
+      body: JSON.stringify(duplicatedNews),
+    })
+
+    await addActivity("create", "Yangilik nusxalandi", `"${newsItem.title}" yangiligi nusxalandi`)
     showToast("success", "Nusxalandi!", "Yangilik muvaffaqiyatli nusxalandi")
-
     loadNews()
     loadStatistics()
+  } catch (error) {
+    console.error("Failed to duplicate news:", error)
+    showToast("error", "Xato!", "Yangilikni nusxalashda xato yuz berdi")
   }
 }
 
-// Users Management - YAXSHILANGAN
-function loadUsers() {
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const usersTableBody = document.getElementById("usersTableBody")
+// Users Management
+async function loadUsers() {
+  try {
+    const users = await apiRequest("/users")
+    displayUsers(users)
+  } catch (error) {
+    console.error("Failed to load users:", error)
+    document.getElementById("usersList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Foydalanuvchilarni yuklashda xato yuz berdi.</p>
+            </div>
+        `
+  }
+}
 
-  usersTableBody.innerHTML = ""
+function displayUsers(users) {
+  const usersList = document.getElementById("usersList")
+  usersList.innerHTML = ""
 
   if (users.length === 0) {
-    usersTableBody.innerHTML = `
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                    <i class="fas fa-users" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-                    Foydalanuvchilar yo'q
-                </td>
-            </tr>
+    usersList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-users" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Foydalanuvchilar yo'q</h3>
+            </div>
         `
     return
   }
+
+  const usersGrid = document.createElement("div")
+  usersGrid.className = "stats-grid"
 
   users.forEach((user) => {
-    const row = document.createElement("tr")
-    row.innerHTML = `
-            <td>
-                <div class="user-info">
-                    <img src="${user.avatar}" alt="${user.name}" class="user-avatar-small">
-                    <div class="user-details">
-                        <div class="user-name">${user.name}</div>
-                        <div class="user-email">${user.email}</div>
-                    </div>
-                </div>
-            </td>
-            <td>${user.email}</td>
-            <td>${user.phone || "Kiritilmagan"}</td>
-            <td><span class="user-role ${user.role}">${getRoleName(user.role)}</span></td>
-            <td><span class="user-status ${user.status}">${getStatusName(user.status)}</span></td>
-            <td>${formatDate(user.joinDate)}</td>
-            <td>
-                <div class="user-actions">
-                    <button class="btn btn-sm btn-primary" onclick="editUser(${user.id})" title="Tahrirlash">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    ${
-                      user.id !== currentUser.id
-                        ? `
-                        <button class="btn btn-sm btn-warning" onclick="toggleUserStatus(${user.id})" title="${
-                            user.status === "active" ? "Bloklash" : "Faollashtirish"
-                          }">
-                            <i class="fas fa-${user.status === "active" ? "ban" : "check"}"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})" title="O'chirish">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `
-                        : ""
-                    }
-                </div>
-            </td>
+    const userCard = document.createElement("div")
+    userCard.className = "stat-card"
+    userCard.innerHTML = `
+            <div class="stat-icon users">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="stat-info">
+                <h3>${user.name}</h3>
+                <p>${user.email}</p>
+                <span class="stat-change ${user.status === "active" ? "positive" : "negative"}">
+                    ${user.status === "active" ? "Faol" : "Bloklangan"}
+                </span>
+            </div>
         `
-    usersTableBody.appendChild(row)
+    usersGrid.appendChild(userCard)
   })
-}
 
-function searchUsers() {
-  const searchTerm = document.getElementById("userSearch").value.toLowerCase()
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm) ||
-      (user.phone && user.phone.includes(searchTerm)),
-  )
-
-  displayFilteredUsers(filteredUsers)
-}
-
-function filterUsers() {
-  const role = document.getElementById("roleFilter").value
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-
-  const filteredUsers = role ? users.filter((user) => user.role === role) : users
-
-  displayFilteredUsers(filteredUsers)
-}
-
-function displayFilteredUsers(users) {
-  const usersTableBody = document.getElementById("usersTableBody")
-  usersTableBody.innerHTML = ""
-
-  if (users.length === 0) {
-    usersTableBody.innerHTML = `
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                    <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-                    Hech narsa topilmadi
-                </td>
-            </tr>
-        `
-    return
-  }
-
-  users.forEach((user) => {
-    const row = document.createElement("tr")
-    row.innerHTML = `
-            <td>
-                <div class="user-info">
-                    <img src="${user.avatar}" alt="${user.name}" class="user-avatar-small">
-                    <div class="user-details">
-                        <div class="user-name">${user.name}</div>
-                        <div class="user-email">${user.email}</div>
-                    </div>
-                </div>
-            </td>
-            <td>${user.email}</td>
-            <td>${user.phone || "Kiritilmagan"}</td>
-            <td><span class="user-role ${user.role}">${getRoleName(user.role)}</span></td>
-            <td><span class="user-status ${user.status}">${getStatusName(user.status)}</span></td>
-            <td>${formatDate(user.joinDate)}</td>
-            <td>
-                <div class="user-actions">
-                    <button class="btn btn-sm btn-primary" onclick="editUser(${user.id})" title="Tahrirlash">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    ${
-                      user.id !== currentUser.id
-                        ? `
-                        <button class="btn btn-sm btn-warning" onclick="toggleUserStatus(${user.id})" title="${
-                            user.status === "active" ? "Bloklash" : "Faollashtirish"
-                          }">
-                            <i class="fas fa-${user.status === "active" ? "ban" : "check"}"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})" title="O'chirish">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `
-                        : ""
-                    }
-                </div>
-            </td>
-        `
-    usersTableBody.appendChild(row)
-  })
-}
-
-function openUserModal(userId = null) {
-  const modal = document.getElementById("userModal")
-  const form = document.getElementById("userForm")
-  const title = document.getElementById("userModalTitle")
-
-  if (userId) {
-    // Edit mode
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    const user = users.find((u) => u.id === userId)
-
-    if (user) {
-      title.textContent = "Foydalanuvchini tahrirlash"
-      document.getElementById("userId").value = user.id
-      document.getElementById("userName").value = user.name
-      document.getElementById("userEmail").value = user.email
-      document.getElementById("userPhone").value = user.phone || ""
-      document.getElementById("userRole").value = user.role
-      
-      // Tahrirlash rejimida parol majburiy emas
-      document.getElementById("userPassword").required = false
-      document.getElementById("userPassword").placeholder = "Yangi parol (ixtiyoriy)"
-    }
-  } else {
-    // Add mode
-    title.textContent = "Foydalanuvchi qo'shish"
-    form.reset()
-    document.getElementById("userPassword").required = true
-    document.getElementById("userPassword").placeholder = "Parol"
-  }
-
-  modal.classList.add("show")
-}
-
-function closeUserModal() {
-  document.getElementById("userModal").classList.remove("show")
-  document.getElementById("userForm").reset()
-}
-
-function handleUserSubmit(e) {
-  e.preventDefault()
-
-  const userId = document.getElementById("userId").value
-  const name = document.getElementById("userName").value.trim()
-  const email = document.getElementById("userEmail").value.trim()
-  const phone = document.getElementById("userPhone").value.trim()
-  const role = document.getElementById("userRole").value
-  const password = document.getElementById("userPassword").value.trim()
-
-  if (!name || !email || !role) {
-    showToast("error", "Xato!", "Barcha majburiy maydonlarni to'ldiring")
-    return
-  }
-
-  // Email formatini tekshirish
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(email)) {
-    showToast("error", "Xato!", "Email manzili noto'g'ri formatda")
-    return
-  }
-
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-
-  if (userId) {
-    // Edit existing user
-    const index = users.findIndex((user) => user.id === Number.parseInt(userId))
-    if (index !== -1) {
-      // Email takrorlanishini tekshirish (o'zidan boshqa foydalanuvchilar uchun)
-      const emailExists = users.some((user) => user.email === email && user.id !== Number.parseInt(userId))
-      if (emailExists) {
-        showToast("error", "Xato!", "Bu email manzili allaqachon ishlatilmoqda")
-        return
-      }
-
-      const updatedUser = {
-        ...users[index],
-        name,
-        email,
-        phone,
-        role,
-      }
-
-      // Agar yangi parol kiritilgan bo'lsa, uni yangilash
-      if (password) {
-        updatedUser.password = password
-      }
-
-      // Username ni email asosida yaratish (agar mavjud bo'lmasa)
-      if (!updatedUser.username) {
-        updatedUser.username = email.split('@')[0]
-      }
-
-      users[index] = updatedUser
-
-      addActivity("edit", "Foydalanuvchi tahrirlandi", `${name} foydalanuvchisi tahrirlandi`)
-      showToast("success", "Muvaffaqiyatli!", "Foydalanuvchi muvaffaqiyatli yangilandi")
-    }
-  } else {
-    // Add new user
-    if (!password) {
-      showToast("error", "Xato!", "Yangi foydalanuvchi uchun parol majburiy")
-      return
-    }
-
-    // Email takrorlanishini tekshirish
-    const emailExists = users.some((user) => user.email === email)
-    if (emailExists) {
-      showToast("error", "Xato!", "Bu email manzili allaqachon ishlatilmoqda")
-      return
-    }
-
-    const newUser = {
-      id: Date.now(),
-      name,
-      email,
-      phone,
-      role,
-      password,
-      username: email.split('@')[0], // Email dan username yaratish
-      status: "active",
-      joinDate: new Date().toISOString(),
-      avatar: "/placeholder.svg?height=40&width=40",
-    }
-
-    users.push(newUser)
-    addActivity("create", "Yangi foydalanuvchi", `${name} foydalanuvchisi qo'shildi`)
-    addNotification("success", "Yangi foydalanuvchi", `${name} ro'yxatdan o'tdi`)
-    showToast("success", "Muvaffaqiyatli!", "Foydalanuvchi muvaffaqiyatli qo'shildi")
-  }
-
-  localStorage.setItem("users", JSON.stringify(users))
-  loadUsers()
-  loadStatistics()
-  closeUserModal()
-}
-
-function editUser(userId) {
-  openUserModal(userId)
-}
-
-function toggleUserStatus(userId) {
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const user = users.find((u) => u.id === userId)
-
-  if (user) {
-    const newStatus = user.status === "active" ? "banned" : "active"
-    const action = newStatus === "active" ? "faollashtirildi" : "bloklandi"
-
-    showConfirmModal(
-      "Foydalanuvchi statusini o'zgartirish",
-      `${user.name} foydalanuvchisini ${action}shni xohlaysizmi?`,
-      () => {
-        user.status = newStatus
-        localStorage.setItem("users", JSON.stringify(users))
-
-        addActivity("edit", "Status o'zgartirildi", `${user.name} foydalanuvchisi ${action}`)
-        showToast("success", "O'zgartirildi!", `Foydalanuvchi ${action}`)
-
-        loadUsers()
-      },
-    )
-  }
-}
-
-function deleteUser(userId) {
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const user = users.find((u) => u.id === userId)
-
-  if (user) {
-    showConfirmModal(
-      "Foydalanuvchini o'chirish",
-      `${user.name} foydalanuvchisini o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.`,
-      () => {
-        const updatedUsers = users.filter((u) => u.id !== userId)
-        localStorage.setItem("users", JSON.stringify(updatedUsers))
-
-        addActivity("delete", "Foydalanuvchi o'chirildi", `${user.name} foydalanuvchisi o'chirildi`)
-        showToast("success", "O'chirildi!", "Foydalanuvchi muvaffaqiyatli o'chirildi")
-
-        loadUsers()
-        loadStatistics()
-      },
-    )
-  }
+  usersList.appendChild(usersGrid)
 }
 
 // Comments Management
-function loadComments() {
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
+async function loadComments() {
+  try {
+    const comments = await apiRequest("/comments")
+    displayComments(comments)
+  } catch (error) {
+    console.error("Failed to load comments:", error)
+    document.getElementById("commentsList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Izohlarni yuklashda xato yuz berdi.</p>
+            </div>
+        `
+  }
+}
+
+function displayComments(comments) {
   const commentsList = document.getElementById("commentsList")
-
-  // Update comment stats
-  const pendingCount = comments.filter((c) => c.status === "pending").length
-  const approvedCount = comments.filter((c) => c.status === "approved").length
-
-  document.getElementById("pendingComments").textContent = pendingCount
-  document.getElementById("approvedComments").textContent = approvedCount
-
   commentsList.innerHTML = ""
 
   if (comments.length === 0) {
@@ -4725,535 +2687,52 @@ function loadComments() {
             <div style="text-align: center; padding: 40px; color: var(--text-muted);">
                 <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 16px;"></i>
                 <h3>Izohlar yo'q</h3>
-                <p>Hozircha hech qanday izoh mavjud emas.</p>
             </div>
         `
     return
   }
 
-  comments.forEach((comment) => {
-    const newsItem = news.find((n) => n.id === comment.newsId)
-    const newsTitle = newsItem ? newsItem.title : "Noma'lum yangilik"
-
-    const commentItem = document.createElement("div")
-    commentItem.className = "comment-item"
-    commentItem.innerHTML = `
-            <div class="comment-header">
-                <div class="comment-author-info">
-                    <span class="comment-author">${comment.author}</span>
-                    <span class="comment-date">${formatDate(comment.date)}</span>
-                </div>
-                <span class="comment-status ${comment.status}">${getCommentStatusName(comment.status)}</span>
-            </div>
-            
-            <div class="comment-news-title">
-                <i class="fas fa-newspaper"></i>
-                ${newsTitle}
-            </div>
-            
-            <div class="comment-content">${comment.content}</div>
-            
-            <div class="comment-actions">
-                ${
-                  comment.status === "pending"
-                    ? `
-                    <button class="btn btn-sm btn-success" onclick="approveComment(${comment.id})">
-                        <i class="fas fa-check"></i>
-                        Tasdiqlash
-                    </button>
-                    <button class="btn btn-sm btn-danger" onclick="rejectComment(${comment.id})">
-                        <i class="fas fa-times"></i>
-                        Rad etish
-                    </button>
-                `
-                    : ""
-                }
-                <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">
-                    <i class="fas fa-trash"></i>
-                    O'chirish
-                </button>
-            </div>
-        `
-    commentsList.appendChild(commentItem)
-  })
-}
-
-function filterComments() {
-  const status = document.getElementById("commentStatusFilter").value
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-
-  const filteredComments = status ? comments.filter((comment) => comment.status === status) : comments
-
-  displayFilteredComments(filteredComments)
-}
-
-function displayFilteredComments(comments) {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const commentsList = document.getElementById("commentsList")
-
-  commentsList.innerHTML = ""
-
-  if (comments.length === 0) {
-    commentsList.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
-                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px;"></i>
-                <h3>Hech narsa topilmadi</h3>
-                <p>Filter bo'yicha hech qanday izoh topilmadi.</p>
-            </div>
-        `
-    return
-  }
+  const commentsGrid = document.createElement("div")
+  commentsGrid.className = "stats-grid"
 
   comments.forEach((comment) => {
-    const newsItem = news.find((n) => n.id === comment.newsId)
-    const newsTitle = newsItem ? newsItem.title : "Noma'lum yangilik"
-
-    const commentItem = document.createElement("div")
-    commentItem.className = "comment-item"
-    commentItem.innerHTML = `
-            <div class="comment-header">
-                <div class="comment-author-info">
-                    <span class="comment-author">${comment.author}</span>
-                    <span class="comment-date">${formatDate(comment.date)}</span>
-                </div>
-                <span class="comment-status ${comment.status}">${getCommentStatusName(comment.status)}</span>
+    const commentCard = document.createElement("div")
+    commentCard.className = "stat-card"
+    commentCard.innerHTML = `
+            <div class="stat-icon comments">
+                <i class="fas fa-comment"></i>
             </div>
-            
-            <div class="comment-news-title">
-                <i class="fas fa-newspaper"></i>
-                ${newsTitle}
-            </div>
-            
-            <div class="comment-content">${comment.content}</div>
-            
-            <div class="comment-actions">
-                ${
-                  comment.status === "pending"
-                    ? `
-                    <button class="btn btn-sm btn-success" onclick="approveComment(${comment.id})">
-                        <i class="fas fa-check"></i>
-                        Tasdiqlash
-                    </button>
-                    <button class="btn btn-sm btn-danger" onclick="rejectComment(${comment.id})">
-                        <i class="fas fa-times"></i>
-                        Rad etish
-                    </button>
-                `
-                    : ""
-                }
-                <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">
-                    <i class="fas fa-trash"></i>
-                    O'chirish
-                </button>
+            <div class="stat-info">
+                <h3>${comment.author}</h3>
+                <p>${comment.content.substring(0, 100)}...</p>
+                <span class="stat-change ${comment.status === "approved" ? "positive" : comment.status === "pending" ? "warning" : "negative"}">
+                    ${getCommentStatusName(comment.status)}
+                </span>
             </div>
         `
-    commentsList.appendChild(commentItem)
+    commentsGrid.appendChild(commentCard)
   })
+
+  commentsList.appendChild(commentsGrid)
 }
 
-function approveComment(commentId) {
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-  const comment = comments.find((c) => c.id === commentId)
-
-  if (comment) {
-    comment.status = "approved"
-    localStorage.setItem("comments", JSON.stringify(comments))
-
-    addActivity("edit", "Izoh tasdiqlandi", `${comment.author} ning izohi tasdiqlandi`)
-    showToast("success", "Tasdiqlandi!", "Izoh muvaffaqiyatli tasdiqlandi")
-
-    loadComments()
-    loadStatistics()
-  }
-}
-
-function rejectComment(commentId) {
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-  const comment = comments.find((c) => c.id === commentId)
-
-  if (comment) {
-    comment.status = "rejected"
-    localStorage.setItem("comments", JSON.stringify(comments))
-
-    addActivity("edit", "Izoh rad etildi", `${comment.author} ning izohi rad etildi`)
-    showToast("warning", "Rad etildi!", "Izoh rad etildi")
-
-    loadComments()
-  }
-}
-
-function deleteComment(commentId) {
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-  const comment = comments.find((c) => c.id === commentId)
-
-  if (comment) {
-    showConfirmModal(
-      "Izohni o'chirish",
-      `${comment.author} ning izohini o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.`,
-      () => {
-        const updatedComments = comments.filter((c) => c.id !== commentId)
-        localStorage.setItem("comments", JSON.stringify(updatedComments))
-
-        addActivity("delete", "Izoh o'chirildi", `${comment.author} ning izohi o'chirildi`)
-        showToast("success", "O'chirildi!", "Izoh muvaffaqiyatli o'chirildi")
-
-        loadComments()
-        loadStatistics()
-      },
-    )
-  }
-}
-
-// Charts - KICHIKROQ QILINDI
-function initializeCharts() {
-  // Monthly chart
-  const monthlyCtx = document.getElementById("monthlyChart")
-  if (monthlyCtx) {
-    charts.monthly = new Chart(monthlyCtx, {
-      type: "line",
-      data: {
-        labels: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun"],
-        datasets: [
-          {
-            label: "Yangiliklar",
-            data: [12, 19, 8, 15, 22, 18],
-            borderColor: "rgb(59, 130, 246)",
-            backgroundColor: "rgba(59, 130, 246, 0.1)",
-            tension: 0.4,
-            fill: true,
-          },
-          {
-            label: "Ko'rishlar",
-            data: [150, 280, 180, 220, 350, 280],
-            borderColor: "rgb(16, 185, 129)",
-            backgroundColor: "rgba(16, 185, 129, 0.1)",
-            tension: 0.4,
-            fill: true,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "top",
-            labels: {
-              usePointStyle: true,
-              padding: 15,
-              font: {
-                size: 11, // 12px dan 11px ga
-              },
-            },
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-            },
-            ticks: {
-              font: {
-                size: 10, // 11px dan 10px ga
-              },
-            },
-          },
-          x: {
-            grid: {
-              color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-            },
-            ticks: {
-              font: {
-                size: 10, // 11px dan 10px ga
-              },
-            },
-          },
-        },
-      },
-    })
-  }
-
-  loadAnalytics()
-}
-
-function loadAnalytics() {
-  // Visits chart
-  const visitsCtx = document.getElementById("visitsChart")
-  if (visitsCtx && !charts.visits) {
-    charts.visits = new Chart(visitsCtx, {
-      type: "bar",
-      data: {
-        labels: ["Dush", "Sesh", "Chor", "Pay", "Jum", "Shan", "Yak"],
-        datasets: [
-          {
-            label: "Tashriflar",
-            data: [65, 59, 80, 81, 56, 55, 40],
-            backgroundColor: "rgba(59, 130, 246, 0.8)",
-            borderColor: "rgb(59, 130, 246)",
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-            },
-            ticks: {
-              font: {
-                size: 10,
-              },
-            },
-          },
-          x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              font: {
-                size: 10,
-              },
-            },
-          },
-        },
-      },
-    })
-  }
-
-  // Categories chart
-  const categoriesCtx = document.getElementById("categoriesChart")
-  if (categoriesCtx && !charts.categories) {
-    charts.categories = new Chart(categoriesCtx, {
-      type: "doughnut",
-      data: {
-        labels: ["E'lonlar", "Tadbirlar", "Ta'lim", "Sport", "Texnologiya"],
-        datasets: [
-          {
-            data: [30, 25, 20, 15, 10],
-            backgroundColor: [
-              "rgba(245, 158, 11, 0.8)",
-              "rgba(16, 185, 129, 0.8)",
-              "rgba(59, 130, 246, 0.8)",
-              "rgba(239, 68, 68, 0.8)",
-              "rgba(139, 92, 246, 0.8)",
-            ],
-            borderWidth: 2,
-            borderColor: currentTheme === "dark" ? "#1e293b" : "#ffffff",
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              usePointStyle: true,
-              padding: 10, // 15px dan 10px ga
-              font: {
-                size: 10, // 11px dan 10px ga
-              },
-            },
-          },
-        },
-      },
-    })
-  }
-
-  // Users chart
-  const usersCtx = document.getElementById("usersChart")
-  if (usersCtx && !charts.users) {
-    charts.users = new Chart(usersCtx, {
-      type: "line",
-      data: {
-        labels: ["1-haf", "2-haf", "3-haf", "4-haf"],
-        datasets: [
-          {
-            label: "Yangi foydalanuvchilar",
-            data: [10, 15, 8, 12],
-            borderColor: "rgb(16, 185, 129)",
-            backgroundColor: "rgba(16, 185, 129, 0.1)",
-            tension: 0.4,
-            fill: true,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-            },
-            ticks: {
-              font: {
-                size: 10,
-              },
-            },
-          },
-          x: {
-            grid: {
-              color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-            },
-            ticks: {
-              font: {
-                size: 10,
-              },
-            },
-          },
-        },
-      },
-    })
-  }
-
-  // Time chart
-  const timeCtx = document.getElementById("timeChart")
-  if (timeCtx && !charts.time) {
-    charts.time = new Chart(timeCtx, {
-      type: "radar",
-      data: {
-        labels: ["00-04", "04-08", "08-12", "12-16", "16-20", "20-24"],
-        datasets: [
-          {
-            label: "Faollik",
-            data: [20, 10, 60, 80, 90, 50],
-            borderColor: "rgb(139, 92, 246)",
-            backgroundColor: "rgba(139, 92, 246, 0.2)",
-            pointBackgroundColor: "rgb(139, 92, 246)",
-            pointBorderColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgb(139, 92, 246)",
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          r: {
-            beginAtZero: true,
-            grid: {
-              color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-            },
-            pointLabels: {
-              font: {
-                size: 10,
-              },
-            },
-            ticks: {
-              font: {
-                size: 9,
-              },
-            },
-          },
-        },
-      },
-    })
-  }
-}
-
-function updateChart() {
-  const period = document.getElementById("chartPeriod").value
-  
-  // Update chart data based on period
-  if (charts.monthly) {
-    let labels, data1, data2
-    
-    switch (period) {
-      case "week":
-        labels = ["Dush", "Sesh", "Chor", "Pay", "Jum", "Shan", "Yak"]
-        data1 = [2, 3, 1, 4, 5, 3, 2]
-        data2 = [25, 35, 15, 45, 55, 35, 25]
-        break
-      case "year":
-        labels = ["2019", "2020", "2021", "2022", "2023", "2024"]
-        data1 = [120, 150, 180, 200, 250, 280]
-        data2 = [1500, 2000, 2500, 3000, 3500, 4000]
-        break
-      default: // month
-        labels = ["Yan", "Fev", "Mar", "Apr", "May", "Iyun"]
-        data1 = [12, 19, 8, 15, 22, 18]
-        data2 = [150, 280, 180, 220, 350, 280]
+// Activity logging
+async function addActivity(type, title, description) {
+  try {
+    const activity = {
+      type,
+      title,
+      description,
+      time: new Date().toISOString(),
     }
-    
-    charts.monthly.data.labels = labels
-    charts.monthly.data.datasets[0].data = data1
-    charts.monthly.data.datasets[1].data = data2
-    charts.monthly.update()
+
+    await apiRequest("/activities", {
+      method: "POST",
+      body: JSON.stringify(activity),
+    })
+  } catch (error) {
+    console.error("Failed to add activity:", error)
   }
-}
-
-// Export functionality
-function exportData(format) {
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const comments = JSON.parse(localStorage.getItem("comments") || "[]")
-
-  const data = {
-    news,
-    users: users.map(u => ({ ...u, password: undefined })), // Parollarni olib tashlash
-    comments,
-    exportDate: new Date().toISOString(),
-  }
-
-  if (format === "json") {
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
-    downloadFile(blob, `admin-data-${new Date().toISOString().split("T")[0]}.json`)
-  } else if (format === "csv") {
-    const csv = convertToCSV(news)
-    const blob = new Blob([csv], { type: "text/csv" })
-    downloadFile(blob, `news-data-${new Date().toISOString().split("T")[0]}.csv`)
-  }
-
-  showToast("success", "Eksport muvaffaqiyatli!", `Ma'lumotlar ${format.toUpperCase()} formatida yuklandi`)
-}
-
-function convertToCSV(data) {
-  const headers = ["ID", "Sarlavha", "Kategoriya", "Muallif", "Sana", "Ko'rishlar"]
-  const rows = data.map((item) => [
-    item.id,
-    `"${item.title}"`,
-    item.category,
-    item.author,
-    new Date(item.date).toLocaleDateString(),
-    item.views,
-  ])
-
-  return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n")
-}
-
-function downloadFile(blob, filename) {
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
 }
 
 // Image handling
@@ -5267,7 +2746,7 @@ function handleImageUpload(input) {
     }
 
     const reader = new FileReader()
-    reader.onload = function (e) {
+    reader.onload = (e) => {
       showImagePreview(e.target.result)
     }
     reader.readAsDataURL(file)
@@ -5295,17 +2774,6 @@ function hideImagePreview() {
 function removeImage() {
   hideImagePreview()
   document.getElementById("newsImageFile").value = ""
-}
-
-function previewImage(input, previewId) {
-  const file = input.files[0]
-  if (file) {
-    const reader = new FileReader()
-    reader.onload = function (e) {
-      document.getElementById(previewId).src = e.target.result
-    }
-    reader.readAsDataURL(file)
-  }
 }
 
 // Drag and drop
@@ -5341,109 +2809,14 @@ function setupDragAndDrop() {
   })
 }
 
-// Settings
-function handleProfileSubmit(e) {
-  e.preventDefault()
-
-  const name = document.getElementById("adminName").value.trim()
-  const email = document.getElementById("adminEmail").value.trim()
-
-  if (!name || !email) {
-    showToast("error", "Xato!", "Barcha maydonlarni to'ldiring")
-    return
-  }
-
-  // Update current user
-  currentUser.name = name
-  currentUser.email = email
-
-  // Update in users list
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const userIndex = users.findIndex((u) => u.id === currentUser.id)
-  if (userIndex !== -1) {
-    users[userIndex].name = name
-    users[userIndex].email = email
-    localStorage.setItem("users", JSON.stringify(users))
-  }
-
-  localStorage.setItem("currentUser", JSON.stringify(currentUser))
-
-  // Update UI
-  document.querySelector(".user-name").textContent = name
-
-  addActivity("edit", "Profil yangilandi", "Profil ma'lumotlari yangilandi")
-  showToast("success", "Saqlandi!", "Profil muvaffaqiyatli yangilandi")
-}
-
-function handlePasswordSubmit(e) {
-  e.preventDefault()
-
-  const currentPassword = document.getElementById("currentPassword").value
-  const newPassword = document.getElementById("newPassword").value
-  const confirmPassword = document.getElementById("confirmPassword").value
-
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    showToast("error", "Xato!", "Barcha maydonlarni to'ldiring")
-    return
-  }
-
-  if (newPassword !== confirmPassword) {
-    showToast("error", "Xato!", "Yangi parollar mos kelmaydi")
-    return
-  }
-
-  if (newPassword.length < 6) {
-    showToast("error", "Xato!", "Parol kamida 6 ta belgidan iborat bo'lishi kerak")
-    return
-  }
-
-  // Check current password
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const user = users.find((u) => u.id === currentUser.id)
-
-  if (!user || user.password !== currentPassword) {
-    showToast("error", "Xato!", "Joriy parol noto'g'ri")
-    return
-  }
-
-  // Update password
-  user.password = newPassword
-  localStorage.setItem("users", JSON.stringify(users))
-
-  // Clear form
-  document.getElementById("passwordForm").reset()
-
-  addActivity("edit", "Parol yangilandi", "Parol muvaffaqiyatli yangilandi")
-  showToast("success", "Yangilandi!", "Parol muvaffaqiyatli yangilandi")
-}
-
 // Global search
 function globalSearch() {
   const searchTerm = document.getElementById("globalSearch").value.toLowerCase()
-  
+
   if (searchTerm.length < 2) return
 
-  // Search in news
-  const news = JSON.parse(localStorage.getItem("news") || "[]")
-  const foundNews = news.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchTerm) ||
-      item.content.toLowerCase().includes(searchTerm)
-  )
-
-  // Search in users
-  const users = JSON.parse(localStorage.getItem("users") || "[]")
-  const foundUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm)
-  )
-
-  // Show results (simplified - you can enhance this)
-  if (foundNews.length > 0 || foundUsers.length > 0) {
-    console.log("Search results:", { news: foundNews, users: foundUsers })
-    // You can implement a dropdown with search results here
-  }
+  // Simple search implementation
+  console.log("Searching for:", searchTerm)
 }
 
 // Confirmation modal
@@ -5451,7 +2824,6 @@ function showConfirmModal(title, message, onConfirm) {
   const modal = document.getElementById("confirmModal")
   document.getElementById("confirmTitle").textContent = title
   document.getElementById("confirmMessage").textContent = message
-
   currentAction = onConfirm
   modal.classList.add("show")
 }
@@ -5484,18 +2856,6 @@ function formatDate(dateString) {
   })
 }
 
-function formatTimeAgo(dateString) {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffInSeconds = Math.floor((now - date) / 1000)
-
-  if (diffInSeconds < 60) return "Hozir"
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} daqiqa oldin`
-  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} soat oldin`
-  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} kun oldin`
-  return formatDate(dateString)
-}
-
 function getCategoryName(category) {
   const categories = {
     elon: "📢 E'lonlar",
@@ -5507,23 +2867,6 @@ function getCategoryName(category) {
   return categories[category] || category
 }
 
-function getRoleName(role) {
-  const roles = {
-    admin: "Administrator",
-    moderator: "Moderator",
-    user: "Foydalanuvchi",
-  }
-  return roles[role] || role
-}
-
-function getStatusName(status) {
-  const statuses = {
-    active: "Faol",
-    banned: "Bloklangan",
-  }
-  return statuses[status] || status
-}
-
 function getCommentStatusName(status) {
   const statuses = {
     pending: "Kutilmoqda",
@@ -5533,47 +2876,13 @@ function getCommentStatusName(status) {
   return statuses[status] || status
 }
 
-// Debounce function for performance
-function debounce(func, wait) {
-  let timeout
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout)
-      func(...args)
-    }
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-  }
-}
-
 // Responsive handling
 window.addEventListener("resize", () => {
   // Close sidebar on mobile when resizing to desktop
   if (window.innerWidth > 768) {
     document.getElementById("sidebar").classList.remove("show")
   }
-
-  // Update charts on resize
-  Object.values(charts).forEach((chart) => {
-    if (chart) {
-      chart.resize()
-    }
-  })
 })
-
-// Service Worker registration (for PWA)
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/sw.js")
-      .then((registration) => {
-        console.log("SW registered: ", registration)
-      })
-      .catch((registrationError) => {
-        console.log("SW registration failed: ", registrationError)
-      })
-  })
-}
 
 // Error handling
 window.addEventListener("error", (e) => {
@@ -5587,6 +2896,6 @@ window.addEventListener("unhandledrejection", (e) => {
   showToast("error", "Xato yuz berdi!", "Iltimos, sahifani yangilang")
 })
 
-    </script>
+     </script>
 </body>
 </html>
