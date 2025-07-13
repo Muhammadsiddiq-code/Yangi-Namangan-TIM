@@ -4264,6 +4264,15 @@ function closeNewsModal() {
   hideImagePreview()
 }
 
+
+
+
+
+
+
+
+
+<!--
 function handleNewsSubmit(e) {
   e.preventDefault()
 
@@ -4325,6 +4334,16 @@ function handleNewsSubmit(e) {
   loadStatistics()
   closeNewsModal()
 }
+-->
+
+
+
+
+
+
+
+
+
 
 function editNews(newsId) {
   openNewsModal(newsId)
@@ -5588,5 +5607,2988 @@ window.addEventListener("unhandledrejection", (e) => {
 })
 
     </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Admin Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-color: #334155;
+            --text-muted: #64748b;
+            --bg-color: #ffffff;
+            --bg-secondary: #f1f5f9;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --box-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --light-color: #1e293b;
+            --dark-color: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 16px 20px;
+            box-shadow: var(--box-shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-left: 4px solid var(--success-color); }
+        .toast.error { border-left: 4px solid var(--danger-color); }
+        .toast.warning { border-left: 4px solid var(--warning-color); }
+        .toast.info { border-left: 4px solid var(--info-color); }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast.success .toast-icon { color: var(--success-color); }
+        .toast.error .toast-icon { color: var(--danger-color); }
+        .toast.warning .toast-icon { color: var(--warning-color); }
+        .toast.info .toast-icon { color: var(--info-color); }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Login Styles */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .login-box {
+            background: var(--bg-color);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--box-shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .logo-container i {
+            font-size: 48px;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-container h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+            z-index: 1;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: var(--transition-fast);
+        }
+
+        .toggle-password:hover {
+            background: var(--bg-secondary);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+            transition: var(--transition-fast);
+        }
+
+        .checkbox-container input:checked + .checkmark {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-container input:checked + .checkmark::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .demo-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .demo-info h4 {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .demo-info p {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            overflow-y: auto;
+            box-shadow: var(--box-shadow);
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar.collapsed .logo span {
+            display: none;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition-fast);
+            font-size: 16px;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            border-right: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+            border-right-color: var(--primary-color);
+        }
+
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 14px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+            min-height: 100vh;
+            background: var(--bg-secondary);
+        }
+
+        .sidebar.collapsed + .main-content {
+            margin-left: 70px;
+        }
+
+        /* Header */
+        .header {
+            height: var(--header-height);
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 18px;
+            transition: var(--transition-fast);
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .header-center {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 40px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-secondary);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: var(--transition-fast);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--bg-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .clock-container {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .current-time {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .current-date {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition-fast);
+        }
+
+        .user-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-lg);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            font-size: 14px;
+        }
+
+        .user-dropdown a:hover {
+            background: var(--bg-secondary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 8px 0;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #475569;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .btn-lg {
+            padding: 16px 24px;
+            font-size: 16px;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .stat-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            border-radius: inherit;
+        }
+
+        .stat-icon.news {
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+        }
+
+        .stat-icon.users {
+            background: linear-gradient(135deg, var(--success-color), #06b6d4);
+        }
+
+        .stat-icon.views {
+            background: linear-gradient(135deg, var(--warning-color), #f97316);
+        }
+
+        .stat-icon.comments {
+            background: linear-gradient(135deg, var(--info-color), #3b82f6);
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .stat-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .stat-change::before {
+            content: "↗";
+            font-size: 10px;
+        }
+
+        .stat-change.negative::before {
+            content: "↘";
+        }
+
+        /* News Container */
+        .news-container {
+            position: relative;
+        }
+
+        .news-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .news-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            transform: scaleY(0);
+            transition: var(--transition);
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .news-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 16px;
+        }
+
+        .news-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .news-category {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .news-category.elon { background: var(--warning-color); }
+        .news-category.tadbir { background: var(--success-color); }
+        .news-category.talim { background: var(--info-color); }
+        .news-category.sport { background: var(--danger-color); }
+        .news-category.texnologiya { background: var(--primary-color); }
+
+        .news-content {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 16px;
+        }
+
+        .news-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .news-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .news-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Filters Container */
+        .filters-container {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-secondary);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: var(--transition-fast);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--bg-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .filters-container select {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            min-width: 150px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .filters-container select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(-20px);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow-lg);
+        }
+
+        .modal-content.small {
+            max-width: 400px;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition-fast);
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: var(--border-color);
+        }
+
+        .modal form {
+            padding: 24px;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition-fast);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 40px 20px;
+            text-align: center;
+            transition: var(--transition-fast);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .upload-content i {
+            font-size: 48px;
+            color: var(--text-muted);
+        }
+
+        .upload-content p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .upload-link {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .file-upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-preview {
+            position: relative;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: var(--transition-fast);
+        }
+
+        .remove-image:hover {
+            background: #dc2626;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .header {
+                padding: 0 20px;
+            }
+
+            .header-center {
+                display: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filters {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal form,
+            .modal-body,
+            .modal-actions {
+                padding: 20px;
+            }
+
+            .news-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stat-icon {
+                width: 56px;
+                height: 56px;
+            }
+
+            .news-item {
+                padding: 20px;
+            }
+
+            .modal-content {
+                width: 100%;
+                margin: 10px;
+                border-radius: var(--border-radius-sm);
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+
+            .toast {
+                min-width: 280px;
+                margin: 0 10px;
+            }
+        }
+
+        /* Error States */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 14px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .offline-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--danger-color);
+            color: white;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            z-index: 10000;
+            transform: translateY(100px);
+            transition: var(--transition);
+        }
+
+        .offline-indicator.show {
+            transform: translateY(0);
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator">
+        <i class="fas fa-wifi"></i>
+        Internet aloqasi yo'q
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="logo-container">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Admin Dashboard</h1>
+                </div>
+                <p>Professional boshqaruv paneli</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Foydalanuvchi nomi yoki email" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Parol" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                
+                <div class="remember-me">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkmark"></span>
+                        Meni eslab qol
+                    </label>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Kirish</span>
+                    <div class="loading-spinner hidden"></div>
+                </button>
+            </form>
+            
+            <div class="demo-info">
+                <h4>Demo ma'lumotlar:</h4>
+                <p><strong>Username:</strong> kolizey</p>
+                <p><strong>Password:</strong> 5577</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Admin Panel</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" onclick="showSection('dashboard')" class="nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Bosh sahifa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('news')" class="nav-link">
+                            <i class="fas fa-newspaper"></i>
+                            <span>Yangiliklar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('users')" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Foydalanuvchilar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('comments')" class="nav-link">
+                            <i class="fas fa-comments"></i>
+                            <span>Izohlar</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">Bosh sahifa</h1>
+                </div>
+                
+                <div class="header-center">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Qidirish..." onkeyup="globalSearch()">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="clock-container">
+                        <div id="currentTime" class="current-time"></div>
+                        <div id="currentDate" class="current-date"></div>
+                    </div>
+                    
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Rejimni o'zgartirish">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="user-menu">
+                        <button class="user-btn" onclick="toggleUserMenu()">
+                            <!-- <img src="/placeholder.svg?height=40&width=40" alt="Admin" class="user-avatar"> -->
+                            <span class="user-name">Administrator</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Chiqish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Dashboard Section -->
+                <section id="dashboardSection" class="content-section active">
+                    <!-- Statistics Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon news">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalNews">0</h3>
+                                <p>Jami yangiliklar</p>
+                                <span class="stat-change positive">+12%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon users">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalUsers">0</h3>
+                                <p>Foydalanuvchilar</p>
+                                <span class="stat-change positive">+8%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon views">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="dailyViews">1247</h3>
+                                <p>Bugungi ko'rishlar</p>
+                                <span class="stat-change positive">+24%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon comments">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalComments">0</h3>
+                                <p>Izohlar</p>
+                                <span class="stat-change negative">-2%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- News Section -->
+                <section id="newsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Yangiliklar boshqaruvi</h2>
+                        <button class="btn btn-primary" onclick="openNewsModal()">
+                            <i class="fas fa-plus"></i>
+                            Yangilik qo'shish
+                        </button>
+                    </div>
+                    
+                    <div class="filters-container">
+                        <div class="search-filters">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="newsSearch" placeholder="Yangilik qidirish..." onkeyup="searchNews()">
+                            </div>
+                            
+                            <select id="categoryFilter" onchange="filterNews()">
+                                <option value="">Barcha kategoriyalar</option>
+                                <option value="elon">📢 E'lonlar</option>
+                                <option value="tadbir">🎉 Tadbirlar</option>
+                                <option value="talim">🏫 Ta'lim</option>
+                                <option value="sport">⚽ Sport</option>
+                                <option value="texnologiya">💻 Texnologiya</option>
+                            </select>
+                            
+                            <select id="sortFilter" onchange="sortNews()">
+                                <option value="newest">Eng yangi</option>
+                                <option value="oldest">Eng eski</option>
+                                <option value="popular">Eng mashhur</option>
+                                <option value="alphabetical">A-Z</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="news-container">
+                        <div id="newsLoading" class="loading hidden">
+                            <div class="spinner"></div>
+                            Yangiliklar yuklanmoqda...
+                        </div>
+                        <div id="newsList" class="news-list">
+                            <!-- News items will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Users Section -->
+                <section id="usersSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Foydalanuvchilar</h2>
+                    </div>
+                    <div id="usersList" class="loading">
+                        <div class="spinner"></div>
+                        Foydalanuvchilar yuklanmoqda...
+                    </div>
+                </section>
+
+                <!-- Comments Section -->
+                <section id="commentsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Izohlar boshqaruvi</h2>
+                    </div>
+                    <div id="commentsList" class="loading">
+                        <div class="spinner"></div>
+                        Izohlar yuklanmoqda...
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="newsModalTitle">Yangilik qo'shish</h3>
+                <button class="close-btn" onclick="closeNewsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="newsForm">
+                <input type="hidden" id="newsId">
+                
+                <div class="form-group">
+                    <label for="newsTitle">Sarlavha *</label>
+                    <input type="text" id="newsTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newsCategory">Kategoriya *</label>
+                    <select id="newsCategory" required>
+                        <option value="">Kategoriya tanlang</option>
+                        <option value="elon">📢 E'lonlar</option>
+                        <option value="tadbir">🎉 Tadbirlar</option>
+                        <option value="talim">🏫 Ta'lim</option>
+                        <option value="sport">⚽ Sport</option>
+                        <option value="texnologiya">💻 Texnologiya</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newsContent">Matn *</label>
+                    <textarea id="newsContent" rows="6" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newsImage">Rasm</label>
+                    <div class="file-upload-area" id="imageUploadArea">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Rasmni shu yerga sudrab tashlang yoki <span class="upload-link">tanlang</span></p>
+                            <input type="file" id="newsImageFile" accept="image/*" onchange="handleImageUpload(this)">
+                        </div>
+                        <div class="image-preview" id="imagePreview" style="display: none;">
+                            <!-- <img id="previewImg" src="/placeholder.svg" alt="Preview"> -->
+                            <button type="button" class="remove-image" onclick="removeImage()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="newsPublished" checked>
+                        <span class="checkmark"></span>
+                        Darhol nashr qilish
+                    </label>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeNewsModal()">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Saqlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Tasdiqlash</h3>
+                <button class="close-btn" onclick="closeConfirmModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p id="confirmMessage">Bu amalni bajarishni xohlaysizmi?</p>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Bekor qilish</button>
+                <button type="button" class="btn btn-danger" id="confirmBtn" onclick="confirmAction()">Tasdiqlash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="app.js"></script> -->
+     <script>
+      // API Configuration
+const API_BASE_URL = "http://localhost:3000"
+
+// Global variables
+let currentUser = null
+let currentTheme =
+  localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+let sidebarCollapsed = false
+let currentAction = null
+let isOnline = navigator.onLine
+
+// Initialize app
+document.addEventListener("DOMContentLoaded", () => {
+  initializeApp()
+})
+
+function initializeApp() {
+  // Set theme
+  document.documentElement.setAttribute("data-theme", currentTheme)
+  updateThemeIcon()
+
+  // Check if user is logged in
+  const savedUser = localStorage.getItem("currentUser")
+  const rememberMe = localStorage.getItem("rememberMe") === "true"
+
+  if (savedUser && rememberMe) {
+    currentUser = JSON.parse(savedUser)
+    showDashboard()
+  } else {
+    showLogin()
+  }
+
+  // Setup event listeners
+  setupEventListeners()
+
+  // Start clock
+  updateClock()
+  setInterval(updateClock, 1000)
+
+  // Setup network monitoring
+  setupNetworkMonitoring()
+
+  // Setup drag and drop
+  setupDragAndDrop()
+}
+
+// Network monitoring
+function setupNetworkMonitoring() {
+  window.addEventListener("online", () => {
+    isOnline = true
+    document.getElementById("offlineIndicator").classList.remove("show")
+    showToast("success", "Aloqa tiklandi!", "Internet aloqasi qayta tiklandi")
+    // Refresh data when back online
+    if (currentUser) {
+      loadAllData()
+    }
+  })
+
+  window.addEventListener("offline", () => {
+    isOnline = false
+    document.getElementById("offlineIndicator").classList.add("show")
+    showToast("warning", "Internet yo'q!", "Internet aloqasi uzildi")
+  })
+}
+
+// API Helper Functions
+async function apiRequest(endpoint, options = {}) {
+  if (!isOnline) {
+    throw new Error("Internet aloqasi yo'q")
+  }
+
+  const url = `${API_BASE_URL}${endpoint}`
+  const defaultOptions = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+
+  const config = { ...defaultOptions, ...options }
+
+  try {
+    const response = await fetch(url, config)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error("API Request failed:", error)
+    showToast("error", "Xato!", "Server bilan aloqa o'rnatilmadi")
+    throw error
+  }
+}
+
+// Authentication
+function setupEventListeners() {
+  // Login form
+  document.getElementById("loginForm").addEventListener("submit", handleLogin)
+
+  // News form
+  document.getElementById("newsForm").addEventListener("submit", handleNewsSubmit)
+
+  // Close modals when clicking outside
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("modal")) {
+      closeAllModals()
+    }
+    // Close dropdowns when clicking outside
+    if (!e.target.closest(".user-menu")) {
+      document.getElementById("userDropdown").classList.remove("show")
+    }
+  })
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeAllModals()
+      document.getElementById("userDropdown").classList.remove("show")
+    }
+    // Ctrl/Cmd + K for global search
+    if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+      e.preventDefault()
+      document.getElementById("globalSearch").focus()
+    }
+  })
+}
+
+async function handleLogin(e) {
+  e.preventDefault()
+
+  const usernameOrEmail = document.getElementById("username").value.trim()
+  const password = document.getElementById("password").value.trim()
+  const rememberMe = document.getElementById("rememberMe").checked
+
+  // Show loading
+  const loginBtn = document.querySelector(".login-btn")
+  const btnText = loginBtn.querySelector("span")
+  const spinner = loginBtn.querySelector(".loading-spinner")
+
+  btnText.style.display = "none"
+  spinner.classList.remove("hidden")
+  loginBtn.disabled = true
+
+  try {
+    // Get users from API
+    const users = await apiRequest("/users")
+
+    // Find user by username or email
+    const user = users.find(
+      (u) =>
+        (u.username && u.username.toLowerCase() === usernameOrEmail.toLowerCase()) ||
+        (u.email && u.email.toLowerCase() === usernameOrEmail.toLowerCase()),
+    )
+
+    if (user && user.password === password) {
+      if (user.status === "banned") {
+        showToast("error", "Kirish rad etildi!", "Sizning hisobingiz bloklangan")
+        return
+      }
+
+      currentUser = {
+        id: user.id,
+        username: user.username || user.email.split("@")[0],
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+      }
+
+      localStorage.setItem("currentUser", JSON.stringify(currentUser))
+      localStorage.setItem("rememberMe", rememberMe.toString())
+
+      // Add login activity
+      await addActivity("login", "Tizimga kirish", `${currentUser.name} tizimga kirdi`)
+
+      showToast("success", "Muvaffaqiyatli!", "Tizimga muvaffaqiyatli kirdingiz")
+      showDashboard()
+    } else {
+      showToast("error", "Xato!", "Noto'g'ri foydalanuvchi nomi/email yoki parol")
+    }
+  } catch (error) {
+    showToast("error", "Xato!", "Server bilan aloqa o'rnatilmadi")
+  } finally {
+    // Reset button
+    btnText.style.display = "inline"
+    spinner.classList.add("hidden")
+    loginBtn.disabled = false
+  }
+}
+
+async function logout() {
+  try {
+    // Add logout activity
+    await addActivity("login", "Tizimdan chiqish", `${currentUser.name} tizimdan chiqdi`)
+  } catch (error) {
+    console.error("Failed to log activity:", error)
+  }
+
+  currentUser = null
+  localStorage.removeItem("currentUser")
+  if (localStorage.getItem("rememberMe") !== "true") {
+    localStorage.removeItem("rememberMe")
+  }
+
+  showToast("info", "Chiqish", "Tizimdan muvaffaqiyatli chiqdingiz")
+  showLogin()
+}
+
+function showLogin() {
+  document.getElementById("loginPage").classList.remove("hidden")
+  document.getElementById("dashboard").classList.add("hidden")
+
+  // Reset login form
+  document.getElementById("loginForm").reset()
+  const loginBtn = document.querySelector(".login-btn")
+  const btnText = loginBtn.querySelector("span")
+  const spinner = loginBtn.querySelector(".loading-spinner")
+  btnText.style.display = "inline"
+  spinner.classList.add("hidden")
+  loginBtn.disabled = false
+}
+
+function showDashboard() {
+  document.getElementById("loginPage").classList.add("hidden")
+  document.getElementById("dashboard").classList.remove("hidden")
+
+  // Update user info in header
+  document.querySelector(".user-name").textContent = currentUser.name
+  document.querySelector(".user-avatar").src = currentUser.avatar
+
+  // Load initial data
+  loadAllData()
+}
+
+async function loadAllData() {
+  try {
+    await Promise.all([loadStatistics(), loadNews(), loadUsers(), loadComments()])
+  } catch (error) {
+    console.error("Failed to load data:", error)
+    showToast("error", "Xato!", "Ma'lumotlarni yuklashda xato yuz berdi")
+  }
+}
+
+// Password toggle
+function togglePassword() {
+  const passwordInput = document.getElementById("password")
+  const toggleBtn = document.querySelector(".toggle-password i")
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text"
+    toggleBtn.className = "fas fa-eye-slash"
+  } else {
+    passwordInput.type = "password"
+    toggleBtn.className = "fas fa-eye"
+  }
+}
+
+// Theme toggle
+function toggleTheme() {
+  currentTheme = currentTheme === "light" ? "dark" : "light"
+  document.documentElement.setAttribute("data-theme", currentTheme)
+  localStorage.setItem("theme", currentTheme)
+  updateThemeIcon()
+}
+
+function updateThemeIcon() {
+  const themeIcon = document.querySelector(".theme-toggle i")
+  themeIcon.className = currentTheme === "light" ? "fas fa-moon" : "fas fa-sun"
+}
+
+// Clock
+function updateClock() {
+  const now = new Date()
+  const timeOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }
+  const dateOptions = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }
+
+  document.getElementById("currentTime").textContent = now.toLocaleTimeString("uz-UZ", timeOptions)
+  document.getElementById("currentDate").textContent = now.toLocaleDateString("uz-UZ", dateOptions)
+}
+
+// Sidebar
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar")
+  const isMobile = window.innerWidth <= 768
+
+  if (isMobile) {
+    sidebar.classList.toggle("show")
+  } else {
+    sidebar.classList.toggle("collapsed")
+    sidebarCollapsed = !sidebarCollapsed
+  }
+}
+
+// Navigation
+function showSection(sectionName) {
+  // Hide all sections
+  document.querySelectorAll(".content-section").forEach((section) => {
+    section.classList.remove("active")
+  })
+
+  // Show selected section
+  document.getElementById(sectionName + "Section").classList.add("active")
+
+  // Update navigation
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.classList.remove("active")
+  })
+  event.target.closest(".nav-link").classList.add("active")
+
+  // Update page title
+  const titles = {
+    dashboard: "Bosh sahifa",
+    news: "Yangiliklar",
+    users: "Foydalanuvchilar",
+    comments: "Izohlar",
+  }
+  document.getElementById("pageTitle").textContent = titles[sectionName]
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) {
+    document.getElementById("sidebar").classList.remove("show")
+  }
+
+  // Load section-specific data
+  switch (sectionName) {
+    case "news":
+      showNewsLoading()
+      loadNews()
+      break
+    case "users":
+      loadUsers()
+      break
+    case "comments":
+      loadComments()
+      break
+  }
+}
+
+// User menu
+function toggleUserMenu() {
+  document.getElementById("userDropdown").classList.toggle("show")
+}
+
+// Toast notifications
+function showToast(type, title, message) {
+  const toastContainer = document.getElementById("toastContainer")
+  const toast = document.createElement("div")
+  toast.className = `toast ${type}`
+
+  const icon = getToastIcon(type)
+  toast.innerHTML = `
+        <div class="toast-icon">
+            <i class="fas fa-${icon}"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="closeToast(this)">
+            <i class="fas fa-times"></i>
+        </button>
+    `
+
+  toastContainer.appendChild(toast)
+
+  // Show toast
+  setTimeout(() => {
+    toast.classList.add("show")
+  }, 100)
+
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    closeToast(toast.querySelector(".toast-close"))
+  }, 5000)
+}
+
+function getToastIcon(type) {
+  const icons = {
+    success: "check-circle",
+    error: "times-circle",
+    warning: "exclamation-triangle",
+    info: "info-circle",
+  }
+  return icons[type] || "info-circle"
+}
+
+function closeToast(button) {
+  const toast = button.closest(".toast")
+  toast.classList.remove("show")
+  setTimeout(() => {
+    toast.remove()
+  }, 300)
+}
+
+// Statistics
+async function loadStatistics() {
+  try {
+    const [news, users, comments] = await Promise.all([
+      apiRequest("/news"),
+      apiRequest("/users"),
+      apiRequest("/comments"),
+    ])
+
+    // Animate counters
+    animateCounter("totalNews", news.length)
+    animateCounter("totalUsers", users.length)
+    animateCounter("totalComments", comments.length)
+  } catch (error) {
+    console.error("Failed to load statistics:", error)
+  }
+}
+
+function animateCounter(elementId, targetValue) {
+  const element = document.getElementById(elementId)
+  const startValue = 0
+  const duration = 1000
+  const startTime = performance.now()
+
+  function updateCounter(currentTime) {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const currentValue = Math.floor(startValue + (targetValue - startValue) * progress)
+
+    element.textContent = currentValue.toLocaleString()
+
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter)
+    }
+  }
+
+  requestAnimationFrame(updateCounter)
+}
+
+// News Management
+async function loadNews() {
+  try {
+    const news = await apiRequest("/news")
+    displayNews(news)
+    hideNewsLoading()
+  } catch (error) {
+    console.error("Failed to load news:", error)
+    hideNewsLoading()
+    document.getElementById("newsList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Yangiliklarni yuklashda xato yuz berdi. Iltimos, qayta urinib ko'ring.</p>
+                <button class="btn btn-primary" onclick="loadNews()" style="margin-top: 16px;">
+                    <i class="fas fa-refresh"></i>
+                    Qayta yuklash
+                </button>
+            </div>
+        `
+  }
+}
+
+function displayNews(news) {
+  const newsList = document.getElementById("newsList")
+  newsList.innerHTML = ""
+
+  if (news.length === 0) {
+    newsList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-newspaper" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Yangiliklar yo'q</h3>
+                <p>Hozircha hech qanday yangilik mavjud emas. Birinchi yangilikni qo'shing!</p>
+                <button class="btn btn-primary" onclick="openNewsModal()" style="margin-top: 16px;">
+                    <i class="fas fa-plus"></i>
+                    Yangilik qo'shish
+                </button>
+            </div>
+        `
+    return
+  }
+
+  news.forEach((item) => {
+    const newsItem = document.createElement("div")
+    newsItem.className = "news-item"
+    newsItem.innerHTML = `
+            <div class="news-header">
+                <div>
+                    <h3 class="news-title">${item.title}</h3>
+                    <div class="news-meta">
+                        <span class="news-category ${item.category}">${getCategoryName(item.category)}</span>
+                        <span><i class="fas fa-user"></i> ${item.author}</span>
+                        <span><i class="fas fa-calendar"></i> ${formatDate(item.date)}</span>
+                        <span><i class="fas fa-eye"></i> ${item.views} ko'rishlar</span>
+                    </div>
+                </div>
+            </div>
+            
+            ${item.image ? `<img src="${item.image}" alt="${item.title}" class="news-image">` : ""}
+            
+            <div class="news-content">${item.content}</div>
+            
+            <div class="news-actions">
+                <button class="btn btn-sm btn-primary" onclick="editNews(${item.id})">
+                    <i class="fas fa-edit"></i>
+                    Tahrirlash
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="deleteNews(${item.id})">
+                    <i class="fas fa-trash"></i>
+                    O'chirish
+                </button>
+                <button class="btn btn-sm btn-secondary" onclick="duplicateNews(${item.id})">
+                    <i class="fas fa-copy"></i>
+                    Nusxalash
+                </button>
+            </div>
+        `
+    newsList.appendChild(newsItem)
+  })
+}
+
+function showNewsLoading() {
+  document.getElementById("newsLoading").classList.remove("hidden")
+}
+
+function hideNewsLoading() {
+  document.getElementById("newsLoading").classList.add("hidden")
+}
+
+async function searchNews() {
+  const searchTerm = document.getElementById("newsSearch").value.toLowerCase()
+  try {
+    const news = await apiRequest("/news")
+    const filteredNews = news.filter(
+      (item) =>
+        item.title.toLowerCase().includes(searchTerm) ||
+        item.content.toLowerCase().includes(searchTerm) ||
+        item.author.toLowerCase().includes(searchTerm),
+    )
+    displayNews(filteredNews)
+  } catch (error) {
+    console.error("Failed to search news:", error)
+  }
+}
+
+async function filterNews() {
+  const category = document.getElementById("categoryFilter").value
+  try {
+    const news = await apiRequest("/news")
+    const filteredNews = category ? news.filter((item) => item.category === category) : news
+    displayNews(filteredNews)
+  } catch (error) {
+    console.error("Failed to filter news:", error)
+  }
+}
+
+async function sortNews() {
+  const sortBy = document.getElementById("sortFilter").value
+  try {
+    const news = await apiRequest("/news")
+    const sortedNews = [...news]
+
+    switch (sortBy) {
+      case "newest":
+        sortedNews.sort((a, b) => new Date(b.date) - new Date(a.date))
+        break
+      case "oldest":
+        sortedNews.sort((a, b) => new Date(a.date) - new Date(b.date))
+        break
+      case "popular":
+        sortedNews.sort((a, b) => b.views - a.views)
+        break
+      case "alphabetical":
+        sortedNews.sort((a, b) => a.title.localeCompare(b.title))
+        break
+    }
+    displayNews(sortedNews)
+  } catch (error) {
+    console.error("Failed to sort news:", error)
+  }
+}
+
+function openNewsModal(newsId = null) {
+  const modal = document.getElementById("newsModal")
+  const form = document.getElementById("newsForm")
+  const title = document.getElementById("newsModalTitle")
+
+  if (newsId) {
+    // Edit mode - load news data
+    loadNewsForEdit(newsId)
+    title.textContent = "Yangilikni tahrirlash"
+  } else {
+    // Add mode
+    title.textContent = "Yangilik qo'shish"
+    form.reset()
+    hideImagePreview()
+  }
+
+  modal.classList.add("show")
+}
+
+async function loadNewsForEdit(newsId) {
+  try {
+    const newsItem = await apiRequest(`/news/${newsId}`)
+
+    document.getElementById("newsId").value = newsItem.id
+    document.getElementById("newsTitle").value = newsItem.title
+    document.getElementById("newsCategory").value = newsItem.category
+    document.getElementById("newsContent").value = newsItem.content
+    document.getElementById("newsPublished").checked = newsItem.published
+
+    if (newsItem.image) {
+      showImagePreview(newsItem.image)
+    }
+  } catch (error) {
+    console.error("Failed to load news for edit:", error)
+    showToast("error", "Xato!", "Yangilikni yuklashda xato yuz berdi")
+  }
+}
+
+function closeNewsModal() {
+  document.getElementById("newsModal").classList.remove("show")
+  document.getElementById("newsForm").reset()
+  hideImagePreview()
+}
+
+async function handleNewsSubmit(e) {
+  e.preventDefault()
+
+  const newsId = document.getElementById("newsId").value
+  const title = document.getElementById("newsTitle").value.trim()
+  const category = document.getElementById("newsCategory").value
+  const content = document.getElementById("newsContent").value.trim()
+  const published = document.getElementById("newsPublished").checked
+
+  if (!title || !category || !content) {
+    showToast("error", "Xato!", "Barcha majburiy maydonlarni to'ldiring")
+    return
+  }
+
+  const imagePreview = document.getElementById("previewImg")
+  const image = imagePreview.style.display !== "none" ? imagePreview.src : null
+
+  const newsData = {
+    title,
+    category,
+    content,
+    published,
+    image,
+    author: currentUser.name,
+    date: new Date().toISOString(),
+    views: 0,
+  }
+
+  try {
+    if (newsId) {
+      // Edit existing news
+      await apiRequest(`/news/${newsId}`, {
+        method: "PUT",
+        body: JSON.stringify({ ...newsData, id: Number.parseInt(newsId) }),
+      })
+
+      await addActivity("edit", "Yangilik tahrirlandi", `"${title}" yangiligi tahrirlandi`)
+      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli yangilandi")
+    } else {
+      // Add new news
+      await apiRequest("/news", {
+        method: "POST",
+        body: JSON.stringify(newsData),
+      })
+
+      await addActivity("create", "Yangi yangilik", `"${title}" yangiligi qo'shildi`)
+      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli qo'shildi")
+    }
+
+    loadNews()
+    loadStatistics()
+    closeNewsModal()
+  } catch (error) {
+    console.error("Failed to save news:", error)
+    showToast("error", "Xato!", "Yangilikni saqlashda xato yuz berdi")
+  }
+}
+
+async function editNews(newsId) {
+  openNewsModal(newsId)
+}
+
+async function deleteNews(newsId) {
+  try {
+    const newsItem = await apiRequest(`/news/${newsId}`)
+
+    showConfirmModal(
+      "Yangilikni o'chirish",
+      `"${newsItem.title}" yangiligini o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.`,
+      async () => {
+        try {
+          await apiRequest(`/news/${newsId}`, {
+            method: "DELETE",
+          })
+
+          await addActivity("delete", "Yangilik o'chirildi", `"${newsItem.title}" yangiligi o'chirildi`)
+          showToast("success", "O'chirildi!", "Yangilik muvaffaqiyatli o'chirildi")
+          loadNews()
+          loadStatistics()
+        } catch (error) {
+          console.error("Failed to delete news:", error)
+          showToast("error", "Xato!", "Yangilikni o'chirishda xato yuz berdi")
+        }
+      },
+    )
+  } catch (error) {
+    console.error("Failed to load news for delete:", error)
+    showToast("error", "Xato!", "Yangilikni yuklashda xato yuz berdi")
+  }
+}
+
+async function duplicateNews(newsId) {
+  try {
+    const newsItem = await apiRequest(`/news/${newsId}`)
+
+    const duplicatedNews = {
+      ...newsItem,
+      title: `${newsItem.title} (nusxa)`,
+      date: new Date().toISOString(),
+      views: 0,
+    }
+
+    delete duplicatedNews.id // Remove ID so server assigns new one
+
+    await apiRequest("/news", {
+      method: "POST",
+      body: JSON.stringify(duplicatedNews),
+    })
+
+    await addActivity("create", "Yangilik nusxalandi", `"${newsItem.title}" yangiligi nusxalandi`)
+    showToast("success", "Nusxalandi!", "Yangilik muvaffaqiyatli nusxalandi")
+    loadNews()
+    loadStatistics()
+  } catch (error) {
+    console.error("Failed to duplicate news:", error)
+    showToast("error", "Xato!", "Yangilikni nusxalashda xato yuz berdi")
+  }
+}
+
+// Users Management
+async function loadUsers() {
+  try {
+    const users = await apiRequest("/users")
+    displayUsers(users)
+  } catch (error) {
+    console.error("Failed to load users:", error)
+    document.getElementById("usersList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Foydalanuvchilarni yuklashda xato yuz berdi.</p>
+            </div>
+        `
+  }
+}
+
+function displayUsers(users) {
+  const usersList = document.getElementById("usersList")
+  usersList.innerHTML = ""
+
+  if (users.length === 0) {
+    usersList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-users" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Foydalanuvchilar yo'q</h3>
+            </div>
+        `
+    return
+  }
+
+  const usersGrid = document.createElement("div")
+  usersGrid.className = "stats-grid"
+
+  users.forEach((user) => {
+    const userCard = document.createElement("div")
+    userCard.className = "stat-card"
+    userCard.innerHTML = `
+            <div class="stat-icon users">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="stat-info">
+                <h3>${user.name}</h3>
+                <p>${user.email}</p>
+                <span class="stat-change ${user.status === "active" ? "positive" : "negative"}">
+                    ${user.status === "active" ? "Faol" : "Bloklangan"}
+                </span>
+            </div>
+        `
+    usersGrid.appendChild(userCard)
+  })
+
+  usersList.appendChild(usersGrid)
+}
+
+// Comments Management
+async function loadComments() {
+  try {
+    const comments = await apiRequest("/comments")
+    displayComments(comments)
+  } catch (error) {
+    console.error("Failed to load comments:", error)
+    document.getElementById("commentsList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Izohlarni yuklashda xato yuz berdi.</p>
+            </div>
+        `
+  }
+}
+
+function displayComments(comments) {
+  const commentsList = document.getElementById("commentsList")
+  commentsList.innerHTML = ""
+
+  if (comments.length === 0) {
+    commentsList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Izohlar yo'q</h3>
+            </div>
+        `
+    return
+  }
+
+  const commentsGrid = document.createElement("div")
+  commentsGrid.className = "stats-grid"
+
+  comments.forEach((comment) => {
+    const commentCard = document.createElement("div")
+    commentCard.className = "stat-card"
+    commentCard.innerHTML = `
+            <div class="stat-icon comments">
+                <i class="fas fa-comment"></i>
+            </div>
+            <div class="stat-info">
+                <h3>${comment.author}</h3>
+                <p>${comment.content.substring(0, 100)}...</p>
+                <span class="stat-change ${comment.status === "approved" ? "positive" : comment.status === "pending" ? "warning" : "negative"}">
+                    ${getCommentStatusName(comment.status)}
+                </span>
+            </div>
+        `
+    commentsGrid.appendChild(commentCard)
+  })
+
+  commentsList.appendChild(commentsGrid)
+}
+
+// Activity logging
+async function addActivity(type, title, description) {
+  try {
+    const activity = {
+      type,
+      title,
+      description,
+      time: new Date().toISOString(),
+    }
+
+    await apiRequest("/activities", {
+      method: "POST",
+      body: JSON.stringify(activity),
+    })
+  } catch (error) {
+    console.error("Failed to add activity:", error)
+  }
+}
+
+// Image handling
+function handleImageUpload(input) {
+  const file = input.files[0]
+  if (file) {
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
+      showToast("error", "Xato!", "Rasm hajmi 5MB dan oshmasligi kerak")
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      showImagePreview(e.target.result)
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+function showImagePreview(src) {
+  const uploadArea = document.querySelector(".upload-content")
+  const preview = document.getElementById("imagePreview")
+  const previewImg = document.getElementById("previewImg")
+
+  uploadArea.style.display = "none"
+  preview.style.display = "block"
+  previewImg.src = src
+}
+
+function hideImagePreview() {
+  const uploadArea = document.querySelector(".upload-content")
+  const preview = document.getElementById("imagePreview")
+
+  uploadArea.style.display = "flex"
+  preview.style.display = "none"
+}
+
+function removeImage() {
+  hideImagePreview()
+  document.getElementById("newsImageFile").value = ""
+}
+
+// Drag and drop
+function setupDragAndDrop() {
+  const uploadArea = document.getElementById("imageUploadArea")
+  if (!uploadArea) return
+
+  uploadArea.addEventListener("dragover", (e) => {
+    e.preventDefault()
+    uploadArea.classList.add("dragover")
+  })
+
+  uploadArea.addEventListener("dragleave", (e) => {
+    e.preventDefault()
+    uploadArea.classList.remove("dragover")
+  })
+
+  uploadArea.addEventListener("drop", (e) => {
+    e.preventDefault()
+    uploadArea.classList.remove("dragover")
+
+    const files = e.dataTransfer.files
+    if (files.length > 0) {
+      const file = files[0]
+      if (file.type.startsWith("image/")) {
+        const input = document.getElementById("newsImageFile")
+        input.files = files
+        handleImageUpload(input)
+      } else {
+        showToast("error", "Xato!", "Faqat rasm fayllarini yuklash mumkin")
+      }
+    }
+  })
+}
+
+// Global search
+function globalSearch() {
+  const searchTerm = document.getElementById("globalSearch").value.toLowerCase()
+
+  if (searchTerm.length < 2) return
+
+  // Simple search implementation
+  console.log("Searching for:", searchTerm)
+}
+
+// Confirmation modal
+function showConfirmModal(title, message, onConfirm) {
+  const modal = document.getElementById("confirmModal")
+  document.getElementById("confirmTitle").textContent = title
+  document.getElementById("confirmMessage").textContent = message
+  currentAction = onConfirm
+  modal.classList.add("show")
+}
+
+function closeConfirmModal() {
+  document.getElementById("confirmModal").classList.remove("show")
+  currentAction = null
+}
+
+function confirmAction() {
+  if (currentAction) {
+    currentAction()
+    closeConfirmModal()
+  }
+}
+
+function closeAllModals() {
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.classList.remove("show")
+  })
+}
+
+// Utility functions
+function formatDate(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString("uz-UZ", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })
+}
+
+function getCategoryName(category) {
+  const categories = {
+    elon: "📢 E'lonlar",
+    tadbir: "🎉 Tadbirlar",
+    talim: "🏫 Ta'lim",
+    sport: "⚽ Sport",
+    texnologiya: "💻 Texnologiya",
+  }
+  return categories[category] || category
+}
+
+function getCommentStatusName(status) {
+  const statuses = {
+    pending: "Kutilmoqda",
+    approved: "Tasdiqlangan",
+    rejected: "Rad etilgan",
+  }
+  return statuses[status] || status
+}
+
+// Responsive handling
+window.addEventListener("resize", () => {
+  // Close sidebar on mobile when resizing to desktop
+  if (window.innerWidth > 768) {
+    document.getElementById("sidebar").classList.remove("show")
+  }
+})
+
+// Error handling
+window.addEventListener("error", (e) => {
+  console.error("Global error:", e.error)
+  showToast("error", "Xato yuz berdi!", "Iltimos, sahifani yangilang")
+})
+
+// Unhandled promise rejection
+window.addEventListener("unhandledrejection", (e) => {
+  console.error("Unhandled promise rejection:", e.reason)
+  showToast("error", "Xato yuz berdi!", "Iltimos, sahifani yangilang")
+})
+
+     </script>
 </body>
 </html>

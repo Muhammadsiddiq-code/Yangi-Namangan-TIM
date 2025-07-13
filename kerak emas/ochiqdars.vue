@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Carousel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      height: 100vh;
+      background-image: linear-gradient(#111, #222, #111);
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+    }
+
+    .carousel {
+      transform: perspective(1000px) rotateX(70deg);
+      transform-style: preserve-3d;
+      display: grid;
+      place-items: center;
+      animation: rotate 15s linear infinite;
+      transition: all 1s;
+      background-image: radial-gradient(circle at 50% 50%, #222 30%, transparent 40%);
+      margin-top: 250px;
+    }
+
+    .carousel:hover {
+      animation-play-state: paused;
+    }
+
+    .card, .cardb {
+      display: grid;
+      place-items: center;
+      width: 190px;
+      height: 225px;
+      position: absolute;
+      border-radius: 5px;
+    }
+
+    .card {
+      background-color: #333;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      -webkit-box-reflect: below 3px linear-gradient(transparent 75%, rgba(255,255,255,0.125));
+    }
+
+    .cardb {
+      background-color: #1f1f1f;
+    }
+
+    .img {
+      width: 180px;
+      height: 100px;
+      border-radius: 3px;
+      margin-bottom: -10px;
+      filter: brightness(0.7);
+      background-size: 190px 190px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: -5px;
+    }
+
+    span {
+      font-size: 12px;
+      text-align: center;
+      padding: 8px;
+    }
+
+    /* Positioning cards in 3D space */
+    .c1 { transform: rotateZ(0deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb1 { transform: rotateZ(0deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c2 { transform: rotateZ(45deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb2 { transform: rotateZ(45deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c3 { transform: rotateZ(90deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb3 { transform: rotateZ(90deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c4 { transform: rotateZ(135deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb4 { transform: rotateZ(135deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c5 { transform: rotateZ(180deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb5 { transform: rotateZ(180deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c6 { transform: rotateZ(225deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb6 { transform: rotateZ(225deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c7 { transform: rotateZ(270deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb7 { transform: rotateZ(270deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    .c8 { transform: rotateZ(315deg) rotateX(90deg) translateY(120px) translateZ(280px) rotateZ(180deg); }
+    .cb8 { transform: rotateZ(315deg) rotateX(90deg) translateY(120px) translateZ(279px); }
+
+    @keyframes rotate {
+      to {
+        transform: perspective(1000px) rotateX(70deg) rotateZ(360deg);
+      }
+    }
+
+    @media screen and (max-width: 992px) {
+      .carousel {
+        scale: 0.7;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel">
+    <div class="card c1">
+      <div class="img" style="background-image: url('./images/photo_2025-04-07_20-52-02.jpg');"></div>
+      <p>Image 8</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb1"></div>
+
+    <div class="card c2">
+      <div class="img" style="background-image: url('./images/photo_2025-04-22_09-59-05.jpg');"></div>
+      <p>Image 7</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb2"></div>
+
+    <div class="card c3">
+      <div class="img" style="background-image: url('./images/photo_2025-04-22_10-13-42.jpg');"></div>
+      <p>Image 6</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb3"></div>
+
+    <div class="card c4">
+      <div class="img" style="background-image: url('./images/photo_2025-04-23_11-20-15.jpg');"></div>
+      <p>Image 5</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb4"></div>
+
+    <div class="card c5">
+      <div class="img" style="background-image: url('./images/photo_2025-05-14_22-39-01.jpg');"></div>
+      <p>Image 4</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb5"></div>
+
+    <div class="card c6">
+      <div class="img" style="background-image: url('./images/photo_2025-05-14_22-54-23.jpg');"></div>
+      <p>Image 3</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb6"></div>
+
+    <div class="card c7">
+      <div class="img" style="background-image: url('./images/photo_2025_1.jpg');"></div>
+      <p>Image 2</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb7"></div>
+
+    <div class="card c8">
+      <div class="img" style="background-image: url('./images/photo_2025_2.jpg');"></div>
+      <p>Image 1</p>
+      <span>Lorem ipsum dolor sit amet.</span>
+    </div>
+    <div class="cardb cb8"></div>
+  </div>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined 3D & Futuristic Carousels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Exo+2:wght@300;400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for theme management */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #020617;
+            --bg-card: rgba(30, 41, 59, 0.85);
+            --bg-card-secondary: rgba(15, 23, 42, 0.9);
+            --text-primary: #f1f5f9;
+            --text-secondary: rgba(241, 245, 249, 0.8);
+            --text-muted: rgba(241, 245, 249, 0.6);
+            --border-color: rgba(94, 234, 212, 0.2);
+            --border-active: rgba(94, 234, 212, 0.3);
+            --glow-primary: rgba(56, 189, 248, 0.7);
+            --glow-secondary: rgba(94, 234, 212, 0.6);
+            --neon-pink: rgba(236, 72, 153, 0.8);
+            --neon-blue: rgba(59, 130, 246, 0.8);
+            --neon-green: rgba(16, 185, 129, 0.8);
+            --grid-color: rgba(14, 165, 233, 0.1);
+            --button-bg: rgba(12, 74, 110, 0.3);
+            --button-border: rgba(14, 165, 233, 0.4);
+            --progress-bg: rgba(56, 189, 248, 0.15);
+            --tech-bg: rgba(15, 23, 42, 0.85);
+            
+            /* 3D Carousel variables */
+            --carousel-3d-bg: #333;
+            --carousel-3d-back: #1f1f1f;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #e2e8f0;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card-secondary: rgba(248, 250, 252, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: rgba(30, 41, 59, 0.8);
+            --text-muted: rgba(30, 41, 59, 0.6);
+            --border-color: rgba(14, 165, 233, 0.3);
+            --border-active: rgba(14, 165, 233, 0.5);
+            --glow-primary: rgba(14, 165, 233, 0.4);
+            --glow-secondary: rgba(6, 182, 212, 0.3);
+            --neon-pink: rgba(236, 72, 153, 0.6);
+            --neon-blue: rgba(59, 130, 246, 0.6);
+            --neon-green: rgba(16, 185, 129, 0.6);
+            --grid-color: rgba(14, 165, 233, 0.05);
+            --button-bg: rgba(14, 165, 233, 0.1);
+            --button-border: rgba(14, 165, 233, 0.3);
+            --progress-bg: rgba(14, 165, 233, 0.1);
+            --tech-bg: rgba(248, 250, 252, 0.9);
+            
+            /* 3D Carousel light theme */
+            --carousel-3d-bg: #fff;
+            --carousel-3d-back: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Exo 2", sans-serif;
+            background: radial-gradient(circle at center, var(--bg-primary), var(--bg-secondary));
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: all 0.5s ease;
+            color: var(--text-primary);
+        }
+
+        /* Background grid effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            animation: gridMove 60s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0px 0px; opacity: 0.5; }
+            50% { opacity: 0.2; }
+            100% { background-position: 40px 40px; opacity: 0.5; }
+        }
+
+        /* Control Panel */
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .theme-toggle, .language-selector {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: var(--text-primary);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .theme-toggle:hover, .language-selector:hover {
+            border-color: var(--border-active);
+            box-shadow: 0 0 15px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 5px;
+            min-width: 120px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: var(--button-bg);
+        }
+
+        .language-option.active {
+            background: var(--glow-primary);
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin: 2rem 0;
+            font-family: "Orbitron", sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--glow-primary);
+            text-shadow: 0 0 20px var(--glow-primary);
+        }
+
+        /* 3D Carousel Styles */
+        .carousel-3d-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            margin-bottom: 4rem;
+        }
+
+        .carousel-3d {
+            transform: perspective(1000px) rotateX(70deg);
+            transform-style: preserve-3d;
+            display: grid;
+            place-items: center;
+            animation: rotate3d 15s linear infinite;
+            transition: all 1s;
+        }
+
+        .carousel-3d:hover {
+            animation-play-state: paused;
+        }
+
+        .card-3d, .cardb-3d {
+            display: grid;
+            place-items: center;
+            width: 235px;
+            height: 287px;
+            position: absolute;
+            border-radius: 5px;
+        }
+
+        .card-3d {
+            background-color: var(--carousel-3d-bg);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            -webkit-box-reflect: below 3px linear-gradient(transparent 75%, rgba(255,255,255,0.125));
+            border: 1px solid var(--border-color);
+        }
+
+        .cardb-3d {
+            background-color: var(--carousel-3d-back);
+        }
+
+        .img-3d {
+            width: 100%;
+            height: 200px;
+            border-radius: 3px;
+            filter: brightness(0.7);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .card-3d p {
+            font-size: 20px;
+            margin-bottom: -5px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .card-3d span {
+            font-size: 14px;
+            text-align: center;
+            padding: 8px;
+            color: var(--text-secondary);
+        }
+
+        /* 3D Card positions */
+        .c1 { transform: rotateZ(0deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb1 { transform: rotateZ(0deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c2 { transform: rotateZ(45deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb2 { transform: rotateZ(45deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c3 { transform: rotateZ(90deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb3 { transform: rotateZ(90deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c4 { transform: rotateZ(135deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb4 { transform: rotateZ(135deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c5 { transform: rotateZ(180deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb5 { transform: rotateZ(180deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c6 { transform: rotateZ(225deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb6 { transform: rotateZ(225deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c7 { transform: rotateZ(270deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb7 { transform: rotateZ(270deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+        .c8 { transform: rotateZ(315deg) rotateX(90deg) translateY(120px) translateZ(420px) rotateZ(180deg); }
+        .cb8 { transform: rotateZ(315deg) rotateX(90deg) translateY(120px) translateZ(419px); }
+
+        @keyframes rotate3d {
+            to {
+                transform: perspective(1000px) rotateX(70deg) rotateZ(360deg);
+            }
+        }
+
+        /* Futuristic Carousel Styles */
+        .carousel-futuristic-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            margin-bottom: 4rem;
+        }
+
+        .carousel-container {
+            width: 90%;
+            max-width: 1100px;
+            position: relative;
+            perspective: 2000px;
+            padding: 3rem 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.75s cubic-bezier(0.21, 0.61, 0.35, 1);
+            transform-style: preserve-3d;
+        }
+
+        .carousel-card {
+            min-width: 320px;
+            max-width: 320px;
+            margin: 0 25px;
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-secondary));
+            border-radius: 1.2rem;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3), 0 0 30px var(--glow-primary);
+            transition: all 0.6s cubic-bezier(0.21, 0.61, 0.35, 1);
+            transform-origin: center center;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Holographic border effect */
+        .carousel-card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, transparent 0%, var(--neon-blue) 25%, var(--neon-green) 50%, var(--neon-pink) 75%, transparent 100%);
+            z-index: -1;
+            border-radius: 1.3rem;
+            filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: borderGlow 6s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; opacity: 0.3; }
+            50% { background-position: 100% 50%; opacity: 0.5; }
+            100% { background-position: 0% 50%; opacity: 0.3; }
+        }
+
+        .carousel-card.is-active::before {
+            opacity: 1;
+            background-size: 300% 300%;
+        }
+
+        .carousel-card:not(.is-active) {
+            transform: scale(0.8) rotateY(35deg) translateZ(-100px);
+            opacity: 0.45;
+            filter: saturate(0.6) brightness(0.7);
+        }
+
+        .carousel-card.is-prev {
+            transform-origin: right center;
+            transform: scale(0.75) rotateY(45deg) translateX(-80px) translateZ(-150px);
+        }
+
+        .carousel-card.is-next {
+            transform-origin: left center;
+            transform: scale(0.75) rotateY(-45deg) translateX(80px) translateZ(-150px);
+        }
+
+        .carousel-card.is-active {
+            transform: scale(1) rotateY(0) translateZ(0);
+            opacity: 1;
+            z-index: 20;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px var(--glow-primary), inset 0 0 20px var(--glow-primary);
+            filter: saturate(1.2) brightness(1.1);
+        }
+
+        .card-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-active);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s ease;
+        }
+
+        .carousel-card.is-active .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-image-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(120deg, var(--glow-primary), transparent 70%), radial-gradient(circle at 80% 20%, var(--glow-secondary), transparent 50%);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .card-image-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg, var(--glow-primary) 0px, var(--glow-primary) 1px, transparent 1px, transparent 4px);
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: 5;
+        }
+
+        .card-content {
+            padding: 1.75rem;
+            color: var(--text-primary);
+        }
+
+        .card-title {
+            font-family: "Orbitron", sans-serif;
+            margin-bottom: 0.75rem;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .card-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: transparent;
+            -webkit-text-stroke: 0.5px;
+            filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .carousel-card.is-active .card-title::after {
+            opacity: 0.8;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .card-progress {
+            height: 3px;
+            background: var(--progress-bg);
+            margin-top: 1.25rem;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-value {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            border-radius: 4px;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--button-bg);
+            color: var(--glow-primary);
+            border: 1px solid var(--button-border);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px var(--glow-primary);
+        }
+
+        .carousel-button:hover {
+            background-color: var(--glow-primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 20px var(--glow-primary);
+        }
+
+        .carousel-button.prev {
+            left: -24px;
+        }
+
+        .carousel-button.next {
+            right: -24px;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+
+        .indicator {
+            width: 24px;
+            height: 4px;
+            background: var(--progress-bg);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--glow-primary);
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+
+        .tech-details {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--tech-bg);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.21, 0.61, 0.35, 1);
+            z-index: 25;
+            border-top: 1px solid var(--border-active);
+        }
+
+        .carousel-card.is-active:hover .tech-details {
+            transform: translateY(0);
+        }
+
+        .tech-tag {
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            background: var(--progress-bg);
+            border: 1px solid var(--border-active);
+            border-radius: 4px;
+            color: var(--glow-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 425px) {
+            .control-panel {
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                display: flex;
+                justify-content: space-between;
+                gap: 8px;
+                z-index: 1000;
+                flex-wrap: nowrap;
+            }
+
+            .theme-toggle, .language-selector {
+                padding: 6px 10px;
+                font-size: 11px;
+                flex: 1;
+                text-align: center;
+                max-width: 120px;
+            }
+
+            .main-container {
+                padding-top: 60px;
+            }
+
+            .section-header {
+                font-size: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            .carousel-3d {
+                scale: 0.6;
+            }
+
+            .carousel-card {
+                min-width: 240px;
+                max-width: 240px;
+                margin: 0 10px;
+            }
+
+            .card-image-container {
+                height: 140px;
+            }
+
+            .carousel-button {
+                width: 36px;
+                height: 36px;
+            }
+
+            .carousel-button.prev {
+                left: 2px;
+            }
+
+            .carousel-button.next {
+                right: 2px;
+            }
+        }
+
+        @media (max-width: 768px) and (min-width: 426px) {
+            .carousel-3d {
+                scale: 0.7;
+            }
+
+            .carousel-card {
+                min-width: 260px;
+                max-width: 260px;
+                margin: 0 15px;
+            }
+
+            .card-image-container {
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Control Panel -->
+    <div s class="control-panel">
+        <button class="theme-toggle" id="themeToggle">
+            <span data-translate="theme">🌙 </span>
+        </button>
+        <div class="language-selector" id="languageSelector">
+            <span data-translate="language">🌐 Til</span>
+            <div class="language-dropdown" id="languageDropdown">
+                <div class="language-option active" data-lang="uz">O'zbekcha</div>
+                <div class="language-option" data-lang="ru">Русский</div>
+                <div class="language-option" data-lang="en">English</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 100px; margin-bottom: 100px; " class="main-container">
+        <!-- 3D Carousel Section -->
+        <div class="carousel-3d-section">
+            <!-- <h2 class="section-header" data-translate="carousel_3d_title">3D Carousel</h2> -->
+            <div class="carousel-3d" id="carousel3d">
+                <!-- 3D Cards will be generated here -->
+            </div>
+        </div>
+
+        <!-- Futuristic Carousel Section -->
+        <div  class="carousel-futuristic-section">
+            <!-- <h2 class="section-header" data-translate="carousel_futuristic_title">Futuristic Carousel</h2> -->
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <div class="carousel-card">
+                        <div class="card-image-container">
+                            <img src="./images/ochiqdars1.jpg" alt="Project Alpha" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-text="Project Alpha" data-translate="project1_title">Alfa loyihasi</h3>
+                            <p class="card-description" data-translate="project1_desc">Raqamli chegaraning neon bilan to'ldirilgan manzaralarini o'rganish.</p>
+                            <div class="card-progress">
+                                <div class="progress-value" style="width:65%"></div>
+                            </div>
+                            <div class="card-stats">
+                                <span data-translate="phase2">II BOSQICH</span>
+                                <span data-translate="complete65">65% TUGALLANGAN</span>
+                            </div>
+                        </div>
+                        <div class="tech-details">
+                            <div class="tech-tag" data-translate="neural">Neyron tarmoqlari</div>
+                            <div class="tech-tag" data-translate="voxel">Voksel tizimlari</div>
+                            <div class="tech-tag" data-translate="quantum">Kvant render</div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="card-image-container">
+                            <img src="./images/ochiqdars2.jpg" alt="Neuro-Link UI" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-text="Neuro-Link UI" data-translate="project2_title">Neyro-Link UI</h3>
+                            <p class="card-description" data-translate="project2_desc">Miya-kompyuter o'zaro ta'siri uchun intuitiv interfeyslar.</p>
+                            <div class="card-progress">
+                                <div class="progress-value" style="width:42%"></div>
+                            </div>
+                            <div class="card-stats">
+                                <span data-translate="phase1">I BOSQICH</span>
+                                <span data-translate="complete42">42% TUGALLANGAN</span>
+                            </div>
+                        </div>
+                        <div class="tech-details">
+                            <div class="tech-tag" data-translate="bci">BCI ramkasi</div>
+                            <div class="tech-tag" data-translate="gesture">Imo-ishora tanish</div>
+                            <div class="tech-tag" data-translate="thought">Fikr xaritalash</div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="card-image-container">
+                            <img src="./images/ochiqdars3.jpg" alt="Quantum Entanglement" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-text="Quantum Entanglement" data-translate="project3_title">Kvant chalkashligi</h3>
+                            <p class="card-description" data-translate="project3_desc">Murakkab kvant holatlarini vizualizatsiya qilish.</p>
+                            <div class="card-progress">
+                                <div class="progress-value" style="width:89%"></div>
+                            </div>
+                            <div class="card-stats">
+                                <span data-translate="phase3">III BOSQICH</span>
+                                <span data-translate="complete89">89% TUGALLANGAN</span>
+                            </div>
+                        </div>
+                        <div class="tech-details">
+                            <div class="tech-tag" data-translate="qbit">Q-Bit arxitekturasi</div>
+                            <div class="tech-tag" data-translate="multiverse">Ko'p olam modellash</div>
+                            <div class="tech-tag" data-translate="probability">Ehtimollik maydonlari</div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="card-image-container">
+                            <img src="./images/ochiqdars4.jpg" alt="Project Chimera" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-text="Project Chimera" data-translate="project4_title">Chimera loyihasi</h3>
+                            <p class="card-description" data-translate="project4_desc">Chuqur kosmos uchun harakatlantiruvchi tizimlar.</p>
+                            <div class="card-progress">
+                                <div class="progress-value" style="width:51%"></div>
+                            </div>
+                            <div class="card-stats">
+                                <span data-translate="phase2">II BOSQICH</span>
+                                <span data-translate="complete51">51% TUGALLANGAN</span>
+                            </div>
+                        </div>
+                        <div class="tech-details">
+                            <div class="tech-tag" data-translate="dark_energy">Qorong'u energiya</div>
+                            <div class="tech-tag" data-translate="plasma">Plazma saqlash</div>
+                            <div class="tech-tag" data-translate="gravitational">Gravitatsion linza</div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="card-image-container">
+                            <img src="./images/ochiqdars5.jpg" alt="Aether Network" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-text="Aether Network" data-translate="project5_title">Aether tarmog'i</h3>
+                            <p class="card-description" data-translate="project5_desc">Markazlashmagan ma'lumotlar tarmog'i.</p>
+                            <div class="card-progress">
+                                <div class="progress-value" style="width:78%"></div>
+                            </div>
+                            <div class="card-stats">
+                                <span data-translate="phase3">III BOSQICH</span>
+                                <span data-translate="complete78">78% TUGALLANGAN</span>
+                            </div>
+                        </div>
+                        <div class="tech-details">
+                            <div class="tech-tag" data-translate="quantum_encryption">Kvant shifrlash</div>
+                            <div class="tech-tag" data-translate="self_healing">O'z-o'zini tiklash</div>
+                            <div class="tech-tag" data-translate="data_holograms">Ma'lumot hologrammalari</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-button prev">
+                    <svg xmlns="./images/ochiqdars6.jpg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 24px; height: 24px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <button class="carousel-button next">
+                    <svg xmlns="./images/ochiqdars7.jpg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 24px; height: 24px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+
+                <div class="carousel-indicators">
+                    <div class="indicator active"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Translation data
+        const translations = {
+            uz: {
+                theme: "🌙 ",
+                theme_light: "☀️",
+                language: "🌐 Til",
+                carousel_3d_title: "3D Karusel",
+                carousel_futuristic_title: "Futuristik Karusel",
+                // 3D Carousel
+                image_1: "Rasm 1",
+                image_2: "Rasm 2", 
+                image_3: "Rasm 3",
+                image_4: "Rasm 4",
+                image_5: "Rasm 5",
+                image_6: "Rasm 6",
+                image_7: "Rasm 7",
+                image_8: "Rasm 8",
+                // Futuristic Carousel
+                project1_title: "Alfa loyihasi",
+                project1_desc: "Raqamli chegaraning neon bilan to'ldirilgan manzaralarini o'rganish.",
+                project2_title: "Neyro-Link UI",
+                project2_desc: "Miya-kompyuter o'zaro ta'siri uchun intuitiv interfeyslar.",
+                project3_title: "Kvant chalkashligi",
+                project3_desc: "Murakkab kvant holatlarini vizualizatsiya qilish.",
+                project4_title: "Chimera loyihasi",
+                project4_desc: "Chuqur kosmos uchun harakatlantiruvchi tizimlar.",
+                project5_title: "Aether tarmog'i",
+                project5_desc: "Markazlashmagan ma'lumotlar tarmog'i.",
+                phase1: "I BOSQICH",
+                phase2: "II BOSQICH", 
+                phase3: "III BOSQICH",
+                complete42: "42% TUGALLANGAN",
+                complete51: "51% TUGALLANGAN",
+                complete65: "65% TUGALLANGAN",
+                complete78: "78% TUGALLANGAN",
+                complete89: "89% TUGALLANGAN",
+                neural: "Neyron tarmoqlari",
+                voxel: "Voksel tizimlari",
+                quantum: "Kvant render",
+                bci: "BCI ramkasi",
+                gesture: "Imo-ishora tanish",
+                thought: "Fikr xaritalash",
+                qbit: "Q-Bit arxitekturasi",
+                multiverse: "Ko'p olam modellash",
+                probability: "Ehtimollik maydonlari",
+                dark_energy: "Qorong'u energiya",
+                plasma: "Plazma saqlash",
+                gravitational: "Gravitatsion linza",
+                quantum_encryption: "Kvant shifrlash",
+                self_healing: "O'z-o'zini tiklash",
+                data_holograms: "Ma'lumot hologrammalari"
+            },
+            ru: {
+                theme: "🌙 Тёмный режим",
+                theme_light: "☀️ Светлый режим",
+                language: "🌐 Язык",
+                carousel_3d_title: "3D Карусель",
+                carousel_futuristic_title: "Футуристическая Карусель",
+                // 3D Carousel
+                image_1: "Картинка 1",
+                image_2: "Картинка 2",
+                image_3: "Картинка 3", 
+                image_4: "Картинка 4",
+                image_5: "Картинка 5",
+                image_6: "Картинка 6",
+                image_7: "Картинка 7",
+                image_8: "Картинка 8",
+                // Futuristic Carousel
+                project1_title: "Проект Альфа",
+                project1_desc: "Исследование неоновых ландшафтов цифровой границы.",
+                project2_title: "Нейро-Линк UI",
+                project2_desc: "Интуитивные интерфейсы для взаимодействия мозг-компьютер.",
+                project3_title: "Квантовая запутанность",
+                project3_desc: "Визуализация сложных квантовых состояний.",
+                project4_title: "Проект Химера",
+                project4_desc: "Двигательные системы для дальнего космоса.",
+                project5_title: "Сеть Эфир",
+                project5_desc: "Децентрализованная сеть данных.",
+                phase1: "ФАЗА I",
+                phase2: "ФАЗА II",
+                phase3: "ФАЗА III",
+                complete42: "42% ЗАВЕРШЕНО",
+                complete51: "51% ЗАВЕРШЕНО",
+                complete65: "65% ЗАВЕРШЕНО",
+                complete78: "78% ЗАВЕРШЕНО",
+                complete89: "89% ЗАВЕРШЕНО",
+                neural: "Нейронные сети",
+                voxel: "Воксельные системы",
+                quantum: "Квантовый рендеринг",
+                bci: "BCI фреймворк",
+                gesture: "Распознавание жестов",
+                thought: "Картирование мыслей",
+                qbit: "Q-Bit архитектура",
+                multiverse: "Моделирование мультивселенной",
+                probability: "Поля вероятности",
+                dark_energy: "Тёмная энергия",
+                plasma: "Удержание плазмы",
+                gravitational: "Гравитационная линза",
+                quantum_encryption: "Квантовое шифрование",
+                self_healing: "Самовосстановление",
+                data_holograms: "Голограммы данных"
+            },
+            en: {
+                theme: "🌙 Dark Mode",
+                theme_light: "☀️ Light Mode",
+                language: "🌐 Language",
+                carousel_3d_title: "3D Carousel",
+                carousel_futuristic_title: "Futuristic Carousel",
+                // 3D Carousel
+                image_1: "Image 1",
+                image_2: "Image 2",
+                image_3: "Image 3",
+                image_4: "Image 4",
+                image_5: "Image 5",
+                image_6: "Image 6",
+                image_7: "Image 7",
+                image_8: "Image 8",
+                // Futuristic Carousel
+                project1_title: "Project Alpha",
+                project1_desc: "Exploring neon-drenched digital frontiers.",
+                project2_title: "Neuro-Link UI",
+                project2_desc: "Intuitive brain-computer interfaces.",
+                project3_title: "Quantum Entanglement",
+                project3_desc: "Visualizing complex quantum states.",
+                project4_title: "Project Chimera",
+                project4_desc: "Deep space propulsion systems.",
+                project5_title: "Aether Network",
+                project5_desc: "Decentralized data networks.",
+                phase1: "PHASE I",
+                phase2: "PHASE II",
+                phase3: "PHASE III",
+                complete42: "42% COMPLETE",
+                complete51: "51% COMPLETE",
+                complete65: "65% COMPLETE",
+                complete78: "78% COMPLETE",
+                complete89: "89% COMPLETE",
+                neural: "Neural Networks",
+                voxel: "Voxel Systems",
+                quantum: "Quantum Rendering",
+                bci: "BCI Framework",
+                gesture: "Gesture Recognition",
+                thought: "Thought Mapping",
+                qbit: "Q-Bit Architecture",
+                multiverse: "Multiverse Modeling",
+                probability: "Probability Fields",
+                dark_energy: "Dark Energy",
+                plasma: "Plasma Containment",
+                gravitational: "Gravitational Lens",
+                quantum_encryption: "Quantum Encryption",
+                self_healing: "Self-Healing",
+                data_holograms: "Data Holograms"
+            }
+        };
+
+        // Current language and theme
+        let currentLang = 'uz';
+        let currentTheme = 'dark';
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', currentTheme);
+            updateThemeText();
+        });
+
+        function updateThemeText() {
+            const themeText = themeToggle.querySelector('[data-translate="theme"]');
+            if (currentTheme === 'dark') {
+                themeText.textContent = translations[currentLang].theme;
+            } else {
+                themeText.textContent = translations[currentLang].theme_light;
+            }
+        }
+
+        // Language selector functionality
+        const languageSelector = document.getElementById('languageSelector');
+        const languageDropdown = document.getElementById('languageDropdown');
+        const languageOptions = document.querySelectorAll('.language-option');
+
+        languageSelector.addEventListener('click', (e) => {
+            e.stopPropagation();
+            languageDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            languageDropdown.classList.remove('active');
+        });
+
+        languageOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const selectedLang = option.getAttribute('data-lang');
+                
+                languageOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                
+                currentLang = selectedLang;
+                updateTranslations();
+                create3DCards(currentLang);
+                
+                languageDropdown.classList.remove('active');
+            });
+        });
+
+        function updateTranslations() {
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+
+            const cardTitles = document.querySelectorAll('.card-title');
+            cardTitles.forEach(title => {
+                const key = title.getAttribute('data-translate');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    title.setAttribute('data-text', translations[currentLang][key]);
+                }
+            });
+
+            updateThemeText();
+        }
+
+        // 3D Carousel functionality
+        const carousel3d = document.getElementById("carousel3d");
+
+        const create3DCards = (lang = "uz") => {
+            carousel3d.innerHTML = "";
+            for (let i = 1; i <= 8; i++) {
+                carousel3d.innerHTML += `
+                    <div class="card-3d c${i}">
+                        <div class="img-3d" style="background-image: url('./images/photo_2025-04-22_10-13-42.jpg${i}');"></div>
+                        <p>${translations[lang][`image_${9 - i}`]}</p>
+                        <span>Lorem ipsum dolor sit amet.</span>
+                    </div>
+                    <div class="cardb-3d cb${i}"></div>
+                `;
+            }
+        };
+
+        // Futuristic Carousel functionality
+        const track = document.querySelector(".carousel-track");
+        const cards = Array.from(track.children);
+        const nextButton = document.querySelector(".carousel-button.next");
+        const prevButton = document.querySelector(".carousel-button.prev");
+        const container = document.querySelector(".carousel-container");
+        const indicators = document.querySelectorAll(".indicator");
+
+        let currentIndex = 0;
+        let cardWidth = cards[0].offsetWidth;
+        let cardMargin = parseInt(window.getComputedStyle(cards[0]).marginRight) * 2;
+
+        function initializeCarousel() {
+            cardWidth = cards[0].offsetWidth;
+            cardMargin = parseInt(window.getComputedStyle(cards[0]).marginRight) * 2;
+            const initialOffset = container.offsetWidth / 2 - cardWidth / 2;
+            track.style.transform = `translateX(${initialOffset}px)`;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            cards.forEach((card, index) => {
+                card.classList.remove("is-active", "is-prev", "is-next", "is-far-prev", "is-far-next");
+
+                if (index === currentIndex) {
+                    card.classList.add("is-active");
+                } else if (index === currentIndex - 1) {
+                    card.classList.add("is-prev");
+                } else if (index === currentIndex + 1) {
+                    card.classList.add("is-next");
+                } else if (index < currentIndex - 1) {
+                    card.classList.add("is-far-prev");
+                } else if (index > currentIndex + 1) {
+                    card.classList.add("is-far-next");
+                }
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle("active", index === currentIndex);
+            });
+        }
+
+        function moveToSlide(targetIndex) {
+            if (targetIndex < 0 || targetIndex >= cards.length) return;
+
+            const amountToMove = targetIndex * (cardWidth + cardMargin);
+            const containerCenter = container.offsetWidth / 2;
+            const cardCenter = cardWidth / 2;
+            const targetTranslateX = containerCenter - cardCenter - amountToMove;
+
+            track.style.transform = `translateX(${targetTranslateX - 25}px)`;
+            currentIndex = targetIndex;
+            updateCarousel();
+        }
+
+        nextButton.addEventListener("click", () => {
+            const nextIndex = currentIndex + 1;
+            if (nextIndex < cards.length) {
+                moveToSlide(nextIndex);
+            }
+        });
+
+        prevButton.addEventListener("click", () => {
+            const prevIndex = currentIndex - 1;
+            if (prevIndex >= 0) {
+                moveToSlide(prevIndex);
+            }
+        });
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener("click", () => {
+                moveToSlide(index);
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+                if (currentIndex < cards.length - 1) {
+                    moveToSlide(currentIndex + 1);
+                }
+            } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                if (currentIndex > 0) {
+                    moveToSlide(currentIndex - 1);
+                }
+            }
+        });
+
+        // Swipe functionality
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        track.addEventListener("mousedown", dragStart);
+        track.addEventListener("touchstart", dragStart, { passive: true });
+        track.addEventListener("mousemove", drag);
+        track.addEventListener("touchmove", drag, { passive: true });
+        track.addEventListener("mouseup", dragEnd);
+        track.addEventListener("mouseleave", dragEnd);
+        track.addEventListener("touchend", dragEnd);
+
+        function dragStart(event) {
+            isDragging = true;
+            startPos = getPositionX(event);
+            const transformMatrix = window.getComputedStyle(track).getPropertyValue("transform");
+            if (transformMatrix !== "none") {
+                currentTranslate = parseInt(transformMatrix.split(",")[4]);
+            } else {
+                currentTranslate = 0;
+            }
+            prevTranslate = currentTranslate;
+            track.style.transition = "none";
+        }
+
+        function drag(event) {
+            if (isDragging) {
+                const currentPosition = getPositionX(event);
+                const moveX = currentPosition - startPos;
+                currentTranslate = prevTranslate + moveX;
+                track.style.transform = `translateX(${currentTranslate}px)`;
+            }
+        }
+
+        function dragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            const movedBy = currentTranslate - prevTranslate;
+            track.style.transition = "transform 0.75s cubic-bezier(0.21, 0.61, 0.35, 1)";
+
+            const threshold = cardWidth / 3.5;
+            if (movedBy < -threshold && currentIndex < cards.length - 1) {
+                moveToSlide(currentIndex + 1);
+            } else if (movedBy > threshold && currentIndex > 0) {
+                moveToSlide(currentIndex - 1);
+            } else {
+                moveToSlide(currentIndex);
+            }
+        }
+
+        function getPositionX(event) {
+            return event.type.includes("mouse") ? event.pageX : event.touches[0].clientX;
+        }
+
+        // Window resize handler
+        window.addEventListener("resize", () => {
+            initializeCarousel();
+            moveToSlide(currentIndex);
+        });
+
+        // Initialize everything
+        window.onload = () => {
+            create3DCards(currentLang);
+            initializeCarousel();
+            moveToSlide(2);
+            updateTranslations();
+        };
+    </script>
+</body>
+</html>
