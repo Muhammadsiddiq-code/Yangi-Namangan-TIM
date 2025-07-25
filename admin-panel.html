@@ -4272,63 +4272,70 @@ function closeNewsModal() {
 
 
 
-async function handleNewsSubmit(e) {
-  e.preventDefault();
-  const newsId = document.getElementById("newsId").value;
-  const title = document.getElementById("newsTitle").value.trim();
-  const category = document.getElementById("newsCategory").value;
-  const content = document.getElementById("newsContent").value.trim();
-  const published = document.getElementById("newsPublished").checked;
-  const imageInput = document.getElementById("newsImage");
-  const image = imageInput.files[0] ? await fileToBase64(imageInput.files[0]) : document.getElementById("imagePreview").src;
+<!--
+function handleNewsSubmit(e) {
+  e.preventDefault()
 
-  const newsData = {
-    id: newsId || Date.now().toString(),
-    title,
-    category,
-    content,
-    published,
-    author: currentUser.name,
-    date: new Date().toISOString(),
-    views: 0,
-    image
-  };
+  const formData = new FormData(e.target)
+  const newsId = document.getElementById("newsId").value
+  const title = document.getElementById("newsTitle").value.trim()
+  const category = document.getElementById("newsCategory").value
+  const content = document.getElementById("newsContent").value.trim()
+  const published = document.getElementById("newsPublished").checked
 
-  try {
-    if (newsId) {
-      // Edit mode
-      await fetch("http://localhost:3000/news/" + newsId, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newsData)
-      });
-      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli yangilandi");
-    } else {
-      // Add mode
-      await fetch("http://localhost:3000/news", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newsData)
-      });
-      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli qo'shildi");
+  if (!title || !category || !content) {
+    showToast("error", "Xato!", "Barcha majburiy maydonlarni to'ldiring")
+    return
+  }
+
+  const news = JSON.parse(localStorage.getItem("news") || "[]")
+  const imagePreview = document.getElementById("previewImg")
+  const image = imagePreview.style.display !== "none" ? imagePreview.src : null
+
+  if (newsId) {
+    // Edit existing news
+    const index = news.findIndex((item) => item.id === Number.parseInt(newsId))
+    if (index !== -1) {
+      news[index] = {
+        ...news[index],
+        title,
+        category,
+        content,
+        published,
+        image,
+        updatedAt: new Date().toISOString(),
+      }
+
+      addActivity("edit", "Yangilik tahrirlandi", `"${title}" yangiligi tahrirlandi`)
+      showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli yangilandi")
+    }
+  } else {
+    // Add new news
+    const newNews = {
+      id: Date.now(),
+      title,
+      category,
+      content,
+      published,
+      image,
+      author: currentUser.name,
+      date: new Date().toISOString(),
+      views: 0,
     }
 
-    closeNewsModal();
-    loadNews(); // Serverdan yangi ro'yxatni yuklab oling
-  } catch (error) {
-    console.error("Failed to save news:", error);
-    showToast("error", "Xato!", "Yangilikni saqlashda xato yuz berdi");
+    news.unshift(newNews)
+    addActivity("create", "Yangi yangilik", `"${title}" yangiligi qo'shildi`)
+    addNotification("success", "Yangi yangilik", `"${title}" yangiligi qo'shildi`)
+    showToast("success", "Muvaffaqiyatli!", "Yangilik muvaffaqiyatli qo'shildi")
   }
-}
 
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+  localStorage.setItem("news", JSON.stringify(news))
+  loadNews()
+  loadStatistics()
+  closeNewsModal()
 }
+-->
+
 
 
 
@@ -7548,16 +7555,12 @@ window.addEventListener("unhandledrejection", (e) => {
 const API_BASE_URL = "http://localhost:3000"
 
 // Global variables
-// let currentUser = null
-// let currentTheme =
-//   localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-// let sidebarCollapsed = false
-// let currentAction = null
-// let isOnline = navigator.onLine
-
-
-
-
+let currentUser = null
+let currentTheme =
+  localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+let sidebarCollapsed = false
+let currentAction = null
+let isOnline = navigator.onLine
 
 // Initialize app
 document.addEventListener("DOMContentLoaded", () => {
@@ -7992,47 +7995,27 @@ function animateCounter(elementId, targetValue) {
 }
 
 // News Management
-// async function loadNews() {
-//   try {
-//     const news = await apiRequest("/news")
-//     displayNews(news)
-//     hideNewsLoading()
-//   } catch (error) {
-//     console.error("Failed to load news:", error)
-//     hideNewsLoading()
-//     document.getElementById("newsList").innerHTML = `
-//             <div style="text-align: center; padding: 40px; color: var(--text-muted);">
-//                 <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
-//                 <h3>Xato yuz berdi</h3>
-//                 <p>Yangiliklarni yuklashda xato yuz berdi. Iltimos, qayta urinib ko'ring.</p>
-//                 <button class="btn btn-primary" onclick="loadNews()" style="margin-top: 16px;">
-//                     <i class="fas fa-refresh"></i>
-//                     Qayta yuklash
-//                 </button>
-//             </div>
-//         `
-//   }
-// }
-
-
-
-
-
 async function loadNews() {
   try {
-    const news = await fetch("http://localhost:3000/news").then(res => res.json());
-    displayNews(news);
+    const news = await apiRequest("/news")
+    displayNews(news)
+    hideNewsLoading()
   } catch (error) {
-    console.error("Failed to load news:", error);
-    showToast("error", "Xato!", "Yangiliklarni yuklashda xato yuz berdi");
+    console.error("Failed to load news:", error)
+    hideNewsLoading()
+    document.getElementById("newsList").innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <h3>Xato yuz berdi</h3>
+                <p>Yangiliklarni yuklashda xato yuz berdi. Iltimos, qayta urinib ko'ring.</p>
+                <button class="btn btn-primary" onclick="loadNews()" style="margin-top: 16px;">
+                    <i class="fas fa-refresh"></i>
+                    Qayta yuklash
+                </button>
+            </div>
+        `
   }
 }
-
-
-
-
-
-
 
 function displayNews(news) {
   const newsList = document.getElementById("newsList")
@@ -8607,7 +8590,5 @@ window.addEventListener("unhandledrejection", (e) => {
 })
 
      </script>
-
-     <script src="admin.js"></script>
 </body>
 </html>
