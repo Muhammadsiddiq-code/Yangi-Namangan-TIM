@@ -1357,13 +1357,11 @@ document.addEventListener("DOMContentLoaded", () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Filter news
         function filterNews() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const category = document.getElementById('categoryFilter').value;
             const sortBy = document.getElementById('sortFilter').value;
 
-            // Filter by search and category
             filteredNews = allNews.filter(news => {
                 const matchesSearch = news.title.toLowerCase().includes(searchTerm) || 
                                     news.content.toLowerCase().includes(searchTerm);
@@ -1371,7 +1369,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return matchesSearch && matchesCategory;
             });
 
-            // Sort
             switch (sortBy) {
                 case 'newest':
                     filteredNews.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1393,7 +1390,6 @@ document.addEventListener("DOMContentLoaded", () => {
         function readMore(newsId) {
             const news = allNews.find(n => n.id === newsId);
             if (news) {
-                // Increment views
                 news.views++;
                 localStorage.setItem('news', JSON.stringify(allNews));
                 
@@ -1402,7 +1398,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Show news modal
         function showNewsModal(news) {
             const modal = document.createElement('div');
             modal.style.cssText = `
@@ -1471,7 +1466,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.body.appendChild(modal);
 
-            // Close on outside click
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     modal.remove();
@@ -1479,7 +1473,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Utility functions
         function getCategoryIcon(category) {
             const icons = {
                 elon: '📢',
@@ -1539,7 +1532,6 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         }
 
-        // Auto-refresh news every 30 seconds
         setInterval(() => {
             const currentNewsData = localStorage.getItem('news');
             if (currentNewsData) {
