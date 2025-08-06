@@ -774,7 +774,7 @@ class PIIMAChatWidget {
         "bog'lanish":
           "Bizning aloqa ma'lumotlari:\n\n📍 Manzil: Namangan shahar, Yangi Namangan tumani\n📞 Telefon: +998 97 827 55 77\n📧 Telegram: https://t.me/YangiNamanganTIM\n🌐 Sayt: https://yntimuz.vercel.app\n\n🕒 Ish vaqti: Dushanbadan-Jumagacha 8:30-17:30",
         fanlar:
-          "Bizda quyidagi fanlar bo'yicha chuqurlashtirilgan ta'lim beriladi:\n\n🔬 Aniq fanlar:\n• Algebra\n• Fizika\n• Geometriya\n• English\n\n💻 Zamonaviy fanlar:\n• Informatika\n• Robotika\n• IT texnologiyalar",
+          "Bizda quyidagi fanlar bo'yicha chuqurlashtirilgan ta'lim beriladi aniq:\n\n🔬 Aniq fanlar:\n• Algebra\n• Fizika\n• Geometriya\n• English\n\n💻 Zamonaviy fanlar:\n• Informatika\n• Robotika\n• IT texnologiyalar",
         imtiyozlar:
           "Bizning maktab imtiyozlari:\n\n🏆 Yuqori sifatli ta'lim\n🌟 Malakali o'qituvchilar\n💻 Zamonaviy jihozlar\n🎯 Individual yondashuv\n🏅 Olimpiada tayyorlash\n🌍 Xalqaro aloqalar",
         default:
@@ -861,6 +861,8 @@ class PIIMAChatWidget {
         const lang = btn.getAttribute("data-lang")
         this.switchLanguage(lang)
       })
+
+
     })
 
     // Show language selector on long press
@@ -929,6 +931,8 @@ class PIIMAChatWidget {
   sendMessage() {
     const input = document.getElementById("message-input")
     const message = input.value.trim()
+
+
 
     if (!message) return
 
@@ -1047,6 +1051,7 @@ class PIIMAChatWidget {
     }
 
     return responses["default"]
+
   }
 
   showWelcomeMessage() {
