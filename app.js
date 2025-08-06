@@ -733,7 +733,7 @@ class PIIMAChatWidget {
 
     this.translations = {
       uz: {
-        "chat-title": "  ixtisoslasjtirilgan maktab AI ",
+        "chat-title": "  ixtisoslasjtirilgan maktab AI  ",
         "chat-status": "Onlayn",
         "chat-placeholder": "Savolingizni yozing...",
         "quick-about": "Maktab haqida",
