@@ -1157,8 +1157,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return [
                 {
                     id: 1,
-                    title: "Yangi ta'lim dasturi ishga tushirildi",
-                    content: "Maktablarda yangi ta'lim dasturi joriy etilmoqda. Bu dastur zamonaviy texnologiyalar va innovatsion yondashuvlarni o'z ichiga oladi. Dastur barcha yoshdagi o'quvchilar uchun mo'ljallangan va kelajakda ta'lim sifatini oshirishga qaratilgan.",
+                    title: "Yangi ta'lim dasturi ishga tushirildi!",
+                    content: "Maktablarda yangi ta'lim dasturi joriy etilmoqda. Bu dastur zamonaviy texnologiyalar va innovatsion yondashuvlarni o'z ichiga oladi. Dastur barcha yoshdagi o'quvchilar uchun mo'ljallangan va kelajakda ta'lim sifatini oshirishga qaratilgan!!!",
                     category: "talim",
                     author: "Administrator",
                     date: new Date().toISOString(),
