@@ -1229,6 +1229,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <img src="${featuredNews.image}" alt="${featuredNews.title}" class="featured-image">
                     <div class="featured-content">
                         <span class="featured-badge">Asosiy yangilik</span>
+                        
                         <h2 class="featured-title">${featuredNews.title}</h2>
                         <p class="featured-excerpt">${truncateText(featuredNews.content, 150)}</p>
                         <div class="news-meta">
